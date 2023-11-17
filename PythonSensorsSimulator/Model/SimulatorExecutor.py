@@ -1,4 +1,4 @@
-from PythonSensorsSimulator.Model import SimulatorThread
+from .SimulatorThread import SimulatorThread
 
 
 class SimulatorExecutor:
