@@ -1,7 +1,7 @@
 import time
 
-from PythonSensorsSimulator.Model.Simulators.Simulator import Simulator
-from PythonSensorsSimulator.Model.Writers.Writer import Writer
+from .Simulator import Simulator
+from ..Writers import Writer
 from datetime import datetime
 import json
 import math

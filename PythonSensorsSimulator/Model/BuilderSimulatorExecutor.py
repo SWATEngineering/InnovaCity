@@ -1,7 +1,7 @@
-from PythonSensorsSimulator.Model.SimulatorExecutor import SimulatorExecutor
-from PythonSensorsSimulator.Model.Writers.Writer import Writer
-from PythonSensorsSimulator.Model.Simulators.TemperatureSimulator import TemperatureSimulator
-from PythonSensorsSimulator.Model.SimulatorThread import SimulatorThread
+from .SimulatorExecutor import SimulatorExecutor
+from .Writers.Writer import Writer
+from .Simulators.TemperatureSimulator import TemperatureSimulator
+from .SimulatorThread import SimulatorThread
 
 
 class BuilderSimulatorExecutor:

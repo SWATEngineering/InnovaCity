@@ -1,5 +1,5 @@
 import threading
-from PythonSensorsSimulator.Model.Simulators import Simulator
+from .Simulators.Simulator import Simulator
 
 
 class SimulatorThread(threading.Thread):

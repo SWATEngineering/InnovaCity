@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from PythonSensorsSimulator.Model.Writers.Writer import Writer
+from ..Writers import Writer
 
 
 class Simulator(ABC):
