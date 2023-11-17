@@ -29,5 +29,5 @@ class TemperatureSimulator(Simulator):
                 "type": "TemperatureSimulator",
                 "id": self._Simulator__id
             }
-            self._Simulator__writer.write(json.dumps(dato, indent=2))
+            self._Simulator__writer.write(json.dumps(dato))
             time.sleep(self._Simulator__frequency_in_s)
