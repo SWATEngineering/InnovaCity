@@ -3,14 +3,14 @@ from .Simulators.Simulator import Simulator
 
 
 class SimulatorThread(threading.Thread):
-    simulator: Simulator = None
+    __simulator: Simulator = None
 
     def __init__(self, simulator: Simulator):
         super().__init__()
-        self.simulator = simulator
+        self.__simulator = simulator
 
     def run(self) -> None:
-        self.simulator.simulate()
+        self.__simulator.simulate()
 
     def stop(self) -> None:
-        self.simulator.stop_simulating()
+        self.__simulator.stop_simulating()

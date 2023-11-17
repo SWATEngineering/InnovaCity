@@ -5,26 +5,24 @@ from .SimulatorThread import SimulatorThread
 
 
 class BuilderSimulatorExecutor:
-    simulator_executor: SimulatorExecutor = None
-    writer: Writer = None
+    __simulator_executor: SimulatorExecutor = None
+    __writer: Writer = None
 
     def __init__(self, writer: Writer):
-        self.writer = writer
-        self.simulator_executor = SimulatorExecutor()
+        self.__writer = writer
+        self.__simulator_executor = SimulatorExecutor()
 
-    def addTemperatureSimulator(self, id: str, frequency_in_s=1) -> "BuilderSimulatorExecutor":
-        if self.writer is None:
+    def add_temperature_simulator(self, id: str, frequency_in_s=1) -> "BuilderSimulatorExecutor":
+        if self.__writer is None:
             return self
-        self.simulator_executor.simulators.append(
+        self.__simulator_executor._SimulatorExecutor__simulators.append(
             SimulatorThread(
-                TemperatureSimulator(self.writer, id, frequency_in_s)
+                TemperatureSimulator(self.__writer, id, frequency_in_s)
             )
         )
         return self
 
-
-    def getSimulatorExecutor(self) -> "SimulatorExecutor":
-        symExec = self.simulator_executor
-        self.simulator_executor = None
-        self.writer = None
-        return symExec
+    def get_simulator_executor(self) -> "SimulatorExecutor":
+        sym_exec = self.__simulator_executor
+        self.__simulator_executor = SimulatorExecutor()
+        return sym_exec
