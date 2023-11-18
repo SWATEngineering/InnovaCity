@@ -7,7 +7,7 @@ class Simulator(ABC):
     __writer: Writer = None
     __frequency_in_s: int = None
     __continue_simulating: bool = None
-    __id = None
+    __id: str = None
 
     def __init__(self, writer: Writer, id: str, frequency_in_s: int = 1):
         self.__writer = writer

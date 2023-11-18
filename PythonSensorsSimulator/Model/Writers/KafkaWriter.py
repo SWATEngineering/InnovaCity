@@ -1,9 +1,11 @@
 from .Writer import Writer
 from confluent_kafka import Producer, KafkaException
 
+
 def acked(err, msg):
     if err is not None:
         print("Fallimento nella consegna del messaggio: %s: %s" % (str(msg), str(err)))
+
 
 class KafkaWriter(Writer):
     __producer: Producer = None
