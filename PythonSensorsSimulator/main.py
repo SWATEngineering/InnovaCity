@@ -1,13 +1,12 @@
 import time
 
-from Model.Writers.StdoutWriter import StdoutWriter
 from Model.BuilderSimulatorExecutor import BuilderSimulatorExecutor
 from Model.Writers.KafkaWriter import KafkaWriter
 
 # Uso generale di una interfaccia Writer al fine di poter implementare quante politiche diverse di writing si vuole,
 # senza dover cambiare nulla sul resto del codice.
 # writeToStd = StdoutWriter()
-writeToKafka = KafkaWriter("temperature","localhost","9092")
+writeToKafka = KafkaWriter("temperature", "localhost", "9092")
 
 symExecBuilder = BuilderSimulatorExecutor(writeToKafka)
 
