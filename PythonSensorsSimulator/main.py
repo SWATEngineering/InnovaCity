@@ -1,11 +1,11 @@
 import time
 import os
 
-KAFKA_HOST = os.environ.get("KAFKA_HOST", "localhost")
-KAFKA_PORT = os.environ.get("KAFKA_PORT", "9092")
-
 from Model.BuilderSimulatorExecutor import BuilderSimulatorExecutor
 from Model.Writers.KafkaWriter import KafkaWriter
+
+KAFKA_HOST = os.environ.get("KAFKA_HOST", "localhost")
+KAFKA_PORT = os.environ.get("KAFKA_PORT", "9092")
 
 # Uso generale di una interfaccia Writer al fine di poter implementare quante politiche diverse di writing si vuole,
 # senza dover cambiare nulla sul resto del codice.
