@@ -41,13 +41,10 @@ services:
   simulators:
     build:
       context: ./PythonSensorsSimulator
-      dockerfile: Dockerfile
     hostname: simulators
     container_name: simulators
     environment:
-      KAFKA_HOST: kafka
-      KAFKA_PORT: 9092
+      KAFKA_HOST: "kafka"
+      KAFKA_PORT: "9092"
     depends_on:
-      - kafka-setup
-    volumes:
-      - ./PythonSensorsSimulator:/app
+      - kafka
