@@ -24,7 +24,7 @@ symExec = (
 )
 
 symExec.run_all()
-time.sleep(3.25)  # do un tempo di 2 secondi per far si che si fermi da solo.
+time.sleep(5)  # do un tempo di 2 secondi per far si che si fermi da solo.
 symExec.stop_all()
 
 # NOTA: ereditarietà usata solamente per l'implementazione di metodi di classi astratte.
