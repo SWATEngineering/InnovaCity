@@ -1,12 +1,16 @@
 import time
+import os
 
 from Model.BuilderSimulatorExecutor import BuilderSimulatorExecutor
 from Model.Writers.KafkaWriter import KafkaWriter
 
+KAFKA_HOST = os.environ.get("KAFKA_HOST", "localhost")
+KAFKA_PORT = os.environ.get("KAFKA_PORT", "9092")
+
 # Uso generale di una interfaccia Writer al fine di poter implementare quante politiche diverse di writing si vuole,
 # senza dover cambiare nulla sul resto del codice.
 # writeToStd = StdoutWriter()
-writeToKafka = KafkaWriter("temperature", "localhost", "9092")
+writeToKafka = KafkaWriter("temperature", KAFKA_HOST, KAFKA_PORT)
 
 symExecBuilder = BuilderSimulatorExecutor(writeToKafka)
 
@@ -20,7 +24,7 @@ symExec = (
 )
 
 symExec.run_all()
-time.sleep(3.25)  # do un tempo di 2 secondi per far si che si fermi da solo.
+time.sleep(5)  # do un tempo di 2 secondi per far si che si fermi da solo.
 symExec.stop_all()
 
 # NOTA: ereditarietà usata solamente per l'implementazione di metodi di classi astratte.
