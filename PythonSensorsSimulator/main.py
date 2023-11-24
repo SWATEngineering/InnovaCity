@@ -4,6 +4,9 @@ import os
 from Model.BuilderSimulatorExecutor import BuilderSimulatorExecutor
 from Model.Writers.KafkaWriter import KafkaWriter
 
+time.sleep(5) # Per far si che Kafka sia già UP all'invio dei messaggi.
+# TODO: da automatizzare come processo.
+
 KAFKA_HOST = os.environ.get("KAFKA_HOST", "localhost")
 KAFKA_PORT = os.environ.get("KAFKA_PORT", "9092")
 
