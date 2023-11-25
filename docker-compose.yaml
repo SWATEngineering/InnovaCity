@@ -37,6 +37,11 @@ services:
       KAFKA_ALLOW_EVERYONE_IF_NO_ACL_FOUND: "true"
     depends_on:
       - zoo
+    healthcheck:
+      test: [ "CMD", "kafka-topics", "--bootstrap-server", "localhost:9092", "--list"]
+      interval: 1s
+      timeout: 2s
+      retries: 10
 
   simulators:
     build:
@@ -47,4 +52,5 @@ services:
       KAFKA_HOST: "kafka"
       KAFKA_PORT: "9092"
     depends_on:
-      - kafka
+      kafka:
+        condition: service_healthy
