@@ -50,6 +50,8 @@ services:
     image: clickhouse/clickhouse-server
     hostname: clickhouse
     container_name: clickhouse
+    ports:
+      - "8123:8123"
     environment:
       # creazione database iniziale
       CLICKHOUSE_DB: innovacity
@@ -58,6 +60,11 @@ services:
       CLICKHOUSE_PASSWORD: ic_admin
       # crea un utente che ha il controllo degli accessi e la gestione degli accounts
       CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT: 1
+    volumes:
+      - ./InitDB:/docker-entrypoint-initdb.d
+    depends_on:
+      kafka:
+        condition: service_healthy
 
   simulators:
     build:
