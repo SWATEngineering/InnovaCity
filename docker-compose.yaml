@@ -1,14 +1,10 @@
-# TODO la versione si puo' omettere
-version: '2.1'
+version: '3.8'
 
 services:
   zoo:
     image: confluentinc/cp-zookeeper:7.3.2
     hostname: zoo
     container_name: zoo
-    # TODO le porte esposte e' possibile rimuoverle visto che funzione tutto all'interno del network di docker
-    ports:
-      - "2181:2181"
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_SERVER_ID: 1
@@ -18,11 +14,8 @@ services:
     image: confluentinc/cp-kafka:7.3.2
     hostname: kafka
     container_name: kafka
-    # TODO le porte esposte e' possibile rimuoverle visto che funzione tutto all'interno del network di docker
     ports:
       - "9092:9092"
-      - "29092:29092"
-      - "9999:9999"
     environment:
       KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka:19092,EXTERNAL://kafka:9092,DOCKER://host.docker.internal:29092
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT,DOCKER:PLAINTEXT
