@@ -6,18 +6,16 @@ from .SimulatorThread import SimulatorThread
 
 class BuilderSimulatorExecutor:
     __simulator_executor: SimulatorExecutor = None
-    __writer: Writer = None
 
-    def __init__(self, writer: Writer):
-        self.__writer = writer
+    def __init__(self):
         self.__simulator_executor = SimulatorExecutor()
 
-    def add_temperature_simulator(self, id: str, frequency_in_s=1) -> "BuilderSimulatorExecutor":
-        if self.__writer is None:
+    def add_temperature_simulator(self, writer: Writer, id: str, frequency_in_s=1) -> "BuilderSimulatorExecutor":
+        if writer is None:
             return self
         self.__simulator_executor._SimulatorExecutor__simulators.append(
             SimulatorThread(
-                TemperatureSimulator(self.__writer, id, frequency_in_s)
+                TemperatureSimulator(writer, id, frequency_in_s)
             )
         )
         return self
