@@ -2,7 +2,7 @@ import time
 
 from .Simulator import Simulator
 from ..Writers import Writer
-from datetime import datetime
+from datetime import datetime, timezone
 import json
 import math
 import random
@@ -24,7 +24,7 @@ class TemperatureSimulator(Simulator):
                                # in questo modo spostiamo il coseno tutto in positivo, con valori che vanno da 0 a 1
                                ) * 12 + 5 + random.random() * 0.2  # per temperature che vanno da 5 a 17 gradi
             dato = {
-                "timestamp": datetime.timestamp(datetime.now()),
+                "timestamp": str(datetime.now()),
                 "value": "{:.2f}".format(sym_temperature),
                 "type": "TemperatureSimulator",
                 "id": self._Simulator__id
