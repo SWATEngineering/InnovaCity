@@ -1,5 +1,6 @@
 import time
 import os
+import uuid
 
 from Model.BuilderSimulatorExecutor import BuilderSimulatorExecutor
 from Model.Writers.KafkaWriter import KafkaWriter
@@ -17,9 +18,9 @@ symExecBuilder = BuilderSimulatorExecutor()
 # Builder pattern per la configurazione dell'esecutore di simulatori.
 symExec = (
     symExecBuilder
-    .add_temperature_simulator(writeToKafkaTemp, "#1", 0.5)
-    .add_temperature_simulator(writeToKafkaTemp, "#2", 0.75)
-    .add_temperature_simulator(writeToKafkaTemp, "#3", 1.5)
+    .add_temperature_simulator(writeToKafkaTemp, 0.5)
+    .add_temperature_simulator(writeToKafkaTemp, 0.75)
+    .add_temperature_simulator(writeToKafkaTemp, 1.5)
     .get_simulator_executor()
 )
 

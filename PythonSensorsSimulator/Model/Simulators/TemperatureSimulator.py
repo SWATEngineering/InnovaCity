@@ -1,4 +1,5 @@
 import time
+import uuid
 
 from .Simulator import Simulator
 from ..Writers import Writer
@@ -10,8 +11,8 @@ import random
 
 class TemperatureSimulator(Simulator):
 
-    def __init__(self, writer: Writer, id: str, frequency_in_s: int = 1):
-        super().__init__(writer, id, frequency_in_s)
+    def __init__(self, writer: Writer, frequency_in_s: int = 1):
+        super().__init__(writer, frequency_in_s)
 
     def simulate(self) -> None:
         while self._Simulator__continue_simulating:
@@ -27,7 +28,7 @@ class TemperatureSimulator(Simulator):
                 "timestamp": str(datetime.now()),
                 "value": "{:.2f}".format(sym_temperature),
                 "type": "TemperatureSimulator",
-                "id": self._Simulator__id
+                "uuid": str(self._Simulator__uuid)
             }
             self._Simulator__writer.write(json.dumps(dato))
             time.sleep(self._Simulator__frequency_in_s)
