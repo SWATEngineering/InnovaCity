@@ -11,11 +11,11 @@ class Simulator(ABC):
     __continue_simulating: bool = None
     __uuid: uuid = None
 
-    def __init__(self, writer: Writer, uuid: uuid, frequency_in_s: int = 1):
+    def __init__(self, writer: Writer, frequency_in_s: int = 1):
         self.__writer = writer
         self.__frequency_in_s = frequency_in_s
         self.__continue_simulating = True
-        self.__uuid = uuid
+        self.__uuid = uuid.uuid4()
 
     @abstractmethod
     def simulate(self) -> None:

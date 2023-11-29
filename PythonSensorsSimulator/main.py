@@ -18,9 +18,9 @@ symExecBuilder = BuilderSimulatorExecutor()
 # Builder pattern per la configurazione dell'esecutore di simulatori.
 symExec = (
     symExecBuilder
-    .add_temperature_simulator(writeToKafkaTemp, uuid.uuid4(), 0.5)
-    .add_temperature_simulator(writeToKafkaTemp, uuid.uuid4(), 0.75)
-    .add_temperature_simulator(writeToKafkaTemp, uuid.uuid4(), 1.5)
+    .add_temperature_simulator(writeToKafkaTemp, 0.5)
+    .add_temperature_simulator(writeToKafkaTemp, 0.75)
+    .add_temperature_simulator(writeToKafkaTemp, 1.5)
     .get_simulator_executor()
 )
 

@@ -11,8 +11,8 @@ import random
 
 class TemperatureSimulator(Simulator):
 
-    def __init__(self, writer: Writer, uuid: uuid, frequency_in_s: int = 1):
-        super().__init__(writer, uuid, frequency_in_s)
+    def __init__(self, writer: Writer, frequency_in_s: int = 1):
+        super().__init__(writer, frequency_in_s)
 
     def simulate(self) -> None:
         while self._Simulator__continue_simulating:
