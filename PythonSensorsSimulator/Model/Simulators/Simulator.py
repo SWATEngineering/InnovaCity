@@ -1,5 +1,7 @@
 from abc import ABC, abstractmethod
 
+import uuid
+
 from ..Writers import Writer
 
 
@@ -7,13 +9,13 @@ class Simulator(ABC):
     __writer: Writer = None
     __frequency_in_s: int = None
     __continue_simulating: bool = None
-    __id: str = None
+    __uuid: uuid = None
 
-    def __init__(self, writer: Writer, id: str, frequency_in_s: int = 1):
+    def __init__(self, writer: Writer, uuid: uuid, frequency_in_s: int = 1):
         self.__writer = writer
         self.__frequency_in_s = frequency_in_s
         self.__continue_simulating = True
-        self.__id = id
+        self.__uuid = uuid
 
     @abstractmethod
     def simulate(self) -> None:
