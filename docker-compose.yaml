@@ -55,9 +55,19 @@ services:
       CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT: 1
     volumes:
       - ./InitDB:/docker-entrypoint-initdb.d
-    depends_on:
-      kafka:
-        condition: service_healthy
+    #depends_on:
+    #  kafka:
+    #    condition: service_healthy
+
+  grafana:
+    image: grafana/grafana-enterprise
+    container_name: grafana
+    restart: unless-stopped
+    ports:
+     - '3000:3000'
+    #depends_on:
+    #  kafka:
+    #    condition: service_healthy
 
   simulators:
     build:
