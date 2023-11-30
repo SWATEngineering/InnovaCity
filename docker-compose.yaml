@@ -65,6 +65,8 @@ services:
     restart: unless-stopped
     ports:
      - '3000:3000'
+    environment:
+        - GF_INSTALL_PLUGINS=grafana-clickhouse-datasource
     #depends_on:
     #  kafka:
     #    condition: service_healthy
