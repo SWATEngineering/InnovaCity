@@ -54,8 +54,8 @@ services:
       - ./grafana/dashboards_config:/etc/grafana/dashboards_config
     environment:
         GF_INSTALL_PLUGINS: grafana-clickhouse-datasource
-        GF_AUTH_ADMIN_USER: ic_admin
-        GF_AUTH_ADMIN_PASSWORD: ic_admin
+        GF_SECURITY_ADMIN_USER: ic_admin
+        GF_SECURITY_ADMIN_PASSWORD: ic_admin
         # Commentato per rendere semplice lo sviluppo
         # GF_AUTH_ORG_ROLE: viewer
     depends_on:
