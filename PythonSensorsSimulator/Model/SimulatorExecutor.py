@@ -1,4 +1,4 @@
-from SimulatorThread import SimulatorThread
+from .SimulatorThread import SimulatorThread
 
 
 class SimulatorExecutor:

@@ -1,7 +1,7 @@
-from SimulatorExecutor import SimulatorExecutor
-from Writers.Writer import Writer
-from Simulators.TemperatureSimulator import TemperatureSimulator
-from SimulatorThread import SimulatorThread
+from .SimulatorExecutor import SimulatorExecutor
+from .Writers.Writer import Writer
+from .Simulators.TemperatureSimulator import TemperatureSimulator
+from .SimulatorThread import SimulatorThread
 
 
 class BuilderSimulatorExecutor:

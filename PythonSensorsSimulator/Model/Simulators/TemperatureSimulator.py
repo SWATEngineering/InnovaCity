@@ -1,11 +1,11 @@
 import time
-
-from Simulator import Simulator
-from ..Writers import Writer
-from datetime import datetime
 import json
 import math
 import random
+from datetime import datetime
+
+from .Simulator import Simulator
+from ..Writers import Writer
 
 
 class TemperatureSimulator(Simulator):
