@@ -1,5 +1,5 @@
 import threading
-from .Simulators.Simulator import Simulator
+from Simulators.Simulator import Simulator
 
 
 class SimulatorThread(threading.Thread):

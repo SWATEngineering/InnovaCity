@@ -1,9 +1,8 @@
 import time
-import uuid
 
-from .Simulator import Simulator
+from Simulator import Simulator
 from ..Writers import Writer
-from datetime import datetime, timezone
+from datetime import datetime
 import json
 import math
 import random
@@ -15,7 +14,7 @@ class TemperatureSimulator(Simulator):
         super().__init__(writer, frequency_in_s)
 
     def simulate(self) -> None:
-        while self._Simulator__continue_simulating:
+        while super().continue_simulating():
             hours = (datetime.timestamp(datetime.now()) % 86400) / 3600
             sym_temperature = ((
                                        math.cos(
@@ -28,7 +27,7 @@ class TemperatureSimulator(Simulator):
                 "timestamp": str(datetime.now()),
                 "value": "{:.2f}".format(sym_temperature),
                 "type": "TemperatureSimulator",
-                "uuid": str(self._Simulator__uuid)
+                "uuid": str(super().get_uuid())
             }
-            self._Simulator__writer.write(json.dumps(dato))
-            time.sleep(self._Simulator__frequency_in_s)
+            super().get_writer().write(json.dumps(dato))
+            time.sleep(super().get_frequency_is_s())

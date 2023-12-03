@@ -1,4 +1,4 @@
-from .SimulatorThread import SimulatorThread
+from SimulatorThread import SimulatorThread
 
 
 class SimulatorExecutor:
@@ -14,3 +14,6 @@ class SimulatorExecutor:
     def stop_all(self) -> None:
         for simulator in self.__simulators:
             simulator.stop()
+
+    def append_simulator(self, simulator_thread: SimulatorThread) -> None:
+        self.__simulators.append(simulator_thread)

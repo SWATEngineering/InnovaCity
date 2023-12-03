@@ -23,3 +23,15 @@ class Simulator(ABC):
 
     def stop_simulating(self) -> None:
         self.__continue_simulating = False
+
+    def continue_simulating(self) -> bool:
+        return self.__continue_simulating
+
+    def get_uuid(self) -> uuid:
+        return self.__uuid
+
+    def get_writer(self) -> Writer:
+        return self.__writer
+
+    def get_frequency_is_s(self):
+        return self.__frequency_in_s
