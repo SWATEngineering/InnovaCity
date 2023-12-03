@@ -1,175 +1,176 @@
 {
-    "annotations": {
-      "list": [
-        {
-          "builtIn": 1,
-          "datasource": {
-            "type": "grafana",
-            "uid": "-- Grafana --"
-          },
-          "enable": true,
-          "hide": true,
-          "iconColor": "rgba(0, 211, 255, 1)",
-          "name": "Annotations & Alerts",
-          "type": "dashboard"
-        }
-      ]
-    },
-    "editable": true,
-    "fiscalYearStartMonth": 0,
-    "graphTooltip": 0,
-    "links": [],
-    "liveNow": false,
-    "panels": [
+  "annotations": {
+    "list": [
       {
+        "builtIn": 1,
         "datasource": {
-          "type": "grafana-clickhouse-datasource",
-          "uid": "PDEE91DDB90597936"
+          "type": "grafana",
+          "uid": "-- Grafana --"
         },
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "palette-classic"
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 1,
+  "links": [],
+  "liveNow": true,
+  "panels": [
+    {
+      "datasource": {
+        "type": "grafana-clickhouse-datasource",
+        "uid": "PDEE91DDB90597936"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
             },
-            "custom": {
-              "axisBorderShow": false,
-              "axisCenteredZero": false,
-              "axisColorMode": "text",
-              "axisLabel": "",
-              "axisPlacement": "auto",
-              "barAlignment": 0,
-              "drawStyle": "line",
-              "fillOpacity": 0,
-              "gradientMode": "none",
-              "hideFrom": {
-                "legend": false,
-                "tooltip": false,
-                "viz": false
-              },
-              "insertNulls": false,
-              "lineInterpolation": "linear",
-              "lineWidth": 1,
-              "pointSize": 5,
-              "scaleDistribution": {
-                "type": "linear"
-              },
-              "showPoints": "auto",
-              "spanNulls": true,
-              "stacking": {
-                "group": "A",
-                "mode": "none"
-              },
-              "thresholdsStyle": {
-                "mode": "off"
-              }
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
             },
-            "mappings": [],
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                },
-                {
-                  "color": "red",
-                  "value": 80
-                }
-              ]
+            "showPoints": "auto",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
             }
           },
-          "overrides": []
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
         },
-        "gridPos": {
-          "h": 8,
-          "w": 12,
-          "x": 0,
-          "y": 0
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
         },
-        "id": 1,
-        "options": {
-          "legend": {
-            "calcs": [],
-            "displayMode": "list",
-            "placement": "bottom",
-            "showLegend": true
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "builderOptions": {
+            "database": "innovacity",
+            "fields": [
+              "value",
+              "uuid",
+              "timestamp"
+            ],
+            "filters": [
+              {
+                "condition": "AND",
+                "filterType": "custom",
+                "key": "timestamp",
+                "operator": "WITH IN DASHBOARD TIME RANGE",
+                "restrictToFields": [
+                  {
+                    "label": "timestamp",
+                    "name": "timestamp",
+                    "picklistValues": [],
+                    "type": "DateTime64(3)"
+                  }
+                ],
+                "type": "datetime"
+              }
+            ],
+            "limit": 100,
+            "mode": "list",
+            "orderBy": [
+              {
+                "dir": "ASC",
+                "name": "timestamp"
+              }
+            ],
+            "table": "temperatures",
+            "timeField": "timestamp",
+            "timeFieldType": "DateTime64(3)"
           },
-          "tooltip": {
-            "mode": "single",
-            "sort": "none"
-          }
-        },
-        "targets": [
-          {
-            "builderOptions": {
-              "database": "innovacity",
-              "fields": [
-                "value",
-                "uuid",
-                "timestamp"
-              ],
-              "filters": [
-                {
-                  "condition": "AND",
-                  "filterType": "custom",
-                  "key": "timestamp",
-                  "operator": "WITH IN DASHBOARD TIME RANGE",
-                  "restrictToFields": [
-                    {
-                      "label": "timestamp",
-                      "name": "timestamp",
-                      "picklistValues": [],
-                      "type": "DateTime64(3)"
-                    }
-                  ],
-                  "type": "datetime"
-                }
-              ],
-              "limit": 100,
-              "mode": "list",
-              "orderBy": [
-                {
-                  "dir": "ASC",
-                  "name": "timestamp"
-                }
-              ],
-              "table": "temperatures",
-              "timeField": "timestamp",
-              "timeFieldType": "DateTime64(3)"
-            },
-            "datasource": {
-              "type": "grafana-clickhouse-datasource",
-              "uid": "PDEE91DDB90597936"
-            },
-            "queryType": "builder",
-            "rawSql": "SELECT \"value\", \"uuid\", \"timestamp\" FROM \"innovacity\".\"temperatures\" WHERE   ( timestamp  >= $__fromTime AND timestamp <= $__toTime ) ORDER BY timestamp ASC LIMIT 100",
-            "refId": "A"
-          }
-        ],
-        "title": "Panel Title",
-        "transformations": [
-          {
-            "id": "prepareTimeSeries",
-            "options": {}
-          }
-        ],
-        "type": "timeseries"
-      }
-    ],
-    "refresh": "",
-    "schemaVersion": 38,
-    "tags": [],
-    "templating": {
-      "list": []
-    },
-    "time": {
-      "from": "now-30m",
-      "to": "now"
-    },
-    "timepicker": {},
-    "timezone": "",
-    "title": "Temperature",
-    "uid": "c702952f-5e6a-4911-b003-a97eb331f272",
-    "version": 1,
-    "weekStart": ""
-  }
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "PDEE91DDB90597936"
+          },
+          "queryType": "builder",
+          "rawSql": "SELECT \"value\", \"uuid\", \"timestamp\" FROM \"innovacity\".\"temperatures\" WHERE   ( timestamp  >= $__fromTime AND timestamp <= $__toTime ) ORDER BY timestamp",
+          "refId": "A"
+        }
+      ],
+      "title": "Panel Title",
+      "transformations": [
+        {
+          "id": "prepareTimeSeries",
+          "options": {}
+        }
+      ],
+      "type": "timeseries"
+    }
+  ],
+  "refresh": "auto",
+  "schemaVersion": 38,
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-15m",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "Temperature",
+  "uid": "c702952f-5e6a-4911-b003-a97eb331f272",
+  "version": 2,
+  "weekStart": ""
+}
