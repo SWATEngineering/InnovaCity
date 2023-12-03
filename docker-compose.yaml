@@ -35,8 +35,8 @@ services:
       - zoo
     healthcheck:
       test: [ "CMD", "kafka-topics", "--bootstrap-server", "localhost:9092", "--list"]
-      interval: 1s
-      timeout: 2s
+      interval: 5s
+      timeout: 30s
       retries: 10
 
   clickhouse:
@@ -55,6 +55,22 @@ services:
       CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT: 1
     volumes:
       - ./InitDB:/docker-entrypoint-initdb.d
+    depends_on:
+      kafka:
+        condition: service_healthy
+
+  grafana:
+    image: grafana/grafana-oss
+    container_name: grafana
+    restart: unless-stopped
+    ports:
+     - '3000:3000'
+    volumes:
+      - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+      - ./grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
+      - ./grafana/dashboards_config:/etc/grafana/dashboards_config
+    environment:
+        GF_INSTALL_PLUGINS: grafana-clickhouse-datasource
     depends_on:
       kafka:
         condition: service_healthy
