@@ -17,8 +17,14 @@ symExecBuilder = BuilderSimulatorExecutor()
 symExec = (
     symExecBuilder
     .add_temperature_simulator(writeToKafkaTemp, 1)
+    .add_temperature_simulator(writeToKafkaTemp, 0.9)
+    .add_temperature_simulator(writeToKafkaTemp, 1.1)
     .add_temperature_simulator(writeToKafkaTemp, 1)
     .add_temperature_simulator(writeToKafkaTemp, 1)
+    .add_temperature_simulator(writeToKafkaTemp, 0.9)
+    .add_temperature_simulator(writeToKafkaTemp, 1.1)
+    .add_temperature_simulator(writeToKafkaTemp, 0.9)
+    .add_temperature_simulator(writeToKafkaTemp, 1.1)
     .get_simulator_executor()
 )
 

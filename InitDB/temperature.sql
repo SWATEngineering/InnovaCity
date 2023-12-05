@@ -14,4 +14,23 @@ CREATE TABLE innovacity.temperatures (
 ORDER BY (uuid, timestamp);
 
 CREATE MATERIALIZED VIEW consumer TO innovacity.temperatures
-AS SELECT * FROM innovacity.temperatures_queue
+AS SELECT * FROM innovacity.temperatures_queue;
+
+CREATE TABLE innovacity.temperatures5m
+(
+    `timestamp5m` DATETIME64,
+    `uuid` UUID,
+    `avgTemperature` AggregateFunction(avg, Float32)
+)
+ENGINE = AggregatingMergeTree
+ORDER BY (timestamp5m, uuid);
+
+CREATE MATERIALIZED VIEW innovacity.temperatures5m_mv
+TO innovacity.temperatures5m
+AS
+SELECT
+    toStartOfFiveMinutes(timestamp) AS timestamp5m,
+    uuid,
+    avgState(value) as avgTemperature
+FROM innovacity.temperatures
+GROUP BY (timestamp5m, uuid);
