@@ -1,5 +1,3 @@
-import uuid
-
 from .SimulatorExecutor import SimulatorExecutor
 from .Writers.Writer import Writer
 from .Simulators.TemperatureSimulator import TemperatureSimulator
@@ -15,7 +13,8 @@ class BuilderSimulatorExecutor:
     def add_temperature_simulator(self, writer: Writer, frequency_in_s=1) -> "BuilderSimulatorExecutor":
         if writer is None:
             return self
-        self.__simulator_executor._SimulatorExecutor__simulators.append(
+
+        self.__simulator_executor.append_simulator(
             SimulatorThread(
                 TemperatureSimulator(writer, frequency_in_s)
             )
