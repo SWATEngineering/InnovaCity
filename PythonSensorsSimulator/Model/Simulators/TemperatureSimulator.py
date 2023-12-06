@@ -10,8 +10,8 @@ from ..Writers import Writer
 
 class TemperatureSimulator(Simulator):
 
-    def __init__(self, writer: Writer, frequency_in_s: int = 1):
-        super().__init__(writer, frequency_in_s)
+    def __init__(self, writer: Writer, latitude: float, longitude: float, frequency_in_s: int = 1):
+        super().__init__(writer, latitude, longitude, frequency_in_s)
 
     def simulate(self) -> None:
         while super().continue_simulating():
@@ -22,11 +22,13 @@ class TemperatureSimulator(Simulator):
                                            # in questo modo il periodo [-1,1] basta per raggiungere i periodi
                                        ) + 1) / 2
                                # in questo modo spostiamo il coseno tutto in positivo, con valori che vanno da 0 a 1
-                               ) * 12 + 5 + random.random() * 0.2  # per temperature che vanno da 5 a 17 gradi
+                               ) * 12 + 5 + random.random()  # per temperature che vanno da 5 a 17 gradi
             dato = {
                 "timestamp": str(datetime.now()),
                 "value": "{:.2f}".format(sym_temperature),
                 "type": "TemperatureSimulator",
+                "latitude": super().get_latitude(),
+                "longitude": super().get_longitude(),
                 "uuid": str(super().get_uuid())
             }
             super().get_writer().write(json.dumps(dato))

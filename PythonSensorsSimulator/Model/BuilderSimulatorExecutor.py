@@ -10,13 +10,19 @@ class BuilderSimulatorExecutor:
     def __init__(self):
         self.__simulator_executor = SimulatorExecutor()
 
-    def add_temperature_simulator(self, writer: Writer, frequency_in_s=1) -> "BuilderSimulatorExecutor":
+    def add_temperature_simulator(
+            self,
+            writer: Writer,
+            latitude: float,
+            longitude: float,
+            frequency_in_s=1
+    ) -> "BuilderSimulatorExecutor":
         if writer is None:
             return self
 
         self.__simulator_executor.append_simulator(
             SimulatorThread(
-                TemperatureSimulator(writer, frequency_in_s)
+                TemperatureSimulator(writer, latitude, longitude, frequency_in_s)
             )
         )
         return self
