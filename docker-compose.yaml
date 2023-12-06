@@ -58,9 +58,6 @@ services:
         GF_SECURITY_ADMIN_PASSWORD: ic_admin
         # Commentato per rendere semplice lo sviluppo
         # GF_AUTH_ORG_ROLE: viewer
-    depends_on:
-      kafka:
-        condition: service_healthy
 
   simulators:
     build:
