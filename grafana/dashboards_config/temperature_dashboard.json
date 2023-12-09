@@ -105,11 +105,7 @@
         {
           "builderOptions": {
             "database": "innovacity",
-            "fields": [
-              "value",
-              "uuid",
-              "timestamp"
-            ],
+            "fields": ["value", "nome_sensore", "timestamp"],
             "filters": [
               {
                 "condition": "AND",
@@ -147,11 +143,7 @@
           "meta": {
             "builderOptions": {
               "database": "innovacity",
-              "fields": [
-                "value",
-                "uuid",
-                "timestamp"
-              ],
+              "fields": ["value", "nome_sensore", "timestamp"],
               "filters": [
                 {
                   "condition": "AND",
@@ -183,7 +175,7 @@
             }
           },
           "queryType": "sql",
-          "rawSql": "SELECT \"value\", \"uuid\", \"timestamp\" FROM \"innovacity\".\"temperatures\" WHERE ( timestamp  >= $__fromTime AND timestamp <= $__toTime ) ORDER BY timestamp ASC",
+          "rawSql": "SELECT \"value\", \"nome_sensore\", \"timestamp\" FROM \"innovacity\".\"temperatures\" WHERE ( timestamp  >= $__fromTime AND timestamp <= $__toTime ) ORDER BY timestamp ASC",
           "refId": "A",
           "selectedFormat": 4
         }
@@ -398,15 +390,13 @@
           "options": {
             "fields": {
               "avgTemperature": {
-                "aggregations": [
-                  "mean"
-                ],
+                "aggregations": ["mean"],
                 "operation": "aggregate"
               },
               "timestamp5m": {
                 "aggregations": []
               },
-              "uuid": {
+              "nome_sensore": {
                 "aggregations": [],
                 "operation": "groupby"
               }
@@ -467,9 +457,7 @@
         "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
+          "calcs": ["lastNotNull"],
           "fields": "",
           "values": false
         },
@@ -494,7 +482,7 @@
           "options": {
             "excludeByName": {
               "timestamp": true,
-              "uuid": true,
+              "nome_sensore": true,
               "value": false
             },
             "indexByName": {},
@@ -506,9 +494,7 @@
           "options": {
             "includeTimeField": false,
             "mode": "reduceFields",
-            "reducers": [
-              "count"
-            ]
+            "reducers": ["count"]
           }
         }
       ],
@@ -566,9 +552,7 @@
         "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
+          "calcs": ["lastNotNull"],
           "fields": "",
           "values": false
         },
@@ -596,7 +580,7 @@
               "latitude": true,
               "longitude": true,
               "timestamp5m": true,
-              "uuid": true
+              "nome_sensore": true
             },
             "indexByName": {},
             "renameByName": {}
@@ -607,9 +591,7 @@
           "options": {
             "includeTimeField": false,
             "mode": "reduceFields",
-            "reducers": [
-              "count"
-            ]
+            "reducers": ["count"]
           }
         }
       ],
@@ -665,9 +647,7 @@
         "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
+          "calcs": ["lastNotNull"],
           "fields": "/^avgTemperature$/",
           "values": false
         },
@@ -703,9 +683,7 @@
           "options": {
             "includeTimeField": false,
             "mode": "reduceFields",
-            "reducers": [
-              "mean"
-            ]
+            "reducers": ["mean"]
           }
         }
       ],
@@ -840,7 +818,7 @@
           "builderOptions": {
             "database": "innovacity",
             "fields": [
-              "uuid",
+              "nome_sensore",
               "type",
               "latitude",
               "longitude",
@@ -876,7 +854,7 @@
             "builderOptions": {
               "database": "innovacity",
               "fields": [
-                "uuid",
+                "nome_sensore",
                 "type",
                 "latitude",
                 "longitude",
@@ -905,7 +883,7 @@
             }
           },
           "queryType": "sql",
-          "rawSql": "SELECT\n    uuid,\n    toStartOfFiveMinutes(timestamp5m) AS timestamp5m,\n    avgMerge(avgTemperature) as avgTemperature,\n    latitude,\n    longitude\nFROM innovacity.temperatures5m\nGROUP BY (uuid, timestamp5m, latitude, longitude)\nHAVING ( timestamp5m  >= $__fromTime AND timestamp5m <= $__toTime ) ",
+          "rawSql": "SELECT\n    nome_sensore,\n    toStartOfFiveMinutes(timestamp5m) AS timestamp5m,\n    avgMerge(avgTemperature) as avgTemperature,\n    latitude,\n    longitude\nFROM innovacity.temperatures5m\nGROUP BY (nome_sensore, timestamp5m, latitude, longitude)\nHAVING ( timestamp5m  >= $__fromTime AND timestamp5m <= $__toTime ) ",
           "refId": "A",
           "selectedFormat": 4
         }
@@ -933,42 +911,30 @@
           "options": {
             "fields": {
               "avgTemperature": {
-                "aggregations": [
-                  "mean"
-                ],
+                "aggregations": ["mean"],
                 "operation": "aggregate"
               },
               "latitude": {
-                "aggregations": [
-                  "lastNotNull"
-                ],
+                "aggregations": ["lastNotNull"],
                 "operation": "groupby"
               },
               "longitude": {
-                "aggregations": [
-                  "lastNotNull"
-                ],
+                "aggregations": ["lastNotNull"],
                 "operation": "groupby"
               },
               "timestamp5m": {
-                "aggregations": [
-                  "lastNotNull"
-                ]
+                "aggregations": ["lastNotNull"]
               },
               "type": {
-                "aggregations": [
-                  "lastNotNull"
-                ],
+                "aggregations": ["lastNotNull"],
                 "operation": "aggregate"
               },
-              "uuid": {
+              "nome_sensore": {
                 "aggregations": [],
                 "operation": "groupby"
               },
               "value": {
-                "aggregations": [
-                  "mean"
-                ],
+                "aggregations": ["mean"],
                 "operation": "aggregate"
               }
             }
@@ -1024,9 +990,7 @@
         "footer": {
           "countRows": false,
           "fields": "",
-          "reducer": [
-            "sum"
-          ],
+          "reducer": ["sum"],
           "show": false
         },
         "showHeader": true,

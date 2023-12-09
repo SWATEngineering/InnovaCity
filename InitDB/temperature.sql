@@ -4,7 +4,7 @@ CREATE TABLE innovacity.temperatures_queue (
     type String,
     latitude Float64,
     longitude Float64,
-    uuid UUID
+    nome_sensore String
 ) ENGINE = Kafka('kafka:9092', 'temperature', 'ch_group_1', 'JSONEachRow');
 
 CREATE TABLE innovacity.temperatures (
@@ -13,32 +13,32 @@ CREATE TABLE innovacity.temperatures (
     type String,
     latitude Float64,
     longitude Float64,
-    uuid UUID
+    nome_sensore String
 ) ENGINE = MergeTree()
-ORDER BY (uuid, timestamp);
+ORDER BY (nome_sensore, timestamp);
 
 CREATE MATERIALIZED VIEW consumer TO innovacity.temperatures
 AS SELECT * FROM innovacity.temperatures_queue;
 
 CREATE TABLE innovacity.temperatures5m
 (
-    uuid UUID,
+    nome_sensore String,
     timestamp5m DATETIME64,
     avgTemperature AggregateFunction(avg, Float32),
     latitude Float64,
     longitude Float64
 )
 ENGINE = AggregatingMergeTree
-ORDER BY (timestamp5m, uuid, longitude, latitude);
+ORDER BY (timestamp5m, nome_sensore, longitude, latitude);
 
 CREATE MATERIALIZED VIEW innovacity.temperatures5m_mv
 TO innovacity.temperatures5m
 AS
 SELECT
     toStartOfFiveMinutes(timestamp) AS timestamp5m,
-    uuid,
+    nome_sensore,
     avgState(value) as avgTemperature,
     latitude,
     longitude
 FROM innovacity.temperatures
-GROUP BY (timestamp5m, uuid, latitude, longitude);
+GROUP BY (timestamp5m, nome_sensore, latitude, longitude);
