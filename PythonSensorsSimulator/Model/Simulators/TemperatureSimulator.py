@@ -32,6 +32,7 @@ class TemperatureSimulator(Simulator):
     def insert_not_real_time_data(self) -> None:
         iter_timestamp = datetime.timestamp(datetime.now())
         primo_timestamp = iter_timestamp - 86400
+        data_to_insert = []
 
         while (iter_timestamp > primo_timestamp):
             iter_timestamp -= super().get_frequency_is_s()
@@ -52,7 +53,13 @@ class TemperatureSimulator(Simulator):
                 "longitude": super().get_longitude(),
                 "nome_sensore": super().get_sensor_name()
             }
-            super().get_writer().write(json.dumps(dato))
+
+            data_to_insert.append(dato)
+
+        batch_size = 1000
+        for i in range(0, len(data_to_insert), batch_size):
+            batch = data_to_insert[i:i + batch_size]
+            super().get_writer().write(json.dumps(batch))
 
     def simulate(self) -> None:
         while super().continue_simulating():
