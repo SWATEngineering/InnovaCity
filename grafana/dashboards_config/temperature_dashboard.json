@@ -883,7 +883,7 @@
             }
           },
           "queryType": "sql",
-          "rawSql": "SELECT\n    nome_sensore,\n    toStartOfFiveMinutes(timestamp5m) AS timestamp5m,\n    avgMerge(avgTemperature) as avgTemperature,\n    latitude,\n    longitude\nFROM innovacity.temperatures5m\nGROUP BY (nome_sensore, timestamp5m, latitude, longitude)\nHAVING ( timestamp5m  >= $__fromTime AND timestamp5m <= $__toTime ) ",
+          "rawSql": "SELECT\n    nome_sensore,\n    toStartOfMinute(timestamp1m) AS timestamp1m,\n    avgMerge(avgTemperature) as avgTemperature,\n    latitude,\n    longitude\nFROM innovacity.temperatures1m\nGROUP BY (nome_sensore, timestamp1m, latitude, longitude)\nHAVING ( timestamp1m  >= $__fromTime AND timestamp1m <= $__toTime ) ",
           "refId": "A",
           "selectedFormat": 4
         }
