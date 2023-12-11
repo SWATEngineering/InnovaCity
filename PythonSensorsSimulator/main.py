@@ -20,10 +20,7 @@ symExec = (
     .add_temperature_simulator(writeToKafkaTemp, 45.388622, 11.946768, 1.1)
     .add_temperature_simulator(writeToKafkaTemp, 45.378850, 11.860942, 1)
     .add_temperature_simulator(writeToKafkaTemp, 45.390749, 11.849001, 1)
-    .add_temperature_simulator(writeToKafkaTemp, 45.423596, 11.905983, 0.9)
-    .add_temperature_simulator(writeToKafkaTemp, 45.418965, 11.851800, 1.1)
-    .add_temperature_simulator(writeToKafkaTemp, 45.408298, 11.876992, 0.9)
-    .add_temperature_simulator(writeToKafkaTemp, 45.445202, 11.883990, 1.1)
+    .add_temperature_simulator(writeToKafkaTemp, 45.423596, 11.905982, 0.9)
     .get_simulator_executor()
 )
 
