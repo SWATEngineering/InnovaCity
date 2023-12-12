@@ -17,7 +17,7 @@ CREATE TABLE innovacity.temperatures (
 ) ENGINE = MergeTree()
 ORDER BY (nome_sensore, timestamp);
 
-CREATE MATERIALIZED VIEW consumer TO innovacity.temperatures
+CREATE MATERIALIZED VIEW consumer_mv TO innovacity.temperatures
 AS SELECT * FROM innovacity.temperatures_queue;
 
 ---CREATE TABLE innovacity.temperatures5m
@@ -64,4 +64,27 @@ SELECT
     latitude,
     longitude
 FROM innovacity.temperatures
-GROUP BY (timestamp1m, nome_sensore, latitude, longitude);
+GROUP BY (timestamp1m, nome_sensore, latitude, longitude); 
+
+CREATE TABLE innovacity.moving_average_calculated_general_temperatures
+(
+    moving_avg_temperature Float32,
+    timestamp1m DATETIME64
+)
+ENGINE = MergeTree
+ORDER BY timestamp1m;
+ 
+CREATE MATERIALIZED VIEW innovacity.mv_moving_average_temperatures
+TO innovacity.moving_average_calculated_general_temperatures
+AS  
+SELECT DISTINCT
+        AVG(value) OVER (PARTITION BY toStartOfMinute(timestamp) ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS moving_avg_temperature,
+        toStartOfMinute(timestamp) AS timestamp1m
+    FROM innovacity.temperatures
+    ORDER BY timestamp1m; 
+
+
+
+
+
+

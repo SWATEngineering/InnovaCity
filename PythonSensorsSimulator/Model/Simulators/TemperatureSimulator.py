@@ -34,7 +34,7 @@ class TemperatureSimulator(Simulator):
         data_to_insert = []
 
         while (iter_timestamp > first_timestamp):
-            iter_timestamp -= super().get_frequency_is_s()
+
             hours = (iter_timestamp % 86400) / 3600
             sym_temperature = ((math.cos(math.pi * ((hours - 12) / 12)) + 1) / 2) * \
                 12 + 5 + self.get_calibration() + random.random()
@@ -49,6 +49,7 @@ class TemperatureSimulator(Simulator):
             }
 
             data_to_insert.append(dato)
+            iter_timestamp -= super().get_frequency_is_s()
 
         batch_size = 5000
         for i in range(0, len(data_to_insert), batch_size):
@@ -56,11 +57,11 @@ class TemperatureSimulator(Simulator):
             super().get_writer().write(json.dumps(batch))
         time.sleep(max(0, (last_timestamp + self.get_frequency_is_s() -
                    datetime.timestamp(datetime.now()))))
+
         # l'effettiva simulazione (dati generati real time e mandati a kakfa singolarmente) parte poco dopo
 
     def simulate(self) -> None:
-        self.insert_not_real_time_data()  # strettamente per il poc.
-
+        self.insert_not_real_time_data()  # strettamente per il poc
         while super().continue_simulating():
 
             hours = (datetime.timestamp(datetime.now()) % 86400) / 3600
