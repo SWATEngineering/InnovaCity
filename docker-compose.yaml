@@ -22,6 +22,7 @@ services:
       interval: 5s
       timeout: 30s
       retries: 10
+    profiles: ["dev", "prod"]
 
   clickhouse:
     image: clickhouse/clickhouse-server
@@ -42,6 +43,7 @@ services:
     depends_on:
       kafka:
         condition: service_healthy
+    profiles: ["dev", "prod"]
 
   grafana:
     image: grafana/grafana-oss
@@ -58,6 +60,7 @@ services:
         GF_SECURITY_ADMIN_PASSWORD: ic_admin
         # Commentato per rendere semplice lo sviluppo
         # GF_AUTH_ORG_ROLE: viewer
+    profiles: ["dev", "prod"]
 
   simulators:
     build:
@@ -70,3 +73,4 @@ services:
     depends_on:
       kafka:
         condition: service_healthy
+    profiles: ["prod"]
