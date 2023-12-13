@@ -27,7 +27,7 @@ class TemperatureSimulator(Simulator):
     def insert_not_real_time_data(self) -> None:
 
         last_timestamp = datetime.timestamp(
-            datetime.now()) + 20 * self.get_frequency_is_s()
+            datetime.now()) + 20 * super().get_frequency_is_s()
         iter_timestamp = last_timestamp
         first_timestamp = last_timestamp - 86400
 
@@ -55,7 +55,7 @@ class TemperatureSimulator(Simulator):
         for i in range(0, len(data_to_insert), batch_size):
             batch = data_to_insert[i:i + batch_size]
             super().get_writer().write(json.dumps(batch))
-        time.sleep(max(0, (last_timestamp + self.get_frequency_is_s() -
+        time.sleep(max(0, (last_timestamp + super().get_frequency_is_s() -
                    datetime.timestamp(datetime.now()))))
 
         # l'effettiva simulazione (dati generati real time e mandati a kakfa singolarmente) parte poco dopo
