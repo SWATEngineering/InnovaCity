@@ -10,6 +10,7 @@ KAFKA_PORT = os.environ.get("KAFKA_PORT", "9092")
 # senza dover cambiare nulla sul resto del codice.
 # writeToStd = StdoutWriter()
 writeToKafkaTemp = KafkaWriter("temperature", KAFKA_HOST, KAFKA_PORT)
+writeToKafkaRain = KafkaWriter("rain", KAFKA_HOST, KAFKA_PORT)
 
 symExecBuilder = BuilderSimulatorExecutor()
 
@@ -21,6 +22,11 @@ symExec = (
     .add_temperature_simulator(writeToKafkaTemp, 45.378850, 11.860942, 1)
     .add_temperature_simulator(writeToKafkaTemp, 45.390749, 11.849001, 1)
     .add_temperature_simulator(writeToKafkaTemp, 45.423596, 11.905982, 0.9)
+    .add_rain_simulator(writeToKafkaRain, 42.398214, 11.851271, 1)
+    .add_rain_simulator(writeToKafkaRain, 42.388622, 11.946768, 1.1)
+    .add_rain_simulator(writeToKafkaRain, 42.378850, 11.860942, 1)
+    .add_rain_simulator(writeToKafkaRain, 42.390749, 11.849001, 1)
+    .add_rain_simulator(writeToKafkaRain, 42.423596, 11.905982, 0.9)
     .get_simulator_executor()
 )
 

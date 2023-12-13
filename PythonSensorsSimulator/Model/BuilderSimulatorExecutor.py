@@ -1,6 +1,7 @@
 from .SimulatorExecutor import SimulatorExecutor
 from .Writers.Writer import Writer
 from .Simulators.TemperatureSimulator import TemperatureSimulator
+from .Simulators.RainSimulator import RainSimulator
 from .SimulatorThread import SimulatorThread
 
 
@@ -22,7 +23,26 @@ class BuilderSimulatorExecutor:
 
         self.__simulator_executor.append_simulator(
             SimulatorThread(
-                TemperatureSimulator(writer, latitude, longitude, frequency_in_s)
+                TemperatureSimulator(
+                    writer, latitude, longitude, frequency_in_s)
+            )
+        )
+        return self
+
+    def add_rain_simulator(
+        self,
+        writer: Writer,
+        latitude: float,
+        longitude: float,
+        frequency_in_s=1
+    ) -> "BuilderSimulatorExecutor":
+        if writer is None:
+            return self
+
+        self.__simulator_executor.append_simulator(
+            SimulatorThread(
+                RainSimulator(
+                    writer, latitude, longitude, frequency_in_s)
             )
         )
         return self
