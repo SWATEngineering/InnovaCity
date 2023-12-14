@@ -20,34 +20,12 @@ ORDER BY (nome_sensore, timestamp);
 CREATE MATERIALIZED VIEW consumer_mv TO innovacity.temperatures
 AS SELECT * FROM innovacity.temperatures_queue;
 
----CREATE TABLE innovacity.temperatures5m
----(
----    nome_sensore String,
----    timestamp5m DATETIME64,
----    avgTemperature AggregateFunction(avg, Float32),
----    latitude Float64,
----    longitude Float64
----)
----ENGINE = AggregatingMergeTree
----ORDER BY (timestamp5m, nome_sensore, longitude, latitude);
-
---CREATE MATERIALIZED VIEW innovacity.temperatures5m_mv
---TO innovacity.temperatures5m
---AS
---SELECT
---    toStartOfFiveMinutes(timestamp) AS timestamp5m,
---    nome_sensore,
---    avgState(value) as avgTemperature,
---    latitude,
---    longitude
---FROM innovacity.temperatures
---GROUP BY (timestamp5m, nome_sensore, latitude, longitude);
 
 CREATE TABLE innovacity.temperatures1m
 (
     nome_sensore String,
     timestamp1m DATETIME64,
-    avgTemperature AggregateFunction(avgState, Float32), -- Using avgState for stateful aggregation
+    avgTemperature AggregateFunction(avgState, Float32), 
     latitude Float64,
     longitude Float64
 )
@@ -80,11 +58,11 @@ CREATE MATERIALIZED VIEW innovacity.mv_moving_average_temperatures
 TO innovacity.moving_average_calculated_general_temperatures
 AS  
 SELECT DISTINCT
-        AVG(value) OVER (PARTITION BY toStartOfMinute(timestamp) ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS moving_avg_temperature,
+            avgState(value) OVER (PARTITION BY toStartOfMinute(timestamp) Rows BETWEEN 2 PRECEDING AND CURRENT ROW) AS moving_avg_temperature,
         toStartOfMinute(timestamp) AS timestamp1m
     FROM innovacity.temperatures
     ORDER BY timestamp1m; 
-
+--------------------------------------------------------------------------------------------------------------------------------
 
 
 CREATE TABLE innovacity.rain_queue (
@@ -116,7 +94,7 @@ CREATE TABLE innovacity.rain1m
 (
     nome_sensore String,
     timestamp1m DATETIME64,
-    sumRain AggregateFunction(sumState, Float32), -- Using sumState for stateful aggregation
+    avgRain AggregateFunction(avgState, Float32), -- Using sumState for stateful aggregation
     latitude Float64,
     longitude Float64
 )
@@ -130,7 +108,7 @@ AS
 SELECT
     toStartOfMinute(timestamp) AS timestamp1m,
     nome_sensore,
-    sumState(value) as sumRain,
+    avgState(value) as avgRain,
     latitude,
     longitude
 FROM innovacity.rain_queue
