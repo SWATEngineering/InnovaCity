@@ -45,23 +45,26 @@ FROM innovacity.temperatures
 GROUP BY (timestamp1m, nome_sensore, latitude, longitude); 
 
 
--- tabella per il calcolo della moving avarage.
-CREATE TABLE innovacity.moving_average_calculated_general_temperatures
-(
-    moving_avg_temperature Float32,
-    timestamp1m DATETIME64
-)
-ENGINE = MergeTree
-ORDER BY timestamp1m;
- 
-CREATE MATERIALIZED VIEW innovacity.mv_moving_average_temperatures
-TO innovacity.moving_average_calculated_general_temperatures
-AS  
-SELECT DISTINCT
-            avgState(value) OVER (PARTITION BY toStartOfMinute(timestamp) Rows BETWEEN 2 PRECEDING AND CURRENT ROW) AS moving_avg_temperature,
-        toStartOfMinute(timestamp) AS timestamp1m
-    FROM innovacity.temperatures
-    ORDER BY timestamp1m; 
---------------------------------------------------------------------------------------------------------------------------------
 
+
+CREATE TABLE innovacity.temperatures_ma (
+    timestamp1m DATETIME64,
+    nome_sensore String,
+    avgTemperatureMA AggregateFunction(avgState, Float32),
+    latitude Float64,
+    longitude Float64
+) ENGINE = AggregatingMergeTree
+ORDER BY (timestamp1m, nome_sensore, longitude, latitude);
+
+CREATE MATERIALIZED VIEW innovacity.temperatures_ma_mv
+TO innovacity.temperatures_ma
+AS
+SELECT
+    toStartOfMinute(timestamp) AS timestamp1m,
+    nome_sensore,
+    avgState(value) as avgTemperatureMA,
+    latitude,
+    longitude
+FROM innovacity.temperatures
+GROUP BY (timestamp1m, nome_sensore, latitude, longitude);
 
