@@ -46,25 +46,22 @@ GROUP BY (timestamp1m, nome_sensore, latitude, longitude);
 
 
 
-
 CREATE TABLE innovacity.temperatures_ma (
-    timestamp1m DATETIME64,
     nome_sensore String,
-    avgTemperatureMA AggregateFunction(avgState, Float32),
+    timestamp1m DATETIME64,
+    avgTemperature AggregateFunction(avgState, Float32),
     latitude Float64,
     longitude Float64
 ) ENGINE = AggregatingMergeTree
 ORDER BY (timestamp1m, nome_sensore, longitude, latitude);
 
-CREATE MATERIALIZED VIEW innovacity.temperatures_ma_mv
-TO innovacity.temperatures_ma
-AS
-SELECT
-    toStartOfMinute(timestamp) AS timestamp1m,
-    nome_sensore,
-    avgState(value) as avgTemperatureMA,
-    latitude,
-    longitude
-FROM innovacity.temperatures
-GROUP BY (timestamp1m, nome_sensore, latitude, longitude);
+
+
+
+
+
+   
+
+
+
 

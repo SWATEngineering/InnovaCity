@@ -15,6 +15,7 @@
       }
     ]
   },
+  "description": "Dashboard per la visualizzazione di varie tipologie di sensori dislocati in una città",
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
@@ -353,7 +354,7 @@
       },
       "gridPos": {
         "h": 5,
-        "w": 3,
+        "w": 5,
         "x": 0,
         "y": 8
       },
@@ -462,8 +463,8 @@
       },
       "gridPos": {
         "h": 5,
-        "w": 12,
-        "x": 3,
+        "w": 6,
+        "x": 5,
         "y": 8
       },
       "id": 2,
@@ -516,6 +517,100 @@
         "type": "grafana-clickhouse-datasource",
         "uid": "PDEE91DDB90597936"
       },
+      "description": "Intensità media della pioggia in base all'intervallo selezionato ",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 1,
+          "mappings": [],
+          "max": 15,
+          "min": 0,
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "light-green",
+                "value": 13
+              },
+              {
+                "color": "yellow",
+                "value": 30
+              },
+              {
+                "color": "dark-orange",
+                "value": 50
+              },
+              {
+                "color": "dark-red",
+                "value": 70
+              },
+              {
+                "color": "purple",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "lengthmm"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 15,
+        "y": 8
+      },
+      "id": 10,
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^avgRain$/",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "pluginVersion": "10.2.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "PDEE91DDB90597936"
+          },
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "fields": [],
+              "limit": 100,
+              "mode": "list"
+            }
+          },
+          "queryType": "sql",
+          "rawSql": "SELECT\n  avgMerge(avgRain) as avgRain\nFROM innovacity.rain1m\nWHERE (timestamp1m >= $__fromTime AND timestamp1m <= $__toTime);",
+          "refId": "A",
+          "selectedFormat": 4
+        }
+      ],
+      "title": "Intensità media",
+      "transparent": true,
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "grafana-clickhouse-datasource",
+        "uid": "PDEE91DDB90597936"
+      },
       "description": "Conteggio delle letture della tabella aggregata della temperatura",
       "fieldConfig": {
         "defaults": {
@@ -553,9 +648,9 @@
       },
       "gridPos": {
         "h": 5,
-        "w": 3,
-        "x": 15,
-        "y": 8
+        "w": 5,
+        "x": 0,
+        "y": 13
       },
       "id": 7,
       "options": {
@@ -623,6 +718,8 @@
           },
           "fieldMinMax": false,
           "mappings": [],
+          "max": 17,
+          "min": 4,
           "thresholds": {
             "mode": "percentage",
             "steps": [
@@ -651,8 +748,8 @@
       "gridPos": {
         "h": 5,
         "w": 6,
-        "x": 18,
-        "y": 8
+        "x": 5,
+        "y": 13
       },
       "id": 6,
       "options": {
@@ -701,6 +798,7 @@
         "type": "grafana-clickhouse-datasource",
         "uid": "PDEE91DDB90597936"
       },
+      "description": "dislocazione geografica dei sensori ",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -714,6 +812,8 @@
             }
           },
           "mappings": [],
+          "max": 18,
+          "min": 4,
           "thresholds": {
             "mode": "percentage",
             "steps": [
@@ -742,7 +842,7 @@
         "h": 12,
         "w": 24,
         "x": 0,
-        "y": 13
+        "y": 18
       },
       "id": 4,
       "options": {
@@ -788,8 +888,13 @@
                   "horizontal": "center",
                   "vertical": "center"
                 },
+                "text": {
+                  "field": "Temperatura Media",
+                  "fixed": "",
+                  "mode": "fixed"
+                },
                 "textConfig": {
-                  "fontSize": 12,
+                  "fontSize": 27,
                   "offsetX": 0,
                   "offsetY": 0,
                   "textAlign": "center",
@@ -813,7 +918,9 @@
         "view": {
           "allLayers": true,
           "id": "fit",
+          "lastOnly": false,
           "lat": 45.407339,
+          "layer": "Layer 1",
           "lon": 11.861342,
           "padding": 50,
           "zoom": 15
@@ -890,7 +997,7 @@
             }
           },
           "queryType": "sql",
-          "rawSql": "SELECT\n    nome_sensore,\n    toStartOfMinute(timestamp1m) AS timestamp1m,\n    avgMerge(avgTemperature) as avgTemperature,\n    latitude,\n    longitude\nFROM innovacity.temperatures1m\nGROUP BY (nome_sensore, timestamp1m, latitude, longitude)\nHAVING ( timestamp1m  >= $__fromTime AND timestamp1m <= $__toTime ) ",
+          "rawSql": "SELECT\n    tipo_sensore,\n    nome_sensore,\n    toStartOfMinute(timestamp1m) AS timestamp1m,\n    avgTemperature,\n    avgRain,\n    latitude,\n    longitude\nFROM\n(\n    SELECT\n        'temperature' AS tipo_sensore,\n        nome_sensore,\n        timestamp1m,\n        avgMerge(avgTemperature) AS avgTemperature,\n        NULL AS avgRain,\n        latitude,\n        longitude\n    FROM innovacity.temperatures1m\n    GROUP BY nome_sensore, timestamp1m, latitude, longitude\n    HAVING ( timestamp1m  >= $__fromTime AND timestamp1m <= $__toTime ) \n    \n    UNION ALL\n\n    SELECT\n        'rain' AS tipo_sensore,\n        nome_sensore,\n        timestamp1m,\n        NULL AS avgTemperature,\n        avgMerge(avgRain) AS avgRain,\n        latitude,\n        longitude\n    FROM innovacity.rain1m\n    GROUP BY nome_sensore, timestamp1m, latitude, longitude\n    HAVING ( timestamp1m  >= $__fromTime AND timestamp1m <= $__toTime ) ) AS combined_data\n    WHERE tipo_sensore = 'temperature' AND avgTemperature IS NOT NULL\n   OR tipo_sensore = 'rain' AND avgRain IS NOT NULL;\n    ",
           "refId": "A",
           "selectedFormat": 4
         }
@@ -917,7 +1024,19 @@
           "id": "groupBy",
           "options": {
             "fields": {
+              "avgRain": {
+                "aggregations": [
+                  "mean"
+                ],
+                "operation": "aggregate"
+              },
               "avgTemperature": {
+                "aggregations": [
+                  "mean"
+                ],
+                "operation": "aggregate"
+              },
+              "avgValue": {
                 "aggregations": [
                   "mean"
                 ],
@@ -944,6 +1063,10 @@
                   "lastNotNull"
                 ]
               },
+              "tipo_sensore": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
               "type": {
                 "aggregations": [
                   "lastNotNull"
@@ -958,24 +1081,42 @@
               }
             }
           }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "avgRain (mean)": false,
+              "avgTemperature (mean)": false
+            },
+            "indexByName": {},
+            "renameByName": {
+              "avgRain (mean)": "Pioggia Media",
+              "avgTemperature (mean)": "Temperatura Media",
+              "latitude": "Latitudine",
+              "longitude": "Longitudine",
+              "nome_sensore": "Nome",
+              "tipo_sensore": "Tipologia Sensore"
+            }
+          }
         }
       ],
       "type": "geomap"
     }
   ],
-  "refresh": "",
+  "refresh": false,
   "schemaVersion": 38,
   "tags": [],
   "templating": {
     "list": []
   },
   "time": {
-    "from": "now-5m",
+    "from": "now-24h",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
-  "title": "Temperature",
+  "title": "Innovacity",
   "uid": "c702952f-5e6a-4911-b003-a97eb331f272",
   "version": 1,
   "weekStart": ""
