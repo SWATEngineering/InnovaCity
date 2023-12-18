@@ -21,7 +21,7 @@ class RainSimulator(Simulator):
         self.__rain_duration = 0
         self.__second_rain_left = 0
 
-    def __new__(cls, *args, **kwargs):
+    def __new__(cls, *args, **kwargs) -> 'RainSimulator':
         if not cls.__instance:
             cls.__instance = super(RainSimulator, cls).__new__(cls)
         return cls.__instance
