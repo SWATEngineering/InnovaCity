@@ -207,6 +207,277 @@
         "type": "grafana-clickhouse-datasource",
         "uid": "PDEE91DDB90597936"
       },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 11,
+        "y": 0
+      },
+      "id": 13,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "PDEE91DDB90597936"
+          },
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "fields": [],
+              "limit": 100,
+              "mode": "list"
+            }
+          },
+          "queryType": "sql",
+          "rawSql": "SELECT\n  timestamp1m,\n  AVG(moving_average) AS media_totale\nFROM (\n  SELECT\n    avgMerge(avgTemperature) OVER (ORDER BY timestamp1m ROWS BETWEEN 2 PRECEDING AND CURRENT ROW) as moving_average,\n    timestamp1m\n  FROM innovacity.temperatures1m\n) AS subquery\nGROUP BY timestamp1m\nORDER BY timestamp1m;",
+          "refId": "A",
+          "selectedFormat": 4
+        }
+      ],
+      "title": "Moving Average Temperatura",
+      "transformations": [
+        {
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
+              {
+                "destinationType": "number",
+                "targetField": "I"
+              }
+            ],
+            "fields": {}
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-clickhouse-datasource",
+        "uid": "PDEE91DDB90597936"
+      },
+      "description": "calcola la temperatura media ogni minuto ",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "celsius"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "B media_totale"
+            },
+            "properties": [
+              {
+                "id": "custom.drawStyle",
+                "value": "line"
+              },
+              {
+                "id": "custom.fillOpacity",
+                "value": 17
+              },
+              {
+                "id": "custom.lineInterpolation",
+                "value": "linear"
+              },
+              {
+                "id": "custom.lineWidth",
+                "value": 7
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 11,
+        "x": 0,
+        "y": 8
+      },
+      "id": 2,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "PDEE91DDB90597936"
+          },
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "fields": [],
+              "limit": 100,
+              "mode": "list"
+            }
+          },
+          "queryType": "sql",
+          "rawSql": "SELECT\r\n    nome_sensore,\r\n    toStartOfMinute(timestamp1m) AS timestamp1m,\r\n    avgMerge(avgTemperature) as \" \"\r\nFROM innovacity.temperatures1m\r\nGROUP BY (nome_sensore, timestamp1m)\r\nHAVING ( timestamp1m  >= $__fromTime AND timestamp1m <= $__toTime ) ",
+          "refId": "A",
+          "selectedFormat": 4
+        },
+        {
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "PDEE91DDB90597936"
+          },
+          "format": 1,
+          "hide": false,
+          "meta": {
+            "builderOptions": {
+              "fields": [],
+              "limit": 100,
+              "mode": "list"
+            }
+          },
+          "queryType": "sql",
+          "rawSql": "SELECT\n  timestamp1m,\n  AVG(moving_average) AS media_totale\nFROM (\n  SELECT\n    avgMerge(avgTemperature) OVER (ORDER BY timestamp1m ROWS BETWEEN 2 PRECEDING AND CURRENT ROW) as moving_average,\n    timestamp1m\n  FROM innovacity.temperatures1m\n) AS subquery\nGROUP BY timestamp1m\nORDER BY timestamp1m;",
+          "refId": "B",
+          "selectedFormat": 4
+        }
+      ],
+      "title": "Temperatura Media per Minuto",
+      "transformations": [
+        {
+          "id": "prepareTimeSeries",
+          "options": {
+            "format": "multi"
+          }
+        }
+      ],
+      "transparent": true,
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-clickhouse-datasource",
+        "uid": "PDEE91DDB90597936"
+      },
       "description": "intensità di pioggia misurata in millimetri orari",
       "fieldConfig": {
         "defaults": {
@@ -266,7 +537,7 @@
         "h": 8,
         "w": 13,
         "x": 11,
-        "y": 0
+        "y": 8
       },
       "id": 9,
       "options": {
@@ -355,8 +626,8 @@
       "gridPos": {
         "h": 5,
         "w": 5,
-        "x": 0,
-        "y": 8
+        "x": 5,
+        "y": 13
       },
       "id": 3,
       "options": {
@@ -405,118 +676,6 @@
         "type": "grafana-clickhouse-datasource",
         "uid": "PDEE91DDB90597936"
       },
-      "description": "calcola la temperatura media ogni minuto ",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": true,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "celsius"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 5,
-        "w": 6,
-        "x": 5,
-        "y": 8
-      },
-      "id": 2,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "datasource": {
-            "type": "grafana-clickhouse-datasource",
-            "uid": "PDEE91DDB90597936"
-          },
-          "format": 1,
-          "meta": {
-            "builderOptions": {
-              "fields": [],
-              "limit": 100,
-              "mode": "list"
-            }
-          },
-          "queryType": "sql",
-          "rawSql": "SELECT\r\n    nome_sensore,\r\n    toStartOfMinute(timestamp1m) AS timestamp1m,\r\n    avgMerge(avgTemperature) as \" \"\r\nFROM innovacity.temperatures1m\r\nGROUP BY (nome_sensore, timestamp1m)\r\nHAVING ( timestamp1m  >= $__fromTime AND timestamp1m <= $__toTime ) ",
-          "refId": "A",
-          "selectedFormat": 4
-        }
-      ],
-      "title": "Temperatura Media per Minuto",
-      "transformations": [
-        {
-          "id": "prepareTimeSeries",
-          "options": {
-            "format": "multi"
-          }
-        }
-      ],
-      "transparent": true,
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "grafana-clickhouse-datasource",
-        "uid": "PDEE91DDB90597936"
-      },
       "description": "Conteggio delle letture della tabella aggregata della temperatura",
       "fieldConfig": {
         "defaults": {
@@ -556,7 +715,7 @@
         "h": 5,
         "w": 5,
         "x": 11,
-        "y": 8
+        "y": 16
       },
       "id": 7,
       "options": {
@@ -663,7 +822,7 @@
         "h": 5,
         "w": 4,
         "x": 19,
-        "y": 8
+        "y": 16
       },
       "id": 10,
       "options": {
@@ -773,7 +932,7 @@
         "h": 5,
         "w": 8,
         "x": 0,
-        "y": 13
+        "y": 18
       },
       "id": 11,
       "options": {
@@ -863,8 +1022,8 @@
       "gridPos": {
         "h": 5,
         "w": 6,
-        "x": 8,
-        "y": 13
+        "x": 9,
+        "y": 21
       },
       "id": 6,
       "options": {
@@ -973,7 +1132,7 @@
         "h": 4,
         "w": 8,
         "x": 15,
-        "y": 13
+        "y": 21
       },
       "id": 12,
       "options": {
@@ -1003,7 +1162,7 @@
             }
           },
           "queryType": "sql",
-          "rawSql": "SELECT timestamp1m, avgRain  FROM innovacity.rain_ma\ngroup by timestamp1m, avgRain\n\n",
+          "rawSql": "SELECT\n  timestamp1m,\n  AVG(moving_average) AS media_totale\nFROM (\n  SELECT\n    avgMerge(avgRain) OVER (ORDER BY timestamp1m ROWS BETWEEN 2 PRECEDING AND CURRENT ROW) as moving_average,\n    timestamp1m\n  FROM innovacity.rain1m\n) AS subquery\nGROUP BY timestamp1m\nORDER BY timestamp1m;\n\n",
           "refId": "A",
           "selectedFormat": 4
         }
@@ -1028,7 +1187,8 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
+            "fixedColor": "red",
+            "mode": "shades"
           },
           "custom": {
             "hideFrom": {
@@ -1038,8 +1198,6 @@
             }
           },
           "mappings": [],
-          "max": 18,
-          "min": 4,
           "thresholds": {
             "mode": "percentage",
             "steps": [
@@ -1062,13 +1220,29 @@
             ]
           }
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Tipo"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#ff1d37",
+                  "mode": "shades"
+                }
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 12,
         "w": 24,
         "x": 0,
-        "y": 18
+        "y": 26
       },
       "id": 4,
       "options": {
@@ -1088,13 +1262,57 @@
         "layers": [
           {
             "config": {
+              "showLegend": true,
+              "style": {
+                "color": {
+                  "fixed": "#3aff20"
+                },
+                "opacity": 0.7,
+                "rotation": {
+                  "fixed": 0,
+                  "max": 360,
+                  "min": -360,
+                  "mode": "mod"
+                },
+                "size": {
+                  "field": "Tipo",
+                  "fixed": 5,
+                  "max": 27,
+                  "min": 15
+                },
+                "symbol": {
+                  "fixed": "img/icons/marker/triangle.svg",
+                  "mode": "fixed"
+                },
+                "symbolAlign": {
+                  "horizontal": "center",
+                  "vertical": "center"
+                },
+                "textConfig": {
+                  "fontSize": 12,
+                  "offsetX": 0,
+                  "offsetY": 0,
+                  "textAlign": "center",
+                  "textBaseline": "middle"
+                }
+              }
+            },
+            "location": {
+              "mode": "auto"
+            },
+            "name": "Layer 2",
+            "tooltip": true,
+            "type": "markers"
+          },
+          {
+            "config": {
               "showLegend": false,
               "style": {
                 "color": {
-                  "field": "avgTemperature (mean)",
-                  "fixed": "dark-green"
+                  "field": "Tipologia_Sensore",
+                  "fixed": "#d8c447"
                 },
-                "opacity": 1,
+                "opacity": 0.4,
                 "rotation": {
                   "fixed": 0,
                   "max": 360,
@@ -1115,12 +1333,12 @@
                   "vertical": "center"
                 },
                 "text": {
-                  "field": "Temperatura Media",
+                  "field": "Tipologia_Sensore",
                   "fixed": "",
                   "mode": "fixed"
                 },
                 "textConfig": {
-                  "fontSize": 27,
+                  "fontSize": 0,
                   "offsetX": 0,
                   "offsetY": 0,
                   "textAlign": "center",
@@ -1190,6 +1408,7 @@
             "uid": "PDEE91DDB90597936"
           },
           "format": 1,
+          "hide": false,
           "meta": {
             "builderOptions": {
               "database": "innovacity",
@@ -1223,8 +1442,27 @@
             }
           },
           "queryType": "sql",
-          "rawSql": "SELECT\n    tipo_sensore,\n    nome_sensore,\n    toStartOfMinute(timestamp1m) AS timestamp1m,\n    avgTemperature,\n    avgRain,\n    latitude,\n    longitude\nFROM\n(\n    SELECT\n        'temperature' AS tipo_sensore,\n        nome_sensore,\n        timestamp1m,\n        avgMerge(avgTemperature) AS avgTemperature,\n        NULL AS avgRain,\n        latitude,\n        longitude\n    FROM innovacity.temperatures1m\n    GROUP BY nome_sensore, timestamp1m, latitude, longitude\n    HAVING ( timestamp1m  >= $__fromTime AND timestamp1m <= $__toTime ) \n    \n    UNION ALL\n\n    SELECT\n        'rain' AS tipo_sensore,\n        nome_sensore,\n        timestamp1m,\n        NULL AS avgTemperature,\n        avgMerge(avgRain) AS avgRain,\n        latitude,\n        longitude\n    FROM innovacity.rain1m\n    GROUP BY nome_sensore, timestamp1m, latitude, longitude\n    HAVING ( timestamp1m  >= $__fromTime AND timestamp1m <= $__toTime ) ) AS combined_data\n    WHERE tipo_sensore = 'temperature' AND avgTemperature IS NOT NULL\n   OR tipo_sensore = 'rain' AND avgRain IS NOT NULL;\n    ",
+          "rawSql": "SELECT\n    'temperature' as Tipo,\n    nome_sensore,\n    toStartOfMinute(timestamp1m) AS timestamp1m,\n    avgMerge(avgTemperature) as avgTemperature,\n    latitude,\n    longitude\nFROM innovacity.temperatures1m\nGROUP BY (nome_sensore, timestamp1m, latitude, longitude)\nHAVING ( timestamp1m >= $__fromTime AND timestamp1m <= $__toTime );",
           "refId": "A",
+          "selectedFormat": 4
+        },
+        {
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "PDEE91DDB90597936"
+          },
+          "format": 1,
+          "hide": false,
+          "meta": {
+            "builderOptions": {
+              "fields": [],
+              "limit": 100,
+              "mode": "list"
+            }
+          },
+          "queryType": "sql",
+          "rawSql": " SELECT\n    'rain' as Tipo,\n    nome_sensore,\n    toStartOfMinute(timestamp1m) AS timestamp1m,\n    avgMerge(avgRain) as avgRain,\n    latitude,\n    longitude\nFROM innovacity.rain1m\nGROUP BY (nome_sensore, timestamp1m, latitude, longitude)\nHAVING ( timestamp1m >= $__fromTime AND timestamp1m <= $__toTime );",
+          "refId": "B",
           "selectedFormat": 4
         }
       ],
@@ -1247,82 +1485,55 @@
           }
         },
         {
+          "id": "merge",
+          "options": {}
+        },
+        {
           "id": "groupBy",
           "options": {
             "fields": {
+              "'temperature'": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Tipo": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "TipoR": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "TipoT": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Tipologia_Sensore": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
               "avgRain": {
                 "aggregations": [
                   "mean"
-                ],
-                "operation": "aggregate"
+                ]
               },
               "avgTemperature": {
                 "aggregations": [
                   "mean"
-                ],
-                "operation": "aggregate"
-              },
-              "avgValue": {
-                "aggregations": [
-                  "mean"
-                ],
-                "operation": "aggregate"
+                ]
               },
               "latitude": {
-                "aggregations": [
-                  "lastNotNull"
-                ],
+                "aggregations": [],
                 "operation": "groupby"
               },
               "longitude": {
-                "aggregations": [
-                  "lastNotNull"
-                ],
+                "aggregations": [],
                 "operation": "groupby"
               },
               "nome_sensore": {
                 "aggregations": [],
                 "operation": "groupby"
-              },
-              "timestamp5m": {
-                "aggregations": [
-                  "lastNotNull"
-                ]
-              },
-              "tipo_sensore": {
-                "aggregations": [],
-                "operation": "groupby"
-              },
-              "type": {
-                "aggregations": [
-                  "lastNotNull"
-                ],
-                "operation": "aggregate"
-              },
-              "value": {
-                "aggregations": [
-                  "mean"
-                ],
-                "operation": "aggregate"
               }
-            }
-          }
-        },
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "avgRain (mean)": false,
-              "avgTemperature (mean)": false
-            },
-            "indexByName": {},
-            "renameByName": {
-              "avgRain (mean)": "Pioggia Media",
-              "avgTemperature (mean)": "Temperatura Media",
-              "latitude": "Latitudine",
-              "longitude": "Longitudine",
-              "nome_sensore": "Nome",
-              "tipo_sensore": "Tipologia Sensore"
             }
           }
         }
@@ -1337,7 +1548,7 @@
     "list": []
   },
   "time": {
-    "from": "now-1h",
+    "from": "now-24h",
     "to": "now"
   },
   "timepicker": {},
