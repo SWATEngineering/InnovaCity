@@ -46,3 +46,25 @@ SELECT
     longitude
 FROM innovacity.rain_queue
 GROUP BY (timestamp1m, nome_sensore, latitude, longitude);
+
+-- Creare la tabella aggregata
+CREATE TABLE innovacity.rain_ma (
+    nome_sensore String,
+    timestamp1m DATETIME64,
+    avgRain Float32,
+    latitude Float64,
+    longitude Float64
+) ENGINE = MergeTree()
+ORDER BY (timestamp1m, nome_sensore, latitude, longitude);
+
+-- Creare una Materialized View
+CREATE MATERIALIZED VIEW innovacity.rain1m_mov_avg
+TO innovacity.rain_ma
+AS
+SELECT
+    nome_sensore,
+    toStartOfMinute(timestamp) AS timestamp1m,
+    avg(value) OVER (PARTITION BY nome_sensore, toStartOfMinute(timestamp) ORDER BY timestamp1m ROWS BETWEEN 2 PRECEDING AND CURRENT ROW) AS avgRain,
+    latitude,
+    longitude
+FROM innovacity.rain;

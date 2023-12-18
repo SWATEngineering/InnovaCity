@@ -63,7 +63,7 @@ AS
 SELECT
     nome_sensore,
     toStartOfMinute(timestamp) AS timestamp1m,
-    avg(value) OVER (PARTITION BY nome_sensore, toStartOfMinute(timestamp) ORDER BY timestamp ROWS BETWEEN 2 PRECEDING AND CURRENT ROW) AS avgTemperature,
+    avg(value) OVER (PARTITION BY  toStartOfMinute(timestamp) ORDER BY timestamp1m ROWS BETWEEN 2 PRECEDING AND CURRENT ROW) AS avgTemperature,
     latitude,
     longitude
 FROM innovacity.temperatures;
