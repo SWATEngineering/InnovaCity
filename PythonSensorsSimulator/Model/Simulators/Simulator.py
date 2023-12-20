@@ -36,7 +36,7 @@ class Simulator(ABC):
     def get_writer(self) -> Writer:
         return self.__writer
 
-    def get_frequency_is_s(self):
+    def get_frequency_in_s(self):
         return self.__frequency_in_s
 
     def get_latitude(self):

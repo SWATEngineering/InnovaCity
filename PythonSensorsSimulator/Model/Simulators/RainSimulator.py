@@ -54,7 +54,7 @@ class RainSimulator(Simulator):
             return math.sin(angle) * intensity**2 * random_factor
 
     def try_initiate_rain(self):
-        if random.random() < 1 / (3 * 3600 / self.get_frequency_is_s()):
+        if random.random() < 1 / (3 * 3600 / self.get_frequency_in_s()):
             self.set_rain_intensity(random.randint(1, 5))
             self.set_rain_duration(random.randint(7200, 14000))
             self.set_second_rain_left(self.get_rain_duration())
@@ -67,7 +67,7 @@ class RainSimulator(Simulator):
     def insert_not_real_time_data(self) -> None:
 
         last_timestamp = datetime.timestamp(
-            datetime.now()) + 20 * super().get_frequency_is_s()
+            datetime.now()) + 20 * super().get_frequency_in_s()
         iter_timestamp = last_timestamp
         first_timestamp = last_timestamp - 86400
 
@@ -87,20 +87,20 @@ class RainSimulator(Simulator):
             }
 
             self.set_second_rain_left(
-                self.get_second_rain_left() - super().get_frequency_is_s())
+                self.get_second_rain_left() - super().get_frequency_in_s())
             if self.get_second_rain_left() == 1:
                 self.stop_rain()
 
             data_to_insert.append(dato)
-            iter_timestamp -= super().get_frequency_is_s()
+            iter_timestamp -= super().get_frequency_in_s()
 
         batch_size = 5000
         for i in range(0, len(data_to_insert), batch_size):
             batch = data_to_insert[i:i + batch_size]
             super().get_writer().write(json.dumps(batch))
         self.stop_rain()
-        time.sleep(max(0, (last_timestamp + super().get_frequency_is_s() -
-                   datetime.timestamp(datetime.now()))))
+        time.sleep(max(0, (last_timestamp + super().get_frequency_in_s() -
+                           datetime.timestamp(datetime.now()))))
 
     def simulate(self) -> None:
         self.insert_not_real_time_data()
@@ -118,9 +118,9 @@ class RainSimulator(Simulator):
             }
 
             self.set_second_rain_left(
-                self.get_second_rain_left() - super().get_frequency_is_s())
+                self.get_second_rain_left() - super().get_frequency_in_s())
             if self.get_second_rain_left() == 1:
                 self.stop_rain()
 
             super().get_writer().write(json.dumps(dato))
-            time.sleep(super().get_frequency_is_s())
+            time.sleep(super().get_frequency_in_s())
