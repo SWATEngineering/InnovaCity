@@ -98,6 +98,7 @@ class RainSimulator(Simulator):
         for i in range(0, len(data_to_insert), batch_size):
             batch = data_to_insert[i:i + batch_size]
             super().get_writer().write(json.dumps(batch))
+        self.stop_rain()
         time.sleep(max(0, (last_timestamp + super().get_frequency_is_s() -
                    datetime.timestamp(datetime.now()))))
 
