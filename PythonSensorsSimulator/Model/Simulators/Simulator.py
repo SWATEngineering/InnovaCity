@@ -8,15 +8,15 @@ class Simulator(ABC):
     __writer: Writer = None
     __frequency_in_s: int = None
     __continue_simulating: bool = None
-    __uuid: uuid = None
+    __sensor_name: str = None
     __latitude: float = None
     __longitude: float = None
 
-    def __init__(self, writer: Writer, latitude: float, longitude: float, frequency_in_s: int = 1):
+    def __init__(self, writer: Writer, latitude: float, longitude: float, sensor_name: str, frequency_in_s: int = 1):
         self.__writer = writer
         self.__frequency_in_s = frequency_in_s
         self.__continue_simulating = True
-        self.__uuid = uuid.uuid4()
+        self.__sensor_name = sensor_name
         self.__latitude = latitude
         self.__longitude = longitude
 
@@ -30,13 +30,13 @@ class Simulator(ABC):
     def continue_simulating(self) -> bool:
         return self.__continue_simulating
 
-    def get_uuid(self) -> uuid:
-        return self.__uuid
+    def get_sensor_name(self) -> str:
+        return self.__sensor_name
 
     def get_writer(self) -> Writer:
         return self.__writer
 
-    def get_frequency_is_s(self):
+    def get_frequency_in_s(self):
         return self.__frequency_in_s
 
     def get_latitude(self):
