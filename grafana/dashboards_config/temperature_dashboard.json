@@ -234,9 +234,7 @@
         "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
+          "calcs": ["lastNotNull"],
           "fields": "/^avgTemperature$/",
           "values": false
         },
@@ -439,9 +437,7 @@
         "minVizWidth": 75,
         "orientation": "auto",
         "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
+          "calcs": ["lastNotNull"],
           "fields": "/^avgRain$/",
           "values": false
         },
@@ -762,14 +758,10 @@
                 "operation": "groupby"
               },
               "avgRain": {
-                "aggregations": [
-                  "mean"
-                ]
+                "aggregations": ["mean"]
               },
               "avgTemperature": {
-                "aggregations": [
-                  "mean"
-                ]
+                "aggregations": ["mean"]
               },
               "latitude": {
                 "aggregations": [],
@@ -790,14 +782,14 @@
       "type": "geomap"
     }
   ],
-  "refresh": "",
+  "refresh": "5s",
   "schemaVersion": 39,
   "tags": [],
   "templating": {
     "list": []
   },
   "time": {
-    "from": "now-2d",
+    "from": "now-5m",
     "to": "now"
   },
   "timepicker": {},
