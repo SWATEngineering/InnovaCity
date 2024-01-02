@@ -1,0 +1,76 @@
+version: '3.8'
+
+services:
+  kafka:
+    image: "bitnami/kafka:latest"
+    container_name: kafka
+    hostname: kafka
+    ports:
+      - "9093:9093"
+    environment:
+      KAFKA_CFG_NODE_ID: 1
+      KAFKA_CFG_LISTENERS: CONTROLLER://kafka:19092,INTERNAL://kafka:9092,EXTERNAL://localhost:9093
+      KAFKA_CFG_ADVERTISED_LISTENERS: INTERNAL://kafka:9092,EXTERNAL://localhost:9093
+      KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
+      KAFKA_CFG_CONTROLLER_QUORUM_VOTERS: 1@kafka:19092
+      KAFKA_CFG_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_CFG_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_CFG_PROCESS_ROLES: broker,controller
+      KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE: true
+    healthcheck:
+      test: [ "CMD", "kafka-topics.sh", "--bootstrap-server", "kafka:9092", "--list"]
+      interval: 5s
+      timeout: 30s
+      retries: 10
+    profiles: ["dev", "prod"]
+
+  clickhouse:
+    image: clickhouse/clickhouse-server
+    hostname: clickhouse
+    container_name: clickhouse
+    ports:
+      - "8123:8123"
+    environment:
+      # creazione database iniziale
+      CLICKHOUSE_DB: innovacity
+      # sostituisce l'utente `default`
+      CLICKHOUSE_USER: ic_admin
+      CLICKHOUSE_PASSWORD: ic_admin
+      # crea un utente che ha il controllo degli accessi e la gestione degli accounts
+      CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT: 1
+    volumes:
+      - ./InitDB:/docker-entrypoint-initdb.d
+    depends_on:
+      kafka:
+        condition: service_healthy
+    profiles: ["dev", "prod"]
+
+  grafana:
+    image: grafana/grafana-oss
+    container_name: grafana
+    ports:
+     - "3000:3000"
+    volumes:
+      - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+      - ./grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
+      - ./grafana/dashboards_config:/etc/grafana/dashboards_config
+    environment:
+        GF_INSTALL_PLUGINS: grafana-clickhouse-datasource
+        GF_SECURITY_ADMIN_USER: ic_admin
+        GF_SECURITY_ADMIN_PASSWORD: ic_admin
+        # Commentato per rendere semplice lo sviluppo
+        # GF_AUTH_ORG_ROLE: viewer
+    profiles: ["dev", "prod"]
+
+  simulators:
+    build:
+      context: ./PythonSensorsSimulator
+    hostname: simulators
+    container_name: simulators
+    environment:
+      KAFKA_HOST: "kafka"
+      KAFKA_PORT: "9092"
+    depends_on:
+      kafka:
+        condition: service_healthy
+    profiles: ["prod"]
