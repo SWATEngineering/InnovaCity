@@ -15,7 +15,7 @@ def generate_value(intensity: int, duration: int, second_left: int) -> float:
         angle = ((second_left /
                  duration)) * math.pi
         random_factor = 1.0 + random.uniform(-0.1, 0.1)
-        return math.sin(angle) * intensity**2 * random_factor
+        return math.sin(angle) * intensity * random_factor
 
 
 class RainSimulator(Simulator):
