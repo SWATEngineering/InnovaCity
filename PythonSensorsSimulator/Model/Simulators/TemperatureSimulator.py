@@ -21,8 +21,7 @@ class TemperatureSimulator(Simulator):
 
     def insert_not_real_time_data(self) -> None:
 
-        last_timestamp = datetime.timestamp(
-            datetime.now()) + 20 * super()._frequency_in_s
+        last_timestamp = datetime.timestamp(datetime.now()) + 20 * self._frequency_in_s
         iter_timestamp = last_timestamp
         first_timestamp = last_timestamp - 86400
 
@@ -38,19 +37,19 @@ class TemperatureSimulator(Simulator):
                 "timestamp": str(datetime.fromtimestamp(iter_timestamp)),
                 "value": "{:.2f}".format(sym_temperature),
                 "type": "TemperatureSimulator",
-                "latitude": super()._latitude,
-                "longitude": super()._longitude,
-                "nome_sensore": super()._sensor_name
+                "latitude": self._latitude,
+                "longitude": self._longitude,
+                "nome_sensore": self._sensor_name
             }
 
             data_to_insert.append(dato)
-            iter_timestamp -= super()._frequency_in_s
+            iter_timestamp -= self._frequency_in_s
 
         batch_size = 5000
         for i in range(0, len(data_to_insert), batch_size):
             batch = data_to_insert[i:i + batch_size]
-            super()._writer.write(json.dumps(batch))
-        time.sleep(max(0, int(last_timestamp + super()._frequency_in_s - datetime.timestamp(datetime.now()))))
+            self._writer.write(json.dumps(batch))
+        time.sleep(max(0, int(last_timestamp + self._frequency_in_s - datetime.timestamp(datetime.now()))))
 
         # l'effettiva simulazione (dati generati real time e mandati a kakfa singolarmente) parte poco dopo
 
@@ -73,9 +72,9 @@ class TemperatureSimulator(Simulator):
                 "timestamp": str(datetime.now()),
                 "value": "{:.2f}".format(sym_temperature),
                 "type": "TemperatureSimulator",
-                "latitude": super()._latitude,
-                "longitude": super()._longitude,
-                "nome_sensore": super()._sensor_name
+                "latitude": self._latitude,
+                "longitude": self._longitude,
+                "nome_sensore": self._sensor_name
             }
-            super()._writer.write(json.dumps(dato))
-            time.sleep(super()._frequency_in_s)
+            self._writer.write(json.dumps(dato))
+            time.sleep(self._frequency_in_s)
