@@ -3,8 +3,6 @@ import json
 import math
 import random
 from datetime import datetime
-from datetime import timedelta
-
 
 from .Simulator import Simulator
 from ..Writers import Writer
@@ -21,9 +19,6 @@ class TemperatureSimulator(Simulator):
         super().__init__(writer, latitude, longitude,
                          f"Sensore di Temperatura {TemperatureSimulator.__count}", frequency_in_s)
 
-    def get_calibration(self) -> float:
-        return self.__calibration
-
     def insert_not_real_time_data(self) -> None:
 
         last_timestamp = datetime.timestamp(
@@ -33,11 +28,11 @@ class TemperatureSimulator(Simulator):
 
         data_to_insert = []
 
-        while (iter_timestamp > first_timestamp):
+        while iter_timestamp > first_timestamp:
 
             hours = (iter_timestamp % 86400) / 3600
             sym_temperature = ((math.cos(math.pi * ((hours - 12) / 12)) + 1) / 2) * \
-                12 + 5 + self.get_calibration() + random.random()
+                12 + 5 + self.__calibration + random.random()
 
             dato = {
                 "timestamp": str(datetime.fromtimestamp(iter_timestamp)),
@@ -72,7 +67,7 @@ class TemperatureSimulator(Simulator):
                     # in questo modo il periodo [-1,1] basta per raggiungere i periodi
                 ) + 1) / 2
                 # in questo modo spostiamo il coseno tutto in positivo, con valori che vanno da 0 a 1
-            ) * 12 + 5 + self.get_calibration() + random.random()
+            ) * 12 + 5 + self.__calibration + random.random()
             # per temperature che vanno da 5 a 17 gradi a fronte della fottore di calibrazione
 
             dato = {
