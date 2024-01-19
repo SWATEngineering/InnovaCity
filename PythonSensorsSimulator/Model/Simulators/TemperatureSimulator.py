@@ -22,7 +22,7 @@ class TemperatureSimulator(Simulator):
     def insert_not_real_time_data(self) -> None:
 
         last_timestamp = datetime.timestamp(
-            datetime.now()) + 20 * super().get_frequency_in_s()
+            datetime.now()) + 20 * super()._frequency_in_s
         iter_timestamp = last_timestamp
         first_timestamp = last_timestamp - 86400
 
@@ -38,20 +38,19 @@ class TemperatureSimulator(Simulator):
                 "timestamp": str(datetime.fromtimestamp(iter_timestamp)),
                 "value": "{:.2f}".format(sym_temperature),
                 "type": "TemperatureSimulator",
-                "latitude": super().get_latitude(),
-                "longitude": super().get_longitude(),
-                "nome_sensore": super().get_sensor_name()
+                "latitude": super()._latitude,
+                "longitude": super()._longitude,
+                "nome_sensore": super()._sensor_name
             }
 
             data_to_insert.append(dato)
-            iter_timestamp -= super().get_frequency_in_s()
+            iter_timestamp -= super()._frequency_in_s
 
         batch_size = 5000
         for i in range(0, len(data_to_insert), batch_size):
             batch = data_to_insert[i:i + batch_size]
-            super().get_writer().write(json.dumps(batch))
-        time.sleep(max(0, (last_timestamp + super().get_frequency_in_s() -
-                           datetime.timestamp(datetime.now()))))
+            super()._writer.write(json.dumps(batch))
+        time.sleep(max(0, int(last_timestamp + super()._frequency_in_s - datetime.timestamp(datetime.now()))))
 
         # l'effettiva simulazione (dati generati real time e mandati a kakfa singolarmente) parte poco dopo
 
@@ -74,9 +73,9 @@ class TemperatureSimulator(Simulator):
                 "timestamp": str(datetime.now()),
                 "value": "{:.2f}".format(sym_temperature),
                 "type": "TemperatureSimulator",
-                "latitude": super().get_latitude(),
-                "longitude": super().get_longitude(),
-                "nome_sensore": super().get_sensor_name()
+                "latitude": super()._latitude,
+                "longitude": super()._longitude,
+                "nome_sensore": super()._sensor_name
             }
-            super().get_writer().write(json.dumps(dato))
-            time.sleep(super().get_frequency_in_s())
+            super()._writer.write(json.dumps(dato))
+            time.sleep(super()._frequency_in_s)
