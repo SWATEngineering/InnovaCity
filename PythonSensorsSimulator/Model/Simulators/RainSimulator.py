@@ -19,7 +19,7 @@ class RainSimulator(Simulator):
         self.__rain_duration = 0
         self.__second_rain_left = 0
 
-    def generate_value(self) -> float:
+    def __generate_value(self) -> float:
         if self.__rain_intensity == 0:
             return 0.0
         else:
@@ -28,13 +28,13 @@ class RainSimulator(Simulator):
             random_factor = 1.0 + random.uniform(-0.1, 0.1)
             return math.sin(angle) * self.__rain_intensity * random_factor
 
-    def try_initiate_rain(self):
+    def __try_initiate_rain(self):
         if random.random() < 1 / (3 * 3600 / self._frequency_in_s):
             self.__rain_intensity = random.randint(1, 5)
             self.__rain_duration = random.randint(7200, 14000)
             self.__second_rain_left = self.__rain_duration
 
-    def stop_rain(self):
+    def __stop_rain(self):
         self.__rain_intensity = 0
         self.__rain_duration = 0
         self.__second_rain_left = 0
@@ -50,12 +50,12 @@ class RainSimulator(Simulator):
 
         while iter_timestamp > first_timestamp:
             if self.__rain_intensity == 0:
-                self.try_initiate_rain()
+                self.__try_initiate_rain()
 
             dato = {
                 "timestamp": str(datetime.fromtimestamp(iter_timestamp)),
                 "value": "{:.2f}".format(
-                    self.generate_value()),
+                    self.__generate_value()),
                 "type": "RainSimulator",
                 "latitude": self._latitude,
                 "longitude": self._longitude,
@@ -64,7 +64,7 @@ class RainSimulator(Simulator):
 
             self.__second_rain_left = self.__second_rain_left - self._frequency_in_s
             if self.__second_rain_left == 1:
-                self.stop_rain()
+                self.__stop_rain()
 
             data_to_insert.append(dato)
             iter_timestamp -= self._frequency_in_s
@@ -73,19 +73,19 @@ class RainSimulator(Simulator):
         for i in range(0, len(data_to_insert), batch_size):
             batch = data_to_insert[i:i + batch_size]
             self._writer.write(json.dumps(batch))
-        self.stop_rain()
+        self.__stop_rain()
         time.sleep(max(0, int(last_timestamp + self._frequency_in_s - datetime.timestamp(datetime.now()))))
 
     def simulate(self) -> None:
         self.insert_not_real_time_data()
         while super().continue_simulating():
             if self.__rain_intensity == 0:
-                self.try_initiate_rain()
+                self.__try_initiate_rain()
 
             dato = {
                 "timestamp": str(datetime.now()),
                 "value": "{:.2f}".format(
-                    self.generate_value()),
+                    self.__generate_value()),
                 "type": "RainSimulator",
                 "latitude": self._latitude,
                 "longitude": self._longitude,
@@ -94,7 +94,7 @@ class RainSimulator(Simulator):
 
             self.__second_rain_left = self.__second_rain_left - self._frequency_in_s
             if self.__second_rain_left == 1:
-                self.stop_rain()
+                self.__stop_rain()
 
             self._writer.write(json.dumps(dato))
             time.sleep(self._frequency_in_s)
