@@ -22,6 +22,10 @@ class Simulator(ABC):
     def simulate(self) -> None:
         pass
 
+    @abstractmethod
+    def _insert_not_real_time_data(self) -> None:
+        pass
+
     def stop_simulating(self) -> None:
         self.__continue_simulating = False
 

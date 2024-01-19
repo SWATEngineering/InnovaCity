@@ -19,7 +19,7 @@ class TemperatureSimulator(Simulator):
         super().__init__(writer, latitude, longitude,
                          f"Sensore di Temperatura {TemperatureSimulator.__count}", frequency_in_s)
 
-    def insert_not_real_time_data(self) -> None:
+    def _insert_not_real_time_data(self) -> None:
 
         last_timestamp = datetime.timestamp(datetime.now()) + 20 * self._frequency_in_s
         iter_timestamp = last_timestamp
@@ -54,7 +54,7 @@ class TemperatureSimulator(Simulator):
         # l'effettiva simulazione (dati generati real time e mandati a kakfa singolarmente) parte poco dopo
 
     def simulate(self) -> None:
-        self.insert_not_real_time_data()  # strettamente per il poc
+        self._insert_not_real_time_data()  # strettamente per il poc
         while super().continue_simulating():
 
             hours = (datetime.timestamp(datetime.now()) % 86400) / 3600

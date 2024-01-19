@@ -39,8 +39,7 @@ class RainSimulator(Simulator):
         self.__rain_duration = 0
         self.__second_rain_left = 0
 
-    def insert_not_real_time_data(self) -> None:
-
+    def _insert_not_real_time_data(self) -> None:
         last_timestamp = datetime.timestamp(
             datetime.now()) + 20 * self._frequency_in_s
         iter_timestamp = last_timestamp
@@ -77,7 +76,7 @@ class RainSimulator(Simulator):
         time.sleep(max(0, int(last_timestamp + self._frequency_in_s - datetime.timestamp(datetime.now()))))
 
     def simulate(self) -> None:
-        self.insert_not_real_time_data()
+        self._insert_not_real_time_data()
         while super().continue_simulating():
             if self.__rain_intensity == 0:
                 self.__try_initiate_rain()
