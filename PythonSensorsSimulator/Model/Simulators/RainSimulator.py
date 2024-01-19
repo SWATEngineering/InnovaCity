@@ -8,16 +8,6 @@ from .Simulator import Simulator
 from ..Writers import Writer
 
 
-def generate_value(intensity: int, duration: int, second_left: int) -> float:
-    if intensity == 0:
-        return 0.0
-    else:
-        angle = ((second_left /
-                 duration)) * math.pi
-        random_factor = 1.0 + random.uniform(-0.1, 0.1)
-        return math.sin(angle) * intensity * random_factor
-
-
 class RainSimulator(Simulator):
     __rain_intensity: int
     __rain_duration: int
@@ -28,6 +18,15 @@ class RainSimulator(Simulator):
         self.__rain_intensity = 0
         self.__rain_duration = 0
         self.__second_rain_left = 0
+
+    def generate_value(self) -> float:
+        if self.__rain_intensity == 0:
+            return 0.0
+        else:
+            angle = ((self.__second_rain_left /
+                      self.__rain_duration)) * math.pi
+            random_factor = 1.0 + random.uniform(-0.1, 0.1)
+            return math.sin(angle) * self.__rain_intensity * random_factor
 
     def try_initiate_rain(self):
         if random.random() < 1 / (3 * 3600 / self._frequency_in_s):
@@ -56,7 +55,7 @@ class RainSimulator(Simulator):
             dato = {
                 "timestamp": str(datetime.fromtimestamp(iter_timestamp)),
                 "value": "{:.2f}".format(
-                    generate_value(self.__rain_intensity, self.__rain_duration, self.__second_rain_left)),
+                    self.generate_value()),
                 "type": "RainSimulator",
                 "latitude": self._latitude,
                 "longitude": self._longitude,
@@ -86,7 +85,7 @@ class RainSimulator(Simulator):
             dato = {
                 "timestamp": str(datetime.now()),
                 "value": "{:.2f}".format(
-                    generate_value(self.__rain_intensity, self.__rain_duration, self.__second_rain_left)),
+                    self.generate_value()),
                 "type": "RainSimulator",
                 "latitude": self._latitude,
                 "longitude": self._longitude,
