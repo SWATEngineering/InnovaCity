@@ -5,7 +5,7 @@ from .Simulators.RainSimulator import RainSimulator
 from .SimulatorThread import SimulatorThread
 
 
-class BuilderSimulatorExecutor:
+class SimulatorExecutorAggregator:
     __simulator_executor: SimulatorExecutor = None
 
     def __init__(self):
@@ -17,7 +17,7 @@ class BuilderSimulatorExecutor:
             latitude: float,
             longitude: float,
             frequency_in_s=1
-    ) -> "BuilderSimulatorExecutor":
+    ) -> "SimulatorExecutorAggregator":
         if writer is None:
             return self
 
@@ -35,7 +35,7 @@ class BuilderSimulatorExecutor:
         latitude: float,
         longitude: float,
         frequency_in_s=1
-    ) -> "BuilderSimulatorExecutor":
+    ) -> "SimulatorExecutorAggregator":
         if writer is None:
             return self
 

@@ -3,8 +3,6 @@ import json
 import math
 import random
 from datetime import datetime
-from datetime import timedelta
-
 
 from .Simulator import Simulator
 from ..Writers import Writer
@@ -21,47 +19,42 @@ class TemperatureSimulator(Simulator):
         super().__init__(writer, latitude, longitude,
                          f"Sensore di Temperatura {TemperatureSimulator.__count}", frequency_in_s)
 
-    def get_calibration(self) -> float:
-        return self.__calibration
+    def _insert_not_real_time_data(self) -> None:
 
-    def insert_not_real_time_data(self) -> None:
-
-        last_timestamp = datetime.timestamp(
-            datetime.now()) + 20 * super().get_frequency_in_s()
+        last_timestamp = datetime.timestamp(datetime.now()) + 20 * self._frequency_in_s
         iter_timestamp = last_timestamp
         first_timestamp = last_timestamp - 86400
 
         data_to_insert = []
 
-        while (iter_timestamp > first_timestamp):
+        while iter_timestamp > first_timestamp:
 
             hours = (iter_timestamp % 86400) / 3600
             sym_temperature = ((math.cos(math.pi * ((hours - 12) / 12)) + 1) / 2) * \
-                12 + 5 + self.get_calibration() + random.random()
+                12 + 5 + self.__calibration + random.random()
 
             dato = {
                 "timestamp": str(datetime.fromtimestamp(iter_timestamp)),
                 "value": "{:.2f}".format(sym_temperature),
                 "type": "TemperatureSimulator",
-                "latitude": super().get_latitude(),
-                "longitude": super().get_longitude(),
-                "nome_sensore": super().get_sensor_name()
+                "latitude": self._latitude,
+                "longitude": self._longitude,
+                "nome_sensore": self._sensor_name
             }
 
             data_to_insert.append(dato)
-            iter_timestamp -= super().get_frequency_in_s()
+            iter_timestamp -= self._frequency_in_s
 
         batch_size = 5000
         for i in range(0, len(data_to_insert), batch_size):
             batch = data_to_insert[i:i + batch_size]
-            super().get_writer().write(json.dumps(batch))
-        time.sleep(max(0, (last_timestamp + super().get_frequency_in_s() -
-                           datetime.timestamp(datetime.now()))))
+            self._writer.write(json.dumps(batch))
+        time.sleep(max(0, int(last_timestamp + self._frequency_in_s - datetime.timestamp(datetime.now()))))
 
         # l'effettiva simulazione (dati generati real time e mandati a kakfa singolarmente) parte poco dopo
 
     def simulate(self) -> None:
-        self.insert_not_real_time_data()  # strettamente per il poc
+        self._insert_not_real_time_data()  # strettamente per il poc
         while super().continue_simulating():
 
             hours = (datetime.timestamp(datetime.now()) % 86400) / 3600
@@ -72,16 +65,16 @@ class TemperatureSimulator(Simulator):
                     # in questo modo il periodo [-1,1] basta per raggiungere i periodi
                 ) + 1) / 2
                 # in questo modo spostiamo il coseno tutto in positivo, con valori che vanno da 0 a 1
-            ) * 12 + 5 + self.get_calibration() + random.random()
+            ) * 12 + 5 + self.__calibration + random.random()
             # per temperature che vanno da 5 a 17 gradi a fronte della fottore di calibrazione
 
             dato = {
                 "timestamp": str(datetime.now()),
                 "value": "{:.2f}".format(sym_temperature),
                 "type": "TemperatureSimulator",
-                "latitude": super().get_latitude(),
-                "longitude": super().get_longitude(),
-                "nome_sensore": super().get_sensor_name()
+                "latitude": self._latitude,
+                "longitude": self._longitude,
+                "nome_sensore": self._sensor_name
             }
-            super().get_writer().write(json.dumps(dato))
-            time.sleep(super().get_frequency_in_s())
+            self._writer.write(json.dumps(dato))
+            time.sleep(self._frequency_in_s)

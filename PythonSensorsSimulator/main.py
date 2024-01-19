@@ -1,6 +1,6 @@
 import os
 
-from Model.BuilderSimulatorExecutor import BuilderSimulatorExecutor
+from Model.SimulatorExecutorAggregator import SimulatorExecutorAggregator
 from Model.Writers.KafkaWriter import KafkaWriter
 
 
@@ -13,11 +13,10 @@ KAFKA_PORT = os.environ.get("KAFKA_PORT", "9092")
 writeToKafkaTemp = KafkaWriter("temperature", KAFKA_HOST, KAFKA_PORT)
 writeToKafkaRain = KafkaWriter("rain", KAFKA_HOST, KAFKA_PORT)
 
-symExecBuilder = BuilderSimulatorExecutor()
+symExecAggregator = SimulatorExecutorAggregator()
 
-# Builder pattern per la configurazione dell'esecutore di simulatori.
 symExec = (
-    symExecBuilder
+    symExecAggregator
     .add_temperature_simulator(writeToKafkaTemp, 45.398214, 11.851271, 1)
     .add_temperature_simulator(writeToKafkaTemp, 45.388622, 11.946768, 1.1)
     .add_temperature_simulator(writeToKafkaTemp, 45.378850, 11.860942, 1)
