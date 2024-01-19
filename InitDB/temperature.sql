@@ -25,7 +25,7 @@ CREATE TABLE innovacity.temperatures1m
 (
     nome_sensore String,
     timestamp1m DATETIME64,
-    avgTemperature AggregateFunction(avgState, Float32), 
+    avgTemperature AggregateFunction(avgState, Float32),
     latitude Float64,
     longitude Float64
 )
@@ -42,7 +42,7 @@ SELECT
     latitude,
     longitude
 FROM innovacity.temperatures
-GROUP BY (timestamp1m, nome_sensore, latitude, longitude); 
+GROUP BY (timestamp1m, nome_sensore, latitude, longitude);
 
 
 
@@ -74,7 +74,7 @@ FROM innovacity.temperatures;
 
 
 
-   
+
 
 
 
