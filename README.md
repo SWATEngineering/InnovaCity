@@ -25,3 +25,6 @@ Per fermare tutti i container utilizzare rispettivamente i comandi
 `docker-compose --profile prod down`
 
 `docker-compose --profile dev down`
+
+## Accesso
+Le credenziali per l'accesso a Grafana username e password sono rispettivamente `ic_admin` e `ic_admin`.
