@@ -1,6 +1,6 @@
 from sensor_simulator_strategy import SensorSimulatorStrategy
 
 
-class TemperatureSensorSensorSimulatorStrategy(SensorSimulatorStrategy):
+class TemperatureSensorSensorSimulator(SensorSimulatorStrategy):
     def simulate(self) -> str:
         return ""
