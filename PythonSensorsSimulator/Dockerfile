@@ -2,7 +2,7 @@ FROM python:3.11-bookworm
 
 WORKDIR /app
 
-RUN pip install confluent-kafka
+RUN pip install -r requirements.txt
 
 COPY . .
 
