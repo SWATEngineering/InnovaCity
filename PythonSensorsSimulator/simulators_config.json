@@ -6,29 +6,5 @@
       "type": "Point",
       "coordinates": [45.398214, 11.851271]
     }
-  },
-  {
-    "type": "temperature",
-    "wait_time_in_seconds": 0.7,
-    "location": {
-      "type": "Point",
-      "coordinates": [45.388622, 11.946768]
-    }
-  },
-  {
-    "type": "rain",
-    "wait_time_in_seconds": 1.1,
-    "location": {
-      "type": "Point",
-      "coordinates": [45.378850, 11.860942]
-    }
-  },
-  {
-    "type": "humidity",
-    "wait_time_in_seconds": 0.4,
-    "location": {
-      "type": "Point",
-      "coordinates": [45.390749, 11.849001]
-    }
   }
 ]

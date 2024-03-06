@@ -1,11 +1,9 @@
 from simulator_thread import SimulatorThread
+from pydantic import BaseModel
 
 
-class SimulatorExecutor:
+class SimulatorExecutor(BaseModel):
     __simulators: [SimulatorThread] = []
-
-    def __init__(self, simulators: [SimulatorThread]):
-        self.__simulators = simulators
 
     def run_all(self) -> None:
         for simulator in self.__simulators:

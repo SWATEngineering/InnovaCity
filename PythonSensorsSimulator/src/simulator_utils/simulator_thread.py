@@ -5,7 +5,7 @@ from writer.writer_strategy import WriterStrategy
 
 
 class SimulatorThread(threading.Thread):
-    __is_running = True
+    __is_running: bool = True
     __simulator: SensorSimulatorStrategy = None
     __writer: WriterStrategy = None
 

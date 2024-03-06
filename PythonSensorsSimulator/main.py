@@ -1,29 +1,24 @@
 import os
+from simulator_utils.simulator_executor_factory import SimulatorExecutorFactory
 
-from Model.SimulatorExecutorAggregator import SimulatorExecutorAggregator
-from Model.Writers.KafkaWriter import KafkaWriter
-
-
+# env var reading
 KAFKA_HOST = os.environ.get("KAFKA_HOST", "kafka")
 KAFKA_PORT = os.environ.get("KAFKA_PORT", "9092")
 
-# Uso generale di una interfaccia Writer al fine di poter implementare quante politiche diverse di writing si vuole,
-# senza dover cambiare nulla sul resto del codice.
-# writeToStd = StdoutWriter()
-writeToKafkaTemp = KafkaWriter("temperature", KAFKA_HOST, KAFKA_PORT)
-writeToKafkaRain = KafkaWriter("rain", KAFKA_HOST, KAFKA_PORT)
+# JSON config file reading
+config_file = open("simulator_utils", "r")
+config_str = config_file.read()
+config_file.close()
 
-symExecAggregator = SimulatorExecutorAggregator()
-
-symExec = (
-    symExecAggregator
-    .add_temperature_simulator(writeToKafkaTemp, 45.398214, 11.851271, 1)
-    .add_temperature_simulator(writeToKafkaTemp, 45.388622, 11.946768, 1.1)
-    .add_temperature_simulator(writeToKafkaTemp, 45.378850, 11.860942, 1)
-    .add_temperature_simulator(writeToKafkaTemp, 45.390749, 11.849001, 1)
-    .add_temperature_simulator(writeToKafkaTemp, 45.423596, 11.905982, 0.9)
-    .add_rain_simulator(writeToKafkaRain, 45.423596, 11.849001, 1)
-    .get_simulator_executor()
+# configuration factory creation
+sim_exe_factory = SimulatorExecutorFactory(
+    _SimulatorExecutorFactory__configs=config_str,
+    _SimulatorExecutorFactory__data_broker_host=KAFKA_HOST,
+    _SimulatorExecutorFactory__data_broker_port=KAFKA_PORT
 )
 
-symExec.run_all()
+# simulator executor creation
+sim_exe = sim_exe_factory.create()
+
+# simulators execution
+sim_exe.run_all()
