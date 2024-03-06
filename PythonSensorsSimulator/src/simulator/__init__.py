@@ -1,6 +1,0 @@
-import sensor_simulator_strategy
-import temperature_sensor_simulator
-import rain_sensor_simulator
-import wind_sensor_simulator
-import humidity_sensor_simulator
-import air_pollution_simulator
