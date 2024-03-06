@@ -17,6 +17,7 @@ from simulator.sensor_simulator_strategy import SensorSimulatorStrategy
 from simulator.rain_sensor_simulator import RainSensorSensorSimulator
 from simulator.humidity_sensor_simulator import HumiditySensorSensorSimulator
 from simulator.air_pollution_simulator import AirPollutionSensorSimulator
+from simulator.reservoir_sensor_simulator import ReservoirSensorSimulator
 
 from writer.kafka_writer import KafkaWriter
 from writer.kafka_logic.adapter_producer import AdapterProducer
@@ -60,6 +61,8 @@ class SimulatorExecutorFactory(BaseModel):
                 self.__create_simulator(sensor_config, SensorTypes.TEMPERATURE, TemperatureSensorSensorSimulator)
             elif sensor_config['type'] == SensorTypes.RAIN.value:
                 self.__create_simulator(sensor_config, SensorTypes.RAIN, RainSensorSensorSimulator)
+            elif sensor_config['type'] == SensorTypes.RESERVOIR.value:
+                self.__create_simulator(sensor_config, SensorTypes.RESERVOIR, ReservoirSensorSimulator)
             elif sensor_config['type'] == SensorTypes.WIND.value:
                 self.__create_simulator(sensor_config, SensorTypes.WIND, WindSensorSensorSimulator)
             elif sensor_config['type'] == SensorTypes.AIR_POLLUTION.value:

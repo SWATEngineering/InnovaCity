@@ -6,6 +6,7 @@ class SensorTypes(Enum):
     HUMIDITY = "humidity"
     WIND = "wind"
     RAIN = "rain"
+    RESERVOIR = "reservoir"
     AIR_POLLUTION = "air_pollution"
     HYDROLOGICAL = "hydrological"
     PARKING = "parking"
