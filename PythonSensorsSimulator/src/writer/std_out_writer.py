@@ -1,4 +1,4 @@
-from writer import writer_strategy
+from src.writer.writer_strategy import WriterStrategy
 
 
 class StdoutWriter(WriterStrategy):

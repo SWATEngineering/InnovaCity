@@ -1,5 +1,5 @@
-from utils.sensor_types import SensorTypes
-from utils.coordinates import Coordinates
+from src.utils.sensor_types import SensorTypes
+from src.utils.coordinates import Coordinates
 
 from typing import List, Dict
 import json

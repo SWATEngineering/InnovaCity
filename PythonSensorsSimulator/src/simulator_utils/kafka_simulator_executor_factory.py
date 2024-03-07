@@ -1,35 +1,25 @@
 from random import Random
 from typing import List, Dict, Type
 import datetime
-import json
+from .simulator_thread import SimulatorThread
+from .simulator_executor_factory_template import SimulatorExecutorFactoryTemplate
 
-from pydantic import BaseModel
+from src.utils.sensor_types import SensorTypes
+from src.utils.coordinates import Coordinates
 
-from simulator_executor import SimulatorExecutor
-from simulator_thread import SimulatorThread
-from simulator_executor_factory_template import SimulatorExecutorFactoryTemplate
-
-from utils.sensor_types import SensorTypes
-from utils.coordinates import Coordinates
-
-from simulator.temperature_sensor_simulator import TemperatureSensorSensorSimulator
-from simulator.wind_sensor_simulator import WindSensorSensorSimulator
-from simulator.sensor_simulator_strategy import SensorSimulatorStrategy
-from simulator.rain_sensor_simulator import RainSensorSensorSimulator
-from simulator.humidity_sensor_simulator import HumiditySensorSensorSimulator
-from simulator.air_pollution_simulator import AirPollutionSensorSimulator
-
-from writer.kafka_writer import KafkaWriter
-from writer.kafka_logic.adapter_producer import AdapterProducer
+from src.simulator.sensor_simulator_strategy import SensorSimulatorStrategy
+from src.writer.kafka_writer import KafkaWriter
+from src.writer.kafka_logic.adapter_producer import AdapterProducer
 
 
 class KafkaSimulatorExecutorFactory(SimulatorExecutorFactoryTemplate):
-    __configs: str
     __data_broker_host: str = 'kafka'
     __data_broker_port: int = 9092
-    __simulators: List[SimulatorThread] = []
     __writers: Dict[str, KafkaWriter] = {}
     __simulators_counter: Dict[str, int] = {}
+
+    def __init__(self, **data):
+        super().__init__(**data)
 
     def _create_simulator(self, config: Dict, simulator_type: SensorTypes, cls: Type[SensorSimulatorStrategy]):
         if self.__writers[simulator_type.value] is None:
@@ -38,8 +28,8 @@ class KafkaSimulatorExecutorFactory(SimulatorExecutorFactoryTemplate):
                     simulator_type.value, self.__data_broker_host, self.__data_broker_port
                 )
             )
-        self.__simulators_counter[simulator_type.value] += self.__simulators_counter.get(simulator_type.value, 0) + 1
-        self.__simulators.append(SimulatorThread(
+        self.__simulators_counter[simulator_type.value] = self.__simulators_counter.get(simulator_type.value, 0) + 1
+        self._simulators.append(SimulatorThread(
             cls(
                 _SensorSimulatorStrategy_wait_time_in_seconds=config["wait_time_in_seconds"],
                 _SensorSimulatorStrategy_sensor_name=simulator_type.value + str(

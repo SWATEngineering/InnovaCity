@@ -1,8 +1,8 @@
 from typing import Callable
 
 from confluent_kafka import Producer, KafkaException
-from target_producer import TargetProducer
-from utils.sensor_types import SensorTypes
+from src.writer.kafka_logic.target_producer import TargetProducer
+from src.utils.sensor_types import SensorTypes
 
 
 class AdapterProducer(TargetProducer):

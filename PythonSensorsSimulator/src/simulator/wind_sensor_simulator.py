@@ -1,4 +1,4 @@
-from sensor_simulator_strategy import SensorSimulatorStrategy
+from src.simulator.sensor_simulator_strategy import SensorSimulatorStrategy
 
 
 class WindSensorSensorSimulator(SensorSimulatorStrategy):

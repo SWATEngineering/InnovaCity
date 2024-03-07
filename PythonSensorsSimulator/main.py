@@ -1,27 +1,27 @@
 import os
-from simulator_utils.kafka_simulator_executor_factory import KafkaSimulatorExecutorFactory
-# from simulator_utils.stdout_simulator_executor_factory import StdoutSimulatorExecutorFactory
+# from simulator_utils.kafka_simulator_executor_factory import KafkaSimulatorExecutorFactory
+from src.simulator_utils.stdout_simulator_executor_factory import StdoutSimulatorExecutorFactory
 
 # env var reading
 KAFKA_HOST = os.environ.get("KAFKA_HOST", "kafka")
 KAFKA_PORT = os.environ.get("KAFKA_PORT", "9092")
 
 # JSON config file reading
-config_file = open("simulator_utils", "r")
+config_file = open("simulators_config.json", "r")
 config_str = config_file.read()
 config_file.close()
 
 # configuration factory creation (kafka writer)
-sim_exe_factory = KafkaSimulatorExecutorFactory(
-    _SimulatorExecutorFactory__configs=config_str,
-    _SimulatorExecutorFactory__data_broker_host=KAFKA_HOST,
-    _SimulatorExecutorFactory__data_broker_port=KAFKA_PORT
-)
+# sim_exe_factory = KafkaSimulatorExecutorFactory(
+#    _SimulatorExecutorFactory__configs=config_str,
+#    _SimulatorExecutorFactory__data_broker_host=KAFKA_HOST,
+#    _SimulatorExecutorFactory__data_broker_port=KAFKA_PORT
+# )
 
 # configuration factory creation (stdout writer)
-# sim_exe_factory = StdoutSimulatorExecutorFactory(
-#     _SimulatorExecutorFactory__configs=config_str,
-# )
+sim_exe_factory = StdoutSimulatorExecutorFactory(
+    configs=config_str,
+)
 
 # simulator executor creation
 sim_exe = sim_exe_factory.create()

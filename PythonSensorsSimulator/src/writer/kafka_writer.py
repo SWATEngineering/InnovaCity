@@ -1,7 +1,8 @@
-from writer_strategy import WriterStrategy
+from src.writer.writer_strategy import WriterStrategy
+from src.writer.kafka_logic.target_producer import TargetProducer
+from src.utils.utility_functions import acked
+
 from pydantic import BaseModel
-from kafka_logic.target_producer import TargetProducer
-from utils.utility_functions import acked
 
 
 class KafkaWriter(WriterStrategy, BaseModel):

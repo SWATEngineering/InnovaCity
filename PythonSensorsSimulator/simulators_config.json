@@ -1,6 +1,6 @@
 [
   {
-    "type": "temperature",
+    "type": "humidity",
     "wait_time_in_seconds": 1.5,
     "location": {
       "type": "Point",
