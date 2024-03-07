@@ -9,6 +9,9 @@ class AirPollutionSensorSimulator(SensorSimulatorStrategy):
     variation_min: float = -5
     variation_max: float = 5
 
+    def __init__(self, **data):
+        super().__init__(**data)
+
     # return the variation percentage based on the season
     def _get_seasonal_variation(self) -> float:
         
@@ -38,13 +41,13 @@ class AirPollutionSensorSimulator(SensorSimulatorStrategy):
 
     def simulate(self) -> str:
         timestamp = self._datetime_obj.now()
-        self.__reservoir_percentage = self._measure_reservoir_level()
+        self.__value = self._generate_air_pollution()
 
         reading = {
             "type": "%",
-            "value": round(self.__reservoir_percentage, 2)
+            "value": round(self.__value, 2)
         }
 
-        dato = json_message_maker(SensorTypes.RESERVOIR, str(self._datetime_obj.now()), [reading], self._sensor_name, self._coordinates)
+        dato = json_message_maker(SensorTypes.AIR_POLLUTION, str(timestamp), [reading], self._sensor_name, self._coordinates)
 
         return dato
