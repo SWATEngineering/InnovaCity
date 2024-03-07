@@ -24,22 +24,22 @@ class KafkaSimulatorExecutorFactory(SimulatorExecutorFactoryTemplate):
     def _create_simulator(self, config: Dict, simulator_type: SensorTypes, cls: Type[SensorSimulatorStrategy]):
         if self.__writers[simulator_type.value] is None:
             self.__writers[simulator_type.value] = KafkaWriter(
-                _KafkaWriter__producer=AdapterProducer(
+                producer=AdapterProducer(
                     simulator_type.value, self.__data_broker_host, self.__data_broker_port
                 )
             )
         self.__simulators_counter[simulator_type.value] = self.__simulators_counter.get(simulator_type.value, 0) + 1
         self._simulators.append(SimulatorThread(
+            config["wait_time_in_seconds"],
             cls(
-                _SensorSimulatorStrategy_wait_time_in_seconds=config["wait_time_in_seconds"],
-                _SensorSimulatorStrategy_sensor_name=simulator_type.value + str(
+                sensor_name=simulator_type.value + str(
                     self.__simulators_counter[simulator_type.value]
                 ),
-                _SensorSimulatorStrategy_random_obj=Random(),
-                _SensorSimulatorStrategy_datetime_obj=datetime,
-                _SensorSimulatorStrategy_coordinates=Coordinates(
-                    __longitude=config["location"]["coordinates"][0],
-                    __latitude=config["location"]["coordinates"][1]
+                random_obj=Random(),
+                datetime_obj=datetime,
+                coordinates=Coordinates(
+                    longitude=config["location"]["coordinates"][0],
+                    latitude=config["location"]["coordinates"][1]
                 )
             ), self.__writers[simulator_type.value]
         ))
