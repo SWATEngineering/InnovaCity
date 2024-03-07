@@ -13,3 +13,5 @@ class SensorTypes(Enum):
     ECO_ZONE = "eco_zone"
     TRAFFIC = "traffic"
     ELECTRIC_BICYCLE = "electric_bicycle"
+
+
