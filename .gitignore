@@ -166,3 +166,7 @@ cython_debug/
 
 #pylint
 pylint_report.txt
+
+#coverage
+coverage.json
+coverage_html/
