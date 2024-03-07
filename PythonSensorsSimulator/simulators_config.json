@@ -14,5 +14,13 @@
       "type": "Point",
       "coordinates": [45.398214, 11.851271]
     }
+  },
+  {
+    "type": "air_pollution",
+    "wait_time_in_seconds": 1.5,
+    "location": {
+      "type": "Point",
+      "coordinates": [45.398214, 11.851271]
+    }
   }
 ]
