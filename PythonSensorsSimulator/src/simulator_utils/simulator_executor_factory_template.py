@@ -54,4 +54,4 @@ class SimulatorExecutorFactoryTemplate(ABC, BaseModel):
                 self._create_simulator(sensor_config, SensorTypes.PARKING, HumiditySensorSensorSimulator)
             elif sensor_config['type'] == SensorTypes.TRAFFIC.value:
                 self._create_simulator(sensor_config, SensorTypes.TRAFFIC, HumiditySensorSensorSimulator)
-            return SimulatorExecutor(simulators=self._simulators)
+        return SimulatorExecutor(simulators=self._simulators)
