@@ -8,7 +8,6 @@ class SensorTypes(Enum):
     RAIN = "rain"
     RESERVOIR = "reservoir"
     AIR_POLLUTION = "air_pollution"
-    HYDROLOGICAL = "hydrological"
     PARKING = "parking"
     CHARGING_STATION = "charging_station"
     ECO_ZONE = "eco_zone"

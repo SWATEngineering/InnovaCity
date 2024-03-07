@@ -20,7 +20,7 @@ config_file.close()
 
 # configuration factory creation (stdout writer)
 sim_exe_factory = StdoutSimulatorExecutorFactory(
-    configs=config_str,
+    configs=config_str
 )
 
 # simulator executor creation

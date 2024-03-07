@@ -44,8 +44,6 @@ class SimulatorExecutorFactoryTemplate(ABC, BaseModel):
                 self._create_simulator(sensor_config, SensorTypes.AIR_POLLUTION, AirPollutionSensorSimulator)
             elif sensor_config['type'] == SensorTypes.HUMIDITY.value:
                 self._create_simulator(sensor_config, SensorTypes.HUMIDITY, HumiditySensorSensorSimulator)
-            elif sensor_config['type'] == SensorTypes.HYDROLOGICAL.value:
-                self._create_simulator(sensor_config, SensorTypes.HYDROLOGICAL, HumiditySensorSensorSimulator)
             elif sensor_config['type'] == SensorTypes.CHARGING_STATION.value:
                 self._create_simulator(sensor_config, SensorTypes.CHARGING_STATION, HumiditySensorSensorSimulator)
             elif sensor_config['type'] == SensorTypes.ECO_ZONE.value:
