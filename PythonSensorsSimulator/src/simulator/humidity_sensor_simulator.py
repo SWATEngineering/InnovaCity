@@ -2,7 +2,6 @@ from src.simulator.sensor_simulator_strategy import SensorSimulatorStrategy
 import math
 from src.utils.sensor_types import SensorTypes
 from src.utils.json_message_maker import json_message_maker
-import time
 
 
 class HumiditySensorSensorSimulator(SensorSimulatorStrategy):
@@ -45,6 +44,6 @@ class HumiditySensorSensorSimulator(SensorSimulatorStrategy):
             "value": round(self.__percen, 2)
         }
 
-        dato = json_message_maker(SensorTypes.HUMIDITY, str(timestamp), reading, self._sensor_name, self._coordinates)
+        dato = json_message_maker(SensorTypes.HUMIDITY, str(timestamp), [reading], self._sensor_name, self._coordinates)
 
         return dato
