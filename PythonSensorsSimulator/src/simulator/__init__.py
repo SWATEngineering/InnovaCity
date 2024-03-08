@@ -5,3 +5,4 @@ import src.simulator.reservoir_sensor_simulator
 import src.simulator.sensor_simulator_strategy
 import src.simulator.temperature_sensor_simulator
 import src.simulator.wind_sensor_simulator
+import src.simulator.ebike_sensor_simulator
