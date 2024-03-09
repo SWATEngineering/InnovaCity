@@ -13,7 +13,7 @@ class AirPollutionSensorSimulator(SensorSimulatorStrategy):
 
     def __init__(self, **data):
         super().__init__(**data)
-        self.__month = self._datetime_obj.now().month
+        self.__month = self._datetime_obj.datetime.now().month
 
     # return the variation percentage based on the season
     def _get_seasonal_variation(self) -> float:
@@ -42,7 +42,7 @@ class AirPollutionSensorSimulator(SensorSimulatorStrategy):
         return value + variation
 
     def simulate(self) -> str:
-        timestamp = self._datetime_obj.now()
+        timestamp = self._datetime_obj.datetime.now()
         self.__value = self._generate_air_pollution()
 
         reading = {
