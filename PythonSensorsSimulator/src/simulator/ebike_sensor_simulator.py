@@ -1,7 +1,6 @@
 from src.simulator.sensor_simulator_strategy import SensorSimulatorStrategy
 from math import radians, sin, cos, sqrt
 import json
-import time
 from datetime import datetime
 from src.utils.coordinates import Coordinates
 from src.utils.sensor_types import SensorTypes
