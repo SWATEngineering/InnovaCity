@@ -13,7 +13,7 @@ class HumiditySensorSensorSimulator(SensorSimulatorStrategy):
         super().__init__(**data)
         self.__amplitude = self._calculate_ampiezza()
 
-    def _calculate_ampiezza(self):
+    def _calculate_ampiezza(self) -> float:
 
         current_month = self._datetime_obj.datetime.now().month
         if 3 <= current_month <= 5:  # Primavera: da marzo a maggio
