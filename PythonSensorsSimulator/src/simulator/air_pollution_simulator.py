@@ -15,7 +15,7 @@ class AirPollutionSensorSimulator(SensorSimulatorStrategy):
     # return the variation percentage based on the season
     def _get_seasonal_variation(self) -> float:
 
-        month = self._datetime_obj.now().month
+        month = self._datetime_obj.datetime.now().month
 
         if month in [12, 1, 2]:  # winter
             # air pollution is higher due to the heating
@@ -39,7 +39,7 @@ class AirPollutionSensorSimulator(SensorSimulatorStrategy):
         return pm + pm * self._get_seasonal_variation() / 100
 
     def simulate(self) -> str:
-        timestamp = self._datetime_obj.now()
+        timestamp = self._datetime_obj.datetime.now()
         self.__value = self._generate_air_pollution()
 
         reading = {

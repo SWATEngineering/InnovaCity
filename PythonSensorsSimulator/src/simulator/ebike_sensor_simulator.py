@@ -62,7 +62,7 @@ class EBikeSensorSimulator(SensorSimulatorStrategy):
         if l_lon == n_lon and l_lat == n_lat:
             return self.__bike_percentage
         
-        time_difference = (self._datetime_obj.now() - self.__last_timestamp).total_seconds()
+        time_difference = (self._datetime_obj.datetime.now() - self.__last_timestamp).total_seconds()
         distance = self._calculate_distance()
 
         speed = distance / time_difference
@@ -82,7 +82,7 @@ class EBikeSensorSimulator(SensorSimulatorStrategy):
         }
 
         self.__last_coordinates = self._coordinates
-        self.__last_timestamp = self._datetime_obj.now()
+        self.__last_timestamp = self._datetime_obj.datetime.now()
 
         dato = json_message_maker(SensorTypes.ELECTRIC_BICYCLE, str(self.__last_timestamp), [reading], self._sensor_name, self._coordinates)
 

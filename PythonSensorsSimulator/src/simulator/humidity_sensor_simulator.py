@@ -15,7 +15,7 @@ class HumiditySensorSensorSimulator(SensorSimulatorStrategy):
 
     def _calculate_ampiezza(self):
 
-        current_month = self._datetime_obj.now().month
+        current_month = self._datetime_obj.datetime.now().month
         if 3 <= current_month <= 5:  # Primavera: da marzo a maggio
             return 0.45
         elif 6 <= current_month <= 8:  # Estate: da giugno a agosto
@@ -26,7 +26,7 @@ class HumiditySensorSensorSimulator(SensorSimulatorStrategy):
             return 0.85
 
     def _calcola_percentuale(self) -> float:
-        now = self._datetime_obj.now()
+        now = self._datetime_obj.datetime.now()
         hours = (int(now.timestamp()) % 86400) / 3600
         relative_humidity = (math.sin(2 * math.pi * (hours - self.__phase) / 24) * self.__amplitude + 1) / 2
         relative_humidity += self._random_obj.uniform(-0.01, 0.01)
@@ -36,7 +36,7 @@ class HumiditySensorSensorSimulator(SensorSimulatorStrategy):
 
     def simulate(self) -> str:
 
-        timestamp = self._datetime_obj.now()
+        timestamp = self._datetime_obj.datetime.now()
         self.__percen = self._calcola_percentuale()
 
         reading = {
