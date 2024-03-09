@@ -20,6 +20,8 @@ class KafkaSimulatorExecutorFactory(SimulatorExecutorFactoryTemplate):
 
     def __init__(self, **data):
         super().__init__(**data)
+        self.__data_broker_host = data.get('data_broker_host')
+        self.__data_broker_port = data.get('data_broker_port')
 
     def _create_simulator(self, config: Dict, simulator_type: SensorTypes, cls: Type[SensorSimulatorStrategy]):
         if self.__writers[simulator_type.value] is None:
