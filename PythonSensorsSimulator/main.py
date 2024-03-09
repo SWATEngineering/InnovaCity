@@ -1,5 +1,5 @@
 import os
-from simulator_utils.kafka_simulator_executor_factory import KafkaSimulatorExecutorFactory
+from src.simulator_utils.kafka_simulator_executor_factory import KafkaSimulatorExecutorFactory
 # from src.simulator_utils.stdout_simulator_executor_factory import StdoutSimulatorExecutorFactory
 
 # env var reading

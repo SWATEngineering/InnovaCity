@@ -24,10 +24,10 @@ class KafkaSimulatorExecutorFactory(SimulatorExecutorFactoryTemplate):
         self.__data_broker_port = data.get('data_broker_port')
 
     def _create_simulator(self, config: Dict, simulator_type: SensorTypes, cls: Type[SensorSimulatorStrategy]):
-        if self.__writers[simulator_type.value] is None:
+        if simulator_type.value not in self.__writers:
             self.__writers[simulator_type.value] = KafkaWriter(
                 producer=AdapterProducer(
-                    simulator_type.value, self.__data_broker_host, self.__data_broker_port
+                    simulator_type, self.__data_broker_host, self.__data_broker_port
                 )
             )
         self.__simulators_counter[simulator_type.value] = self.__simulators_counter.get(simulator_type.value, 0) + 1
