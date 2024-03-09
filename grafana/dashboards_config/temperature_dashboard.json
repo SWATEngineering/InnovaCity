@@ -142,7 +142,7 @@
             }
           },
           "queryType": "sql",
-          "rawSql": "SELECT\r\n    nome_sensore,\r\n    toStartOfMinute(timestamp1m) AS timestamp1m,\r\n    avgMerge(avgTemperature) as \" \"\r\nFROM innovacity.temperatures1m\r\nGROUP BY (nome_sensore, timestamp1m)\r\nHAVING ( timestamp1m  >= $__fromTime AND timestamp1m <= $__toTime ) ",
+          "rawSql": "SELECT\r\n    name,\r\n    toStartOfMinute(timestamp1m) AS timestamp1m,\r\n    avgMerge(avgTemperature) as \" \"\r\nFROM innovacity.temperatures1m\r\nGROUP BY (name, timestamp1m)\r\nHAVING ( timestamp1m  >= $__fromTime AND timestamp1m <= $__toTime ) ",
           "refId": "A",
           "selectedFormat": 4
         },
@@ -565,7 +565,7 @@
             }
           },
           "queryType": "sql",
-          "rawSql": "SELECT\r\n    nome_sensore,\r\n    toStartOfMinute(timestamp1m) AS timestamp1m,\r\n    avgMerge(avgReservoir) as avgReservoir\r\nFROM innovacity.reservoirs1m\r\nGROUP BY (nome_sensore, timestamp1m)\r\nHAVING ( timestamp1m  >= $__fromTime AND timestamp1m <= $__toTime ) ",
+          "rawSql": "SELECT\r\n    name,\r\n    toStartOfMinute(timestamp1m) AS timestamp1m,\r\n    avgMerge(avgReservoir) as avgReservoir\r\nFROM innovacity.reservoirs1m\r\nGROUP BY (name, timestamp1m)\r\nHAVING ( timestamp1m  >= $__fromTime AND timestamp1m <= $__toTime ) ",
           "refId": "A",
           "selectedFormat": 4
         },
@@ -760,7 +760,7 @@
           "builderOptions": {
             "database": "innovacity",
             "fields": [
-              "nome_sensore",
+              "name",
               "type",
               "latitude",
               "longitude",
@@ -797,7 +797,7 @@
             "builderOptions": {
               "database": "innovacity",
               "fields": [
-                "nome_sensore",
+                "name",
                 "type",
                 "latitude",
                 "longitude",
@@ -826,7 +826,7 @@
             }
           },
           "queryType": "sql",
-          "rawSql": "SELECT\n    'temperature' as Tipo,\n    nome_sensore,\n    toStartOfMinute(timestamp1m) AS timestamp1m,\n    avgMerge(avgTemperature) as avgTemperature,\n    latitude,\n    longitude\nFROM innovacity.temperatures1m\nGROUP BY (nome_sensore, timestamp1m, latitude, longitude)\nHAVING ( timestamp1m >= $__fromTime AND timestamp1m <= $__toTime );",
+          "rawSql": "SELECT\n    'temperature' as Tipo,\n    name,\n    toStartOfMinute(timestamp1m) AS timestamp1m,\n    avgMerge(avgTemperature) as avgTemperature,\n    latitude,\n    longitude\nFROM innovacity.temperatures1m\nGROUP BY (name, timestamp1m, latitude, longitude)\nHAVING ( timestamp1m >= $__fromTime AND timestamp1m <= $__toTime );",
           "refId": "A",
           "selectedFormat": 4
         },
@@ -845,7 +845,7 @@
             }
           },
           "queryType": "sql",
-          "rawSql": " SELECT\n    'rain' as Tipo,\n    nome_sensore,\n    toStartOfMinute(timestamp1m) AS timestamp1m,\n    avgMerge(avgRain) as avgRain,\n    latitude,\n    longitude\nFROM innovacity.rain1m\nGROUP BY (nome_sensore, timestamp1m, latitude, longitude)\nHAVING ( timestamp1m >= $__fromTime AND timestamp1m <= $__toTime );",
+          "rawSql": " SELECT\n    'rain' as Tipo,\n    name,\n    toStartOfMinute(timestamp1m) AS timestamp1m,\n    avgMerge(avgRain) as avgRain,\n    latitude,\n    longitude\nFROM innovacity.rain1m\nGROUP BY (name, timestamp1m, latitude, longitude)\nHAVING ( timestamp1m >= $__fromTime AND timestamp1m <= $__toTime );",
           "refId": "B",
           "selectedFormat": 4
         },
@@ -864,7 +864,7 @@
             }
           },
           "queryType": "sql",
-          "rawSql": " SELECT\n    'reservoir' as Tipo,\n    nome_sensore,\n    toStartOfMinute(timestamp1m) AS timestamp1m,\n    avgMerge(avgReservoir) as avgReservoir,\n    latitude,\n    longitude\nFROM innovacity.reservoirs1m\nGROUP BY (nome_sensore, timestamp1m, latitude, longitude)\nHAVING ( timestamp1m >= $__fromTime AND timestamp1m <= $__toTime );",
+          "rawSql": " SELECT\n    'reservoir' as Tipo,\n    name,\n    toStartOfMinute(timestamp1m) AS timestamp1m,\n    avgMerge(avgReservoir) as avgReservoir,\n    latitude,\n    longitude\nFROM innovacity.reservoirs1m\nGROUP BY (name, timestamp1m, latitude, longitude)\nHAVING ( timestamp1m >= $__fromTime AND timestamp1m <= $__toTime );",
           "refId": "C",
           "selectedFormat": 4
         }
@@ -932,7 +932,7 @@
                 "aggregations": [],
                 "operation": "groupby"
               },
-              "nome_sensore": {
+              "name": {
                 "aggregations": [],
                 "operation": "groupby"
               }

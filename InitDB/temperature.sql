@@ -18,9 +18,9 @@ ORDER BY (name, timestamp);
 CREATE MATERIALIZED VIEW innovacity.temperatures_topic_mv TO innovacity.temperatures AS
 SELECT
     JSONExtractString(data, 'name') AS sensor_name,
-    toDateTime(JSONExtractString(data, 'timestamp')) AS timestamp,
-    JSONExtractFloat(data, 'readings', 1) AS value, -- arrays start from 1
-    JSONExtractString(data, 'type', 1) AS type,
+    toDateTime64(JSONExtractString(data, 'timestamp'), 0) AS timestamp,
+    JSONExtractFloat(data, 'readings', 1, 'value') AS value, -- arrays start from 1
+    JSONExtractString(data, 'type') AS type,
     JSONExtractFloat(data, 'location', 'coordinates', 1) AS latitude,
     JSONExtractFloat(data, 'location', 'coordinates', 2) AS longitude
 FROM innovacity.temperatures_topic_kafka;

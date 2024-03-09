@@ -1,3 +1,4 @@
+/*
 CREATE TABLE innovacity.humidity_queue (
     timestamp DATETIME64,
     value Float32,
