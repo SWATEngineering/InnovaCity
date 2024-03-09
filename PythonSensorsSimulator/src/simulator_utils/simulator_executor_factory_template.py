@@ -28,7 +28,7 @@ class SimulatorExecutorFactoryTemplate(ABC, BaseModel):
     def create(self) -> SimulatorExecutor:
         sensors_config = json.loads(self._configs)
         for sensor_config in sensors_config:
-            type_tuple = str_to_type_switcher.get(sensor_config['type'],None)
+            type_tuple = str_to_type_switcher.get(sensor_config['type'], None)
             if type_tuple is not None:
                 self._create_simulator(sensor_config, type_tuple[0], type_tuple[1])
         return SimulatorExecutor(simulators=self._simulators)

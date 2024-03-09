@@ -1,38 +1,46 @@
-CREATE TABLE innovacity.rain_queue (
-    timestamp DATETIME64,
-    value Float32,
-    type String,
-    latitude Float64,
-    longitude Float64,
-    nome_sensore String
-) ENGINE = Kafka('kafka:9092', 'rain', 'ch_group_1', 'JSONEachRow');
-
+-- +----------------------+
+-- | START KAFKA CONSUMER |
+-- +----------------------+
+CREATE TABLE innovacity.rain_topic_kafka (
+    data String
+) ENGINE = Kafka('kafka:9092', 'rain', 'ch_group_1', 'JSONAsString');
 
 CREATE TABLE innovacity.rain (
-    timestamp DATETIME64,
-    value Float32,
-    type String,
-    latitude Float64,
-    longitude Float64,
-    nome_sensore String
+     name String,
+     timestamp DATETIME64,
+     value Float64,
+     type String,
+     latitude Float64,
+     longitude Float64
 ) ENGINE = MergeTree()
-ORDER BY (nome_sensore, timestamp);
+      ORDER BY (name, timestamp);
 
+CREATE MATERIALIZED VIEW innovacity.rain_topic_mv TO innovacity.rain AS
+SELECT
+    JSONExtractString(data, 'name') AS sensor_name,
+    toDateTime(JSONExtractString(data, 'timestamp')) AS timestamp,
+    JSONExtractFloat(data, 'readings', 1) AS value, -- arrays start from 1
+    JSONExtractString(data, 'type', 1) AS type,
+    JSONExtractFloat(data, 'location', 'coordinates', 1) AS latitude,
+    JSONExtractFloat(data, 'location', 'coordinates', 2) AS longitude
+FROM innovacity.rain_topic_kafka;
+-- +--------------------+
+-- | END KAFKA CONSUMER |
+-- +--------------------+
 
-CREATE MATERIALIZED VIEW rain_consumer_mv TO innovacity.rain
-AS SELECT * FROM innovacity.rain_queue;
-
-
+-- +--------------------------+
+-- | START AGGREGATE 1 MINUTE |
+-- +--------------------------+
 CREATE TABLE innovacity.rain1m
 (
-    nome_sensore String,
+    name String,
     timestamp1m DATETIME64,
-    avgRain AggregateFunction(avgState, Float32), -- Using sumState for stateful aggregation
+    avgRain AggregateFunction(avgState, Float64), -- Using sumState for stateful aggregation
     latitude Float64,
     longitude Float64
 )
 ENGINE = AggregatingMergeTree
-ORDER BY (timestamp1m, nome_sensore, longitude, latitude);
+ORDER BY (timestamp1m, name, longitude, latitude);
 
 
 CREATE MATERIALIZED VIEW innovacity.rain1m_mv
@@ -40,31 +48,39 @@ TO innovacity.rain1m
 AS
 SELECT
     toStartOfMinute(timestamp) AS timestamp1m,
-    nome_sensore,
+    name,
     avgState(value) as avgRain,
     latitude,
     longitude
-FROM innovacity.rain_queue
-GROUP BY (timestamp1m, nome_sensore, latitude, longitude);
+FROM innovacity.rain
+GROUP BY (timestamp1m, name, latitude, longitude);
+-- +------------------------+
+-- | END AGGREGATE 1 MINUTE |
+-- +------------------------+
 
--- Creare la tabella aggregata
+-- +----------------------+
+-- | START MOVING AVERAGE |
+-- +----------------------+
 CREATE TABLE innovacity.rain_ma (
-    nome_sensore String,
+    name String,
     timestamp1m DATETIME64,
-    avgRain Float32,
+    avgRain Float64,
     latitude Float64,
     longitude Float64
 ) ENGINE = MergeTree()
-ORDER BY (timestamp1m, nome_sensore, latitude, longitude);
+ORDER BY (timestamp1m, name, latitude, longitude);
 
 -- Creare una Materialized View
 CREATE MATERIALIZED VIEW innovacity.rain1m_mov_avg
 TO innovacity.rain_ma
 AS
 SELECT
-    nome_sensore,
+    name,
     toStartOfMinute(timestamp) AS timestamp1m,
-    avg(value) OVER (PARTITION BY nome_sensore, toStartOfMinute(timestamp) ORDER BY timestamp1m ROWS BETWEEN 2 PRECEDING AND CURRENT ROW) AS avgRain,
+    avg(value) OVER (PARTITION BY name, toStartOfMinute(timestamp) ORDER BY timestamp1m ROWS BETWEEN 2 PRECEDING AND CURRENT ROW) AS avgRain,
     latitude,
     longitude
 FROM innovacity.rain;
+-- +--------------------+
+-- | END MOVING AVERAGE |
+-- +--------------------+
