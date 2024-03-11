@@ -17,7 +17,7 @@ ORDER BY (name, timestamp);
 
 CREATE MATERIALIZED VIEW innovacity.air_pollution_topic_mv TO innovacity.air_pollution AS
 SELECT
-    JSONExtractString(data, 'name') AS sensor_name,
+    JSONExtractString(data, 'name') AS name,
     toDateTime64(JSONExtractString(data, 'timestamp'), 0) AS timestamp,
     JSONExtractFloat(data, 'readings', 1, 'value') AS value, -- arrays start from 1
     JSONExtractString(data, 'type') AS type,

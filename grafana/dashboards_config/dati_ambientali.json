@@ -15,7 +15,7 @@
       }
     ]
   },
-  "description": "Dashboard per la visualizzazione di varie tipologie di sensori dislocati in una città",
+  "description": "Dashboard per la visualizzazione di varie tipologie di sensori ambientali dislocati in una città",
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
