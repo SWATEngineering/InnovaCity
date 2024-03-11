@@ -35,7 +35,7 @@ CREATE TABLE innovacity.air_pollution1m
 (
     name String,
     timestamp1m DATETIME64,
-    avgair_pollution AggregateFunction(avgState, Float64),
+    avg_air_pollution AggregateFunction(avgState, Float64),
     latitude Float64,
     longitude Float64
 )
@@ -48,7 +48,7 @@ AS
 SELECT
     toStartOfMinute(timestamp) AS timestamp1m,
     name,
-    avgState(value) as avgair_pollution,
+    avgState(value) as avg_air_pollution,
     latitude,
     longitude
 FROM innovacity.air_pollution
@@ -57,7 +57,7 @@ GROUP BY (timestamp1m, name, latitude, longitude);
 CREATE TABLE innovacity.air_pollution_ma (
     name String,
     timestamp1m DATETIME64,
-    avgair_pollution Float64,
+    avg_air_pollution Float64,
     latitude Float64,
     longitude Float64
 ) ENGINE = MergeTree()
@@ -75,7 +75,7 @@ AS
 SELECT
     name,
     toStartOfMinute(timestamp) AS timestamp1m,
-    avg(value) OVER (PARTITION BY  toStartOfMinute(timestamp) ORDER BY timestamp1m ROWS BETWEEN 2 PRECEDING AND CURRENT ROW) AS avgair_pollution,
+    avg(value) OVER (PARTITION BY  toStartOfMinute(timestamp) ORDER BY timestamp1m ROWS BETWEEN 2 PRECEDING AND CURRENT ROW) AS avg_air_pollution,
     latitude,
     longitude
 FROM innovacity.air_pollution;
