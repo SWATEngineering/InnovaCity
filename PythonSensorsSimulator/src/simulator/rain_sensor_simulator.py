@@ -41,7 +41,7 @@ class RainSensorSensorSimulator(SensorSimulatorStrategy):
         self.__second_rain_left = 0
 
     def simulate(self) -> str:
-        now = self._datetime_obj.datetime.now()
+        now = self._datetime_obj.now()
 
         if self.__rain_intensity == 0:
             self.__try_initiate_rain()

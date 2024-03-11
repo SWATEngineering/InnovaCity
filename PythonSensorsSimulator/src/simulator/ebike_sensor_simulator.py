@@ -6,6 +6,7 @@ from src.utils.coordinates import Coordinates
 from src.utils.sensor_types import SensorTypes
 from src.utils.json_message_maker import json_message_maker
 
+
 class EBikeSensorSimulator(SensorSimulatorStrategy):
     __bike_percentage: float = 100
     __last_coordinates: Coordinates = None
@@ -48,7 +49,7 @@ class EBikeSensorSimulator(SensorSimulatorStrategy):
     def _measure_battery_level(self) -> float:
         if self.__last_coordinates is None or self.__last_timestamp is None:
             return self.__bike_percentage
-        
+
         if self.__bike_percentage <= 0.01 or self.__is_charging == True:
             self._charge_battery()
         if self.__is_charging == True:
@@ -60,8 +61,8 @@ class EBikeSensorSimulator(SensorSimulatorStrategy):
         n_lon, n_lat = json.loads(self._coordinates.get_geo_json())['coordinates']
         if l_lon == n_lon and l_lat == n_lat:
             return self.__bike_percentage
-        
-        time_difference = (self._datetime_obj.datetime.now() - self.__last_timestamp).total_seconds()
+
+        time_difference = (self._datetime_obj.now() - self.__last_timestamp).total_seconds()
         distance = self._calculate_distance()
 
         speed = distance / time_difference
@@ -81,8 +82,9 @@ class EBikeSensorSimulator(SensorSimulatorStrategy):
         }
 
         self.__last_coordinates = self._coordinates
-        self.__last_timestamp = self._datetime_obj.datetime.now()
+        self.__last_timestamp = self._datetime_obj.now()
 
-        dato = json_message_maker(SensorTypes.ELECTRIC_BICYCLE, str(self.__last_timestamp), [reading], self._sensor_name, self._coordinates)
+        dato = json_message_maker(SensorTypes.ELECTRIC_BICYCLE, str(self.__last_timestamp), [reading],
+                                  self._sensor_name, self._coordinates)
 
         return dato

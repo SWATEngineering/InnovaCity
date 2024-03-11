@@ -12,8 +12,8 @@ class ReservoirSensorSimulator(SensorSimulatorStrategy):
 
     def _calculate_evaporation_rate(self) -> float:
 
-        hour = self._datetime_obj.datetime.now().hour
-        month = self._datetime_obj.datetime.now().month
+        hour = self._datetime_obj.now().hour
+        month = self._datetime_obj.now().month
         base_evaporation_rate = ((math.cos(math.pi * ((hour - 12) / 12)) + 1) / 2) * 0.4 + 0.3
 
         if 3 <= month < 6:
@@ -31,7 +31,7 @@ class ReservoirSensorSimulator(SensorSimulatorStrategy):
         return evaporation_rate
 
     def _measure_reservoir_level(self) -> float:
-        current_time = self._datetime_obj.datetime.now()
+        current_time = self._datetime_obj.now()
         hour = current_time.hour
         month = current_time.month
 
@@ -44,7 +44,7 @@ class ReservoirSensorSimulator(SensorSimulatorStrategy):
         return percentage
 
     def simulate(self) -> str:
-        timestamp = self._datetime_obj.datetime.now()
+        timestamp = self._datetime_obj.now()
         self.__reservoir_percentage = self._measure_reservoir_level()
 
         reading = {

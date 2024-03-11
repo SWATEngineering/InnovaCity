@@ -14,7 +14,7 @@ class TemperatureSensorSensorSimulator(SensorSimulatorStrategy):
         self.__calibration = self._random_obj.uniform(-0.5, 0.5)
 
     def simulate(self) -> str:
-        now = self._datetime_obj.datetime.now()
+        now = self._datetime_obj.now()
         hours = (int(now.timestamp()) % 86400) / 3600
 
         simulated_value = ((
