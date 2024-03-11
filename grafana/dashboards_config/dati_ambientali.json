@@ -19,7 +19,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 1,
+  "id": 3,
   "links": [],
   "liveNow": true,
   "panels": [
@@ -71,7 +71,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -201,7 +202,8 @@
             "mode": "percentage",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "yellow",
@@ -234,14 +236,16 @@
         "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
-          "calcs": ["lastNotNull"],
+          "calcs": [
+            "lastNotNull"
+          ],
           "fields": "/^avgTemperature$/",
           "values": false
         },
         "textMode": "value",
         "wideLayout": true
       },
-      "pluginVersion": "10.2.3",
+      "pluginVersion": "10.2.2",
       "targets": [
         {
           "datasource": {
@@ -315,7 +319,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -397,7 +402,8 @@
             "mode": "percentage",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "light-green",
@@ -437,7 +443,9 @@
         "minVizWidth": 75,
         "orientation": "auto",
         "reduceOptions": {
-          "calcs": ["lastNotNull"],
+          "calcs": [
+            "lastNotNull"
+          ],
           "fields": "/^avgRain$/",
           "values": false
         },
@@ -445,7 +453,7 @@
         "showThresholdMarkers": true,
         "sizing": "auto"
       },
-      "pluginVersion": "10.2.3",
+      "pluginVersion": "10.2.2",
       "targets": [
         {
           "datasource": {
@@ -518,7 +526,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -534,7 +543,7 @@
         "h": 9,
         "w": 19,
         "x": 0,
-        "y": 12
+        "y": 18
       },
       "id": 11,
       "options": {
@@ -610,6 +619,136 @@
         "type": "grafana-clickhouse-datasource",
         "uid": "PDEE91DDB90597936"
       },
+      "description": "Misura PM10",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 19,
+        "x": 0,
+        "y": 27
+      },
+      "id": 13,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "PDEE91DDB90597936"
+          },
+          "editorType": "sql",
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "columns": [],
+              "database": "",
+              "limit": 1000,
+              "mode": "list",
+              "queryType": "table",
+              "table": ""
+            }
+          },
+          "pluginVersion": "4.0.3",
+          "queryType": "table",
+          "rawSql": "SELECT\n    name,\n    toStartOfMinute(timestamp1m) AS timestamp1m,\n    avgMerge(avg_air_pollution) as avg_air_pollution\nFROM innovacity.air_pollution1m\nGROUP BY (name, timestamp1m)\nHAVING ( timestamp1m  >= $__fromTime AND timestamp1m <= $__toTime ) ",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "PDEE91DDB90597936"
+          },
+          "editorType": "sql",
+          "format": 1,
+          "hide": false,
+          "meta": {
+            "builderOptions": {
+              "columns": [],
+              "database": "",
+              "limit": 1000,
+              "mode": "list",
+              "queryType": "table",
+              "table": ""
+            }
+          },
+          "pluginVersion": "4.0.3",
+          "queryType": "table",
+          "rawSql": "SELECT\n  timestamp1m,\n  AVG(moving_average) AS moving_average\nFROM (\n  SELECT\n    avgMerge(avg_air_pollution) OVER (ORDER BY timestamp1m ROWS BETWEEN 2 PRECEDING AND CURRENT ROW) as moving_average,\n    timestamp1m\n  FROM innovacity.air_pollution1m\n) AS subquery\nGROUP BY timestamp1m\nORDER BY timestamp1m;",
+          "refId": "B"
+        }
+      ],
+      "title": "Qualità dell'aria",
+      "transparent": true,
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-clickhouse-datasource",
+        "uid": "PDEE91DDB90597936"
+      },
       "description": "dislocazione geografica dei sensori ",
       "fieldConfig": {
         "defaults": {
@@ -631,13 +770,13 @@
                   "color": "blue",
                   "index": 0
                 },
-                "temperature": {
-                  "color": "orange",
-                  "index": 1
-                },
                 "reservoirs": {
                   "color": "purple",
                   "index": 2
+                },
+                "temperature": {
+                  "color": "orange",
+                  "index": 1
                 }
               },
               "type": "value"
@@ -647,7 +786,8 @@
             "mode": "percentage",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "yellow",
@@ -670,7 +810,7 @@
         "h": 11,
         "w": 20,
         "x": 2,
-        "y": 18
+        "y": 36
       },
       "id": 4,
       "options": {
@@ -754,7 +894,7 @@
           "zoom": 15
         }
       },
-      "pluginVersion": "10.2.3",
+      "pluginVersion": "10.2.2",
       "targets": [
         {
           "builderOptions": {
@@ -916,13 +1056,19 @@
                 "operation": "groupby"
               },
               "avgRain": {
-                "aggregations": ["mean"]
-              },
-              "avgTemperature": {
-                "aggregations": ["mean"]
+                "aggregations": [
+                  "mean"
+                ]
               },
               "avgReservoir": {
-                "aggregations": ["mean"]
+                "aggregations": [
+                  "mean"
+                ]
+              },
+              "avgTemperature": {
+                "aggregations": [
+                  "mean"
+                ]
               },
               "latitude": {
                 "aggregations": [],
@@ -943,20 +1089,20 @@
       "type": "geomap"
     }
   ],
-  "refresh": "5s",
-  "schemaVersion": 39,
+  "refresh": "",
+  "schemaVersion": 38,
   "tags": [],
   "templating": {
     "list": []
   },
   "time": {
-    "from": "now-5m",
-    "to": "now"
+    "from": "2024-03-11T21:44:00.000Z",
+    "to": "2024-03-11T21:57:00.000Z"
   },
   "timepicker": {},
   "timezone": "",
-  "title": "Innovacity",
-  "uid": "c702952f-5e6a-4911-b003-a97eb331f272",
-  "version": 3,
+  "title": "Innovacity Copy",
+  "uid": "fc312d0f-81a8-40f6-b70c-5b8f5ba76cce",
+  "version": 1,
   "weekStart": ""
 }
