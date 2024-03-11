@@ -1,7 +1,7 @@
 from src.simulator.sensor_simulator_strategy import SensorSimulatorStrategy
 from src.utils.sensor_types import SensorTypes
 from src.utils.json_message_maker import json_message_maker
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 
 
 class AirPollutionSensorSimulator(SensorSimulatorStrategy):
@@ -13,7 +13,7 @@ class AirPollutionSensorSimulator(SensorSimulatorStrategy):
 
     def __init__(self, **data):
         super().__init__(**data)
-        self.__month = self._datetime_obj.datetime.now().month
+        self.__month = self._datetime_obj.now().month
 
     # return the variation percentage based on the season
     def _get_seasonal_variation(self) -> float:
@@ -42,7 +42,7 @@ class AirPollutionSensorSimulator(SensorSimulatorStrategy):
         return value + variation
 
     def simulate(self) -> str:
-        timestamp = self._datetime_obj.datetime.now()
+        timestamp = self._datetime_obj.now()
         self.__value = self._generate_air_pollution()
 
         reading = {
@@ -55,16 +55,16 @@ class AirPollutionSensorSimulator(SensorSimulatorStrategy):
 
         return dato
 
-    def simulate_and_plot(self, num_iterations=100):
-        pollution_values = []
+    # def simulate_and_plot(self, num_iterations=100):
+        # pollution_values = []
 
-        for _ in range(num_iterations):
-            value = self._generate_air_pollution()
-            pollution_values.append(value)
+        # for _ in range(num_iterations):
+            # value = self._generate_air_pollution()
+            # pollution_values.append(value)
 
-        plt.plot(range(1, num_iterations + 1), pollution_values, marker='o')
-        plt.xlabel('Iterations')
-        plt.ylabel('Air Pollution Value')
-        plt.title('Air Pollution Simulation Results')
-        plt.grid(True)
-        plt.show()
+        # plt.plot(range(1, num_iterations + 1), pollution_values, marker='o')
+        # plt.xlabel('Iterations')
+        # plt.ylabel('Air Pollution Value')
+        # plt.title('Air Pollution Simulation Results')
+        # plt.grid(True)
+        # plt.show()

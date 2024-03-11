@@ -1,6 +1,6 @@
 from random import Random
-from typing import List, Dict, Type
-import datetime
+from typing import Dict, Type
+from datetime import datetime
 from .simulator_thread import SimulatorThread
 from .simulator_executor_factory_template import SimulatorExecutorFactoryTemplate
 

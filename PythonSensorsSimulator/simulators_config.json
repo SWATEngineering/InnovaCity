@@ -46,5 +46,13 @@
       "type": "Point",
       "coordinates": [45.398214, 11.851271]
     }
+  },
+  {
+    "type": "wind",
+    "wait_time_in_seconds": 0.5,
+    "location": {
+      "type": "Point",
+      "coordinates": [45.398256, 11.851272]
+    }
   }
 ]
