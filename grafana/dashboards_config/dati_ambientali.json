@@ -674,7 +674,8 @@
                 "value": 80
               }
             ]
-          }
+          },
+          "unit": "conμgm3"
         },
         "overrides": []
       },
@@ -1224,7 +1225,7 @@
       "type": "geomap"
     }
   ],
-  "refresh": "auto",
+  "refresh": "5s",
   "schemaVersion": 38,
   "tags": [],
   "templating": {
@@ -1236,8 +1237,8 @@
   },
   "timepicker": {},
   "timezone": "",
-  "title": "Innovacity Copy",
+  "title": "Ambientale",
   "uid": "fc312d0f-81a8-40f6-b70c-5b8f5ba76cce",
-  "version": 1,
+  "version": 2,
   "weekStart": ""
 }
