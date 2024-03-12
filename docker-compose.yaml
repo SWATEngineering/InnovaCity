@@ -41,6 +41,7 @@ services:
       # crea un utente che ha il controllo degli accessi e la gestione degli accounts
       CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT: 1
     volumes:
+      - ./clickhouse/timezone.xml:/etc/clickhouse-server/config.d/timezone.xml
       - ./InitDB:/docker-entrypoint-initdb.d
     depends_on:
       kafka:
