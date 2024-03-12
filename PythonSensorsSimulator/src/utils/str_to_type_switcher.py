@@ -7,6 +7,7 @@ from src.simulator.humidity_sensor_simulator import HumiditySensorSensorSimulato
 from src.simulator.air_pollution_simulator import AirPollutionSensorSimulator
 from src.simulator.reservoir_sensor_simulator import ReservoirSensorSimulator
 from src.simulator.ebike_sensor_simulator import EBikeSensorSimulator
+from src.simulator.parking_sensor_simulator import ParkingSensorSimulator
 
 str_to_type_switcher = {
     SensorTypes.TEMPERATURE.value: (SensorTypes.TEMPERATURE, TemperatureSensorSensorSimulator),
@@ -15,7 +16,7 @@ str_to_type_switcher = {
     SensorTypes.RAIN.value: (SensorTypes.RAIN, RainSensorSensorSimulator),
     SensorTypes.RESERVOIR.value: (SensorTypes.RESERVOIR, ReservoirSensorSimulator),
     SensorTypes.AIR_POLLUTION.value: (SensorTypes.AIR_POLLUTION, AirPollutionSensorSimulator),
-    SensorTypes.PARKING.value: (SensorTypes.PARKING, AirPollutionSensorSimulator),
+    SensorTypes.PARKING.value: (SensorTypes.PARKING, ParkingSensorSimulator),
     SensorTypes.CHARGING_STATION.value: (SensorTypes.CHARGING_STATION, AirPollutionSensorSimulator),
     SensorTypes.ECO_ZONE.value: (SensorTypes.ECO_ZONE, AirPollutionSensorSimulator),
     SensorTypes.TRAFFIC.value: (SensorTypes.TRAFFIC, AirPollutionSensorSimulator),
