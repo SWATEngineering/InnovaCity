@@ -36,7 +36,8 @@ class HumiditySensorSensorSimulator(SensorSimulatorStrategy):
         relative_humidity = (math.sin(2 * math.pi * (hours - self.__phase) / 24) * self.__amplitude + 1) / 2
         relative_humidity += self._random_obj.uniform(-0.01, 0.01)
         relative_humidity = max(0.0, min(1.0, relative_humidity))
-        percentile = relative_humidity * (100 - 35) + 35
+        oscillazione=self._random_obj.uniform(-0.1,0.1)
+        percentile = relative_humidity * (100 - 35) + 35  + oscillazione
         return percentile
 
     def simulate(self) -> str:
