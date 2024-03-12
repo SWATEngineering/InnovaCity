@@ -1,4 +1,3 @@
-from pydantic import BaseModel
 from abc import ABC, abstractmethod
 from typing import Dict, Type, List
 import json
@@ -13,13 +12,12 @@ from src.simulator.sensor_simulator_strategy import SensorSimulatorStrategy
 from src.utils.str_to_type_switcher import str_to_type_switcher
 
 
-class SimulatorExecutorFactoryTemplate(ABC, BaseModel):
+class SimulatorExecutorFactoryTemplate(ABC):
     _configs: str
     _simulators: List[SimulatorThread] = []
 
-    def __init__(self, **data):
-        super().__init__(**data)
-        self._configs = data.get('configs')
+    def __init__(self, configs: str):
+        self._configs = configs
 
     @abstractmethod
     def _create_simulator(self, config: Dict, simulator_type: SensorTypes, cls: Type[SensorSimulatorStrategy]):

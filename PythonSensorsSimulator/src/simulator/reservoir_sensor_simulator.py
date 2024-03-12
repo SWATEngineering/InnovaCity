@@ -1,14 +1,19 @@
+from datetime import datetime
+from random import Random
+from typing import Type
+
 from src.simulator.sensor_simulator_strategy import SensorSimulatorStrategy
 import math
 from src.utils.sensor_types import SensorTypes
 from src.utils.json_message_maker import json_message_maker
+from src.utils.coordinates import Coordinates
 
 
 class ReservoirSensorSimulator(SensorSimulatorStrategy):
     __reservoir_percentage: float = 95.0
 
-    def __init__(self, **data):
-        super().__init__(**data)
+    def __init__(self, sensor_name: str, random_obj: Random, datetime_obj: Type[datetime], coordinates: Coordinates):
+        super().__init__(sensor_name, random_obj, datetime_obj, coordinates)
 
     def _calculate_evaporation_rate(self) -> float:
 

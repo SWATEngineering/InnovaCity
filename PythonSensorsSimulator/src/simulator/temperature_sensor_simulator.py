@@ -1,16 +1,20 @@
 import math
+from datetime import datetime
+from random import Random
+from typing import Type
 
 from src.simulator.sensor_simulator_strategy import SensorSimulatorStrategy
 
 from src.utils.json_message_maker import json_message_maker
 from src.utils.sensor_types import SensorTypes
+from src.utils.coordinates import Coordinates
 
 
 class TemperatureSensorSensorSimulator(SensorSimulatorStrategy):
     __calibration = None
 
-    def __init__(self, **data):
-        super().__init__(**data)
+    def __init__(self, sensor_name: str, random_obj: Random, datetime_obj: Type[datetime], coordinates: Coordinates):
+        super().__init__(sensor_name, random_obj, datetime_obj, coordinates)
         self.__calibration = self._random_obj.uniform(-0.5, 0.5)
 
     def simulate(self) -> str:

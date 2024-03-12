@@ -1,5 +1,8 @@
+from random import Random
+from typing import Type
+
 from src.simulator.sensor_simulator_strategy import SensorSimulatorStrategy
-from math import radians, sin, cos, sqrt
+from math import radians, sqrt
 import json
 from datetime import datetime
 from src.utils.coordinates import Coordinates
@@ -13,11 +16,11 @@ class EBikeSensorSimulator(SensorSimulatorStrategy):
     __last_timestamp: datetime = None
     __is_charging: bool = False
 
-    def __init__(self, **data):
-        super().__init__(**data)
+    def __init__(self, sensor_name: str, random_obj: Random, datetime_obj: Type[datetime], coordinates: Coordinates):
+        super().__init__(sensor_name, random_obj, datetime_obj, coordinates)
 
     def _charge_battery(self) -> None:
-        if self.__is_charging == False:
+        if not self.__is_charging:
             self.__is_charging = True
 
         increment = self._random_obj.uniform(1, 2)
@@ -52,7 +55,7 @@ class EBikeSensorSimulator(SensorSimulatorStrategy):
 
         if self.__bike_percentage <= 0.01 or self.__is_charging == True:
             self._charge_battery()
-        if self.__is_charging == True:
+        if self.__is_charging:
             return self.__bike_percentage
 
         self._calculate_movement()

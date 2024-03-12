@@ -1,7 +1,12 @@
+from datetime import datetime
+from random import Random
+from typing import Type
+
 from src.simulator.sensor_simulator_strategy import SensorSimulatorStrategy
 import math
 from src.utils.sensor_types import SensorTypes
 from src.utils.json_message_maker import json_message_maker
+from src.utils.coordinates import Coordinates
 
 
 class EcoZoneSensorSensorSimulator(SensorSimulatorStrategy):
@@ -11,8 +16,8 @@ class EcoZoneSensorSensorSimulator(SensorSimulatorStrategy):
     __percentuale: float
     __tasso_notturno: float = 0.001
 
-    def __init__(self, **data):
-        super().__init__(**data)
+    def __init__(self, sensor_name: str, random_obj: Random, datetime_obj: Type[datetime], coordinates: Coordinates):
+        super().__init__(sensor_name, random_obj, datetime_obj, coordinates)
         self.__tasso_massimo = self._random_obj.uniform(0.25, 0.75)
         self.__svuotamento = self._random_obj.randint(20, 23)
         self.__inizio = self._random_obj.randint(1, 6)

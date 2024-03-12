@@ -1,7 +1,12 @@
+from datetime import datetime
+from random import Random
+from typing import Type
+
 from src.simulator.sensor_simulator_strategy import SensorSimulatorStrategy
 import math
 from src.utils.sensor_types import SensorTypes
 from src.utils.json_message_maker import json_message_maker
+from src.utils.coordinates import Coordinates
 
 
 class HumiditySensorSensorSimulator(SensorSimulatorStrategy):
@@ -9,8 +14,8 @@ class HumiditySensorSensorSimulator(SensorSimulatorStrategy):
     __amplitude: float
     __percen: float
 
-    def __init__(self, **data):
-        super().__init__(**data)
+    def __init__(self, sensor_name: str, random_obj: Random, datetime_obj: Type[datetime], coordinates: Coordinates):
+        super().__init__(sensor_name, random_obj, datetime_obj, coordinates)
         self.__amplitude = self._calculate_ampiezza()
 
     def _calculate_ampiezza(self) -> float:

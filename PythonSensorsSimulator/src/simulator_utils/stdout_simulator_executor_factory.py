@@ -1,5 +1,5 @@
 from random import Random
-from typing import List, Dict, Type
+from typing import Dict, Type
 from datetime import datetime
 
 from src.simulator_utils.simulator_thread import SimulatorThread
@@ -17,8 +17,8 @@ class StdoutSimulatorExecutorFactory(SimulatorExecutorFactoryTemplate):
     __simulators_counter: Dict[str, int] = {}
     __writer: StdoutWriter = StdoutWriter()
 
-    def __init__(self, **data):
-        super().__init__(**data)
+    def __init__(self, configs: str):
+        super().__init__(configs)
 
     def _create_simulator(self, config: Dict, simulator_type: SensorTypes, cls: Type[SensorSimulatorStrategy]):
         self.__simulators_counter[simulator_type.value] = self.__simulators_counter.get(simulator_type.value, 0) + 1

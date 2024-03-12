@@ -1,15 +1,13 @@
-from pydantic import BaseModel
 import json
 
 
-class Coordinates(BaseModel):
+class Coordinates:
     __longitude: float
     __latitude: float
 
-    def __init__(self,**data):
-        super().__init__(**data)
-        self.__longitude = data['longitude']
-        self.__latitude = data['latitude']
+    def __init__(self, longitude: float, latitude: float):
+        self.__longitude = longitude
+        self.__latitude = latitude
 
     def get_geo_json(self) -> str:
         return json.dumps({

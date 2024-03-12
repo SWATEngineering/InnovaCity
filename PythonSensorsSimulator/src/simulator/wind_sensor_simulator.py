@@ -1,13 +1,20 @@
 import math
+from datetime import datetime
+from random import Random
+from typing import Type
 
 from src.simulator.sensor_simulator_strategy import SensorSimulatorStrategy
 from src.utils.json_message_maker import json_message_maker
 from src.utils.sensor_types import SensorTypes
+from src.utils.coordinates import Coordinates
 
 
 class WindSensorSensorSimulator(SensorSimulatorStrategy):
     __direction: int = 0
     __speed: float = 0
+
+    def __init__(self, sensor_name: str, random_obj: Random, datetime_obj: Type[datetime], coordinates: Coordinates):
+        super().__init__(sensor_name, random_obj, datetime_obj, coordinates)
 
     def simulate(self) -> str:
 
