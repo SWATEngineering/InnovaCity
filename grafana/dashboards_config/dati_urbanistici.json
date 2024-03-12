@@ -15,10 +15,11 @@
         }
       ]
     },
+    "description": "pannelli urbanistici ",
     "editable": true,
     "fiscalYearStartMonth": 0,
     "graphTooltip": 0,
-    "id": 1,
+    "id": 3,
     "links": [],
     "liveNow": false,
     "panels": [
@@ -27,7 +28,215 @@
           "type": "grafana-clickhouse-datasource",
           "uid": "PDEE91DDB90597936"
         },
-        "description": "Dislocazione geografica dei sensori di biciclette elettriche",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "continuous-GrYlRd"
+            },
+            "custom": {
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unitScale": true
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 6,
+          "y": 0
+        },
+        "id": 1,
+        "options": {
+          "basemap": {
+            "config": {},
+            "name": "Layer 0",
+            "type": "default"
+          },
+          "controls": {
+            "mouseWheelZoom": true,
+            "showAttribution": true,
+            "showDebug": false,
+            "showMeasure": false,
+            "showScale": false,
+            "showZoom": true
+          },
+          "layers": [
+            {
+              "config": {
+                "showLegend": true,
+                "style": {
+                  "color": {
+                    "fixed": "green"
+                  },
+                  "opacity": 0.3,
+                  "rotation": {
+                    "fixed": 0,
+                    "max": 360,
+                    "min": -360,
+                    "mode": "mod"
+                  },
+                  "size": {
+                    "fixed": 5,
+                    "max": 15,
+                    "min": 2
+                  },
+                  "symbol": {
+                    "fixed": "img/icons/marker/dumpster.svg",
+                    "mode": "fixed"
+                  },
+                  "symbolAlign": {
+                    "horizontal": "center",
+                    "vertical": "center"
+                  },
+                  "textConfig": {
+                    "fontSize": 12,
+                    "offsetX": 0,
+                    "offsetY": 0,
+                    "textAlign": "center",
+                    "textBaseline": "middle"
+                  }
+                }
+              },
+              "location": {
+                "mode": "auto"
+              },
+              "name": "Layer 1",
+              "tooltip": true,
+              "type": "markers"
+            }
+          ],
+          "tooltip": {
+            "mode": "details"
+          },
+          "view": {
+            "allLayers": true,
+            "id": "zero",
+            "lat": 0,
+            "lon": 0,
+            "zoom": 1
+          }
+        },
+        "pluginVersion": "10.3.3",
+        "targets": [
+          {
+            "builderOptions": {
+              "aggregates": [],
+              "columns": [
+                {
+                  "custom": false,
+                  "name": "latitude",
+                  "type": "Float64"
+                },
+                {
+                  "custom": false,
+                  "name": "longitude",
+                  "type": "Float64"
+                },
+                {
+                  "custom": false,
+                  "name": "name",
+                  "type": "String"
+                }
+              ],
+              "database": "innovacity",
+              "filters": [],
+              "groupBy": [
+                "name",
+                "latitude",
+                "longitude"
+              ],
+              "limit": 0,
+              "meta": {},
+              "mode": "aggregate",
+              "orderBy": [
+                {
+                  "dir": "ASC",
+                  "name": "name"
+                }
+              ],
+              "queryType": "table",
+              "table": "eco_zone_topic_mv"
+            },
+            "datasource": {
+              "type": "grafana-clickhouse-datasource",
+              "uid": "PDEE91DDB90597936"
+            },
+            "editorType": "sql",
+            "format": 1,
+            "meta": {
+              "builderOptions": {
+                "aggregates": [],
+                "columns": [
+                  {
+                    "custom": false,
+                    "name": "latitude",
+                    "type": "Float64"
+                  },
+                  {
+                    "custom": false,
+                    "name": "longitude",
+                    "type": "Float64"
+                  },
+                  {
+                    "custom": false,
+                    "name": "name",
+                    "type": "String"
+                  }
+                ],
+                "database": "innovacity",
+                "filters": [],
+                "groupBy": [
+                  "name",
+                  "latitude",
+                  "longitude"
+                ],
+                "limit": 0,
+                "meta": {},
+                "mode": "aggregate",
+                "orderBy": [
+                  {
+                    "dir": "ASC",
+                    "name": "name"
+                  }
+                ],
+                "queryType": "table",
+                "table": "eco_zone_topic_mv"
+              }
+            },
+            "pluginVersion": "4.0.3",
+            "queryType": "table",
+            "rawSql": "SELECT latitude, longitude, name FROM \"innovacity\".\"eco_zone_topic_mv\" GROUP BY name, latitude, longitude ORDER BY name ASC",
+            "refId": "A"
+          }
+        ],
+        "title": "mappacassonetto",
+        "transparent": true,
+        "type": "geomap"
+      },
+      {
+        "datasource": {
+          "type": "grafana-clickhouse-datasource",
+          "uid": "PDEE91DDB90597936"
+        },
         "fieldConfig": {
           "defaults": {
             "color": {
@@ -67,12 +276,12 @@
           "overrides": []
         },
         "gridPos": {
-          "h": 10,
-          "w": 13,
+          "h": 8,
+          "w": 12,
           "x": 6,
-          "y": 0
+          "y": 8
         },
-        "id": 1,
+        "id": 2,
         "options": {
           "basemap": {
             "config": {},
@@ -147,39 +356,6 @@
         "pluginVersion": "10.3.3",
         "targets": [
           {
-            "builderOptions": {
-              "aggregates": [],
-              "columns": [
-                {
-                  "custom": false,
-                  "name": "name",
-                  "type": "String"
-                },
-                {
-                  "custom": false,
-                  "name": "value",
-                  "type": "Float64"
-                },
-                {
-                  "custom": false,
-                  "name": "latitude",
-                  "type": "Float64"
-                },
-                {
-                  "custom": false,
-                  "name": "longitude",
-                  "type": "Float64"
-                }
-              ],
-              "database": "innovacity",
-              "filters": [],
-              "groupBy": [],
-              "meta": {},
-              "mode": "list",
-              "orderBy": [],
-              "queryType": "table",
-              "table": "ebikes"
-            },
             "datasource": {
               "type": "grafana-clickhouse-datasource",
               "uid": "PDEE91DDB90597936"
@@ -188,50 +364,25 @@
             "format": 1,
             "meta": {
               "builderOptions": {
-                "aggregates": [],
-                "columns": [
-                  {
-                    "custom": false,
-                    "name": "name",
-                    "type": "String"
-                  },
-                  {
-                    "custom": false,
-                    "name": "value",
-                    "type": "Float64"
-                  },
-                  {
-                    "custom": false,
-                    "name": "latitude",
-                    "type": "Float64"
-                  },
-                  {
-                    "custom": false,
-                    "name": "longitude",
-                    "type": "Float64"
-                  }
-                ],
-                "database": "innovacity",
-                "filters": [],
-                "groupBy": [],
-                "meta": {},
+                "columns": [],
+                "database": "",
+                "limit": 1000,
                 "mode": "list",
-                "orderBy": [],
                 "queryType": "table",
-                "table": "ebikes"
+                "table": ""
               }
             },
             "pluginVersion": "4.0.3",
             "queryType": "table",
-            "rawSql": "SELECT name, value, latitude, longitude\r\nFROM innovacity.ebikes\r\nWHERE (name, timestamp) IN (\r\n    SELECT name, MAX(timestamp) AS latest_timestamp\r\n    FROM innovacity.ebikes\r\n    GROUP BY name\r\n);",
+            "rawSql": "SELECT name, value, latitude, longitude\r\nFROM innovacity.ebikes\r\nWHERE (name, timestamp) IN (\r\n  SELECT name, MAX(timestamp) AS latest_timestamp\r\n  FROM innovacity.ebikes\r\n  GROUP BY name\r\n);",
             "refId": "A"
           }
         ],
-        "title": "Mappa Sensori Biciclette Elettriche",
+        "title": "Mappa: Biciclette elettriche",
         "type": "geomap"
       }
     ],
-    "refresh": "5s",
+    "refresh": "",
     "schemaVersion": 39,
     "tags": [],
     "templating": {
@@ -243,8 +394,8 @@
     },
     "timepicker": {},
     "timezone": "",
-    "title": "Dati urbanistici",
-    "uid": "a4e0d1c3-f36e-4140-b803-656a0538ba97",
-    "version": 3,
+    "title": "Urbanistica",
+    "uid": "db599846-eaca-47c2-93ae-697ac9408b2a",
+    "version": 2,
     "weekStart": ""
   }

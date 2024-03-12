@@ -7,3 +7,4 @@ import src.simulator.temperature_sensor_simulator
 import src.simulator.wind_sensor_simulator
 import src.simulator.ebike_sensor_simulator
 import src.simulator.ecozone_sensor_simulator
+import src.simulator.parking_sensor_simulator
