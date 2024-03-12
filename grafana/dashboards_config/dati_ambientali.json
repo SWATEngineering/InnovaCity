@@ -19,7 +19,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 3,
+  "id": 1,
   "links": [],
   "liveNow": true,
   "panels": [
@@ -565,18 +565,22 @@
             "type": "grafana-clickhouse-datasource",
             "uid": "PDEE91DDB90597936"
           },
+          "editorType": "sql",
           "format": 1,
           "meta": {
             "builderOptions": {
-              "fields": [],
+              "columns": [],
+              "database": "",
               "limit": 100,
-              "mode": "list"
+              "mode": "list",
+              "queryType": "table",
+              "table": ""
             }
           },
-          "queryType": "sql",
+          "pluginVersion": "4.0.3",
+          "queryType": "table",
           "rawSql": "SELECT\r\n    name,\r\n    toStartOfMinute(timestamp1m) AS timestamp1m,\r\n    avgMerge(avgReservoir) as avgReservoir\r\nFROM innovacity.reservoirs1m\r\nGROUP BY (name, timestamp1m)\r\nHAVING ( timestamp1m  >= $__fromTime AND timestamp1m <= $__toTime ) ",
-          "refId": "A",
-          "selectedFormat": 4
+          "refId": "A"
         },
         {
           "datasource": {
@@ -596,7 +600,7 @@
               "table": ""
             }
           },
-          "pluginVersion": "4.0.0-beta",
+          "pluginVersion": "4.0.3",
           "queryType": "table",
           "rawSql": "SELECT\n  timestamp1m,\n  AVG(moving_average) AS moving_average\nFROM (\n  SELECT\n    avgMerge(avgReservoir) OVER (ORDER BY timestamp1m ROWS BETWEEN 2 PRECEDING AND CURRENT ROW) as moving_average,\n    timestamp1m\n  FROM innovacity.reservoirs1m\n) AS subquery\nGROUP BY timestamp1m\nORDER BY timestamp1m;",
           "refId": "B"
@@ -749,6 +753,137 @@
         "type": "grafana-clickhouse-datasource",
         "uid": "PDEE91DDB90597936"
       },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "%"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 19,
+        "x": 0,
+        "y": 36
+      },
+      "id": 14,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "PDEE91DDB90597936"
+          },
+          "editorType": "sql",
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "columns": [],
+              "database": "",
+              "limit": 1000,
+              "mode": "list",
+              "queryType": "table",
+              "table": ""
+            }
+          },
+          "pluginVersion": "4.0.3",
+          "queryType": "table",
+          "rawSql": "SELECT\n    name,\n    toStartOfMinute(timestamp1m) AS timestamp1m,\n    avgMerge(avgHumidity) as avgHumidity\nFROM innovacity.humidity1m\nGROUP BY (name, timestamp1m)\nHAVING ( timestamp1m  >= $__fromTime AND timestamp1m <= $__toTime ) ",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "PDEE91DDB90597936"
+          },
+          "editorType": "sql",
+          "format": 1,
+          "hide": false,
+          "meta": {
+            "builderOptions": {
+              "columns": [],
+              "database": "",
+              "limit": 1000,
+              "mode": "list",
+              "queryType": "table",
+              "table": ""
+            }
+          },
+          "pluginVersion": "4.0.3",
+          "queryType": "table",
+          "rawSql": "SELECT\n  timestamp1m,\n  AVG(moving_average) AS moving_average\nFROM (\n  SELECT\n    avgMerge(avgHumidity) OVER (ORDER BY timestamp1m ROWS BETWEEN 2 PRECEDING AND CURRENT ROW) as moving_average,\n    timestamp1m\n  FROM innovacity.humidity1m\n) AS subquery\nGROUP BY timestamp1m\nORDER BY timestamp1m;",
+          "refId": "B"
+        }
+      ],
+      "title": "Umidità media per minuto",
+      "transparent": true,
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-clickhouse-datasource",
+        "uid": "PDEE91DDB90597936"
+      },
       "description": "dislocazione geografica dei sensori ",
       "fieldConfig": {
         "defaults": {
@@ -810,7 +945,7 @@
         "h": 11,
         "w": 20,
         "x": 2,
-        "y": 36
+        "y": 42
       },
       "id": 4,
       "options": {
@@ -1089,15 +1224,15 @@
       "type": "geomap"
     }
   ],
-  "refresh": "",
+  "refresh": "auto",
   "schemaVersion": 38,
   "tags": [],
   "templating": {
     "list": []
   },
   "time": {
-    "from": "2024-03-11T21:44:00.000Z",
-    "to": "2024-03-11T21:57:00.000Z"
+    "from": "now-15m",
+    "to": "now"
   },
   "timepicker": {},
   "timezone": "",
