@@ -1,143 +1,335 @@
 {
-    "annotations": {
-      "list": [
-        {
-          "builtIn": 1,
-          "datasource": {
-            "type": "grafana",
-            "uid": "-- Grafana --"
-          },
-          "enable": true,
-          "hide": true,
-          "iconColor": "rgba(0, 211, 255, 1)",
-          "name": "Annotations & Alerts",
-          "type": "dashboard"
-        }
-      ]
-    },
-    "description": "pannelli urbanistici ",
-    "editable": true,
-    "fiscalYearStartMonth": 0,
-    "graphTooltip": 0,
-    "id": 3,
-    "links": [],
-    "liveNow": false,
-    "panels": [
+  "annotations": {
+    "list": [
       {
+        "builtIn": 1,
         "datasource": {
-          "type": "grafana-clickhouse-datasource",
-          "uid": "PDEE91DDB90597936"
+          "type": "grafana",
+          "uid": "-- Grafana --"
         },
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "continuous-GrYlRd"
-            },
-            "custom": {
-              "hideFrom": {
-                "legend": false,
-                "tooltip": false,
-                "viz": false
-              }
-            },
-            "mappings": [],
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                },
-                {
-                  "color": "red",
-                  "value": 80
-                }
-              ]
-            },
-            "unitScale": true
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "pannelli urbanistici ",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 1,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": {
+        "type": "grafana-clickhouse-datasource",
+        "uid": "PDEE91DDB90597936"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
           },
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 8,
-          "w": 12,
-          "x": 6,
-          "y": 0
-        },
-        "id": 1,
-        "options": {
-          "basemap": {
-            "config": {},
-            "name": "Layer 0",
-            "type": "default"
-          },
-          "controls": {
-            "mouseWheelZoom": true,
-            "showAttribution": true,
-            "showDebug": false,
-            "showMeasure": false,
-            "showScale": false,
-            "showZoom": true
-          },
-          "layers": [
-            {
-              "config": {
-                "showLegend": true,
-                "style": {
-                  "color": {
-                    "fixed": "green"
-                  },
-                  "opacity": 0.3,
-                  "rotation": {
-                    "fixed": 0,
-                    "max": 360,
-                    "min": -360,
-                    "mode": "mod"
-                  },
-                  "size": {
-                    "fixed": 5,
-                    "max": 15,
-                    "min": 2
-                  },
-                  "symbol": {
-                    "fixed": "img/icons/marker/dumpster.svg",
-                    "mode": "fixed"
-                  },
-                  "symbolAlign": {
-                    "horizontal": "center",
-                    "vertical": "center"
-                  },
-                  "textConfig": {
-                    "fontSize": 12,
-                    "offsetX": 0,
-                    "offsetY": 0,
-                    "textAlign": "center",
-                    "textBaseline": "middle"
-                  }
-                }
-              },
-              "location": {
-                "mode": "auto"
-              },
-              "name": "Layer 1",
-              "tooltip": true,
-              "type": "markers"
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
             }
-          ],
-          "tooltip": {
-            "mode": "details"
           },
-          "view": {
-            "allLayers": true,
-            "id": "zero",
-            "lat": 0,
-            "lon": 0,
-            "zoom": 1
+          "mappings": [],
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 20
+              },
+              {
+                "color": "orange",
+                "value": 50
+              },
+              {
+                "color": "yellow",
+                "value": 70
+              }
+            ]
           }
         },
-        "pluginVersion": "10.3.3",
-        "targets": [
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 6,
+        "y": 0
+      },
+      "id": 2,
+      "options": {
+        "basemap": {
+          "config": {},
+          "name": "Layer 0",
+          "type": "default"
+        },
+        "controls": {
+          "mouseWheelZoom": true,
+          "showAttribution": true,
+          "showDebug": false,
+          "showMeasure": false,
+          "showScale": false,
+          "showZoom": true
+        },
+        "layers": [
           {
+            "config": {
+              "showLegend": true,
+              "style": {
+                "color": {
+                  "fixed": "dark-green"
+                },
+                "opacity": 0.4,
+                "rotation": {
+                  "fixed": 0,
+                  "max": 360,
+                  "min": -360,
+                  "mode": "mod"
+                },
+                "size": {
+                  "fixed": 5,
+                  "max": 15,
+                  "min": 2
+                },
+                "symbol": {
+                  "fixed": "img/icons/marker/bike.svg",
+                  "mode": "fixed"
+                },
+                "symbolAlign": {
+                  "horizontal": "center",
+                  "vertical": "center"
+                },
+                "textConfig": {
+                  "fontSize": 12,
+                  "offsetX": 0,
+                  "offsetY": 0,
+                  "textAlign": "center",
+                  "textBaseline": "middle"
+                }
+              }
+            },
+            "location": {
+              "mode": "auto"
+            },
+            "name": "Layer 1",
+            "tooltip": true,
+            "type": "markers"
+          }
+        ],
+        "tooltip": {
+          "mode": "details"
+        },
+        "view": {
+          "allLayers": true,
+          "id": "fit",
+          "lat": 0,
+          "lon": 0,
+          "padding": 50,
+          "zoom": 15
+        }
+      },
+      "pluginVersion": "10.2.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "PDEE91DDB90597936"
+          },
+          "editorType": "sql",
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "columns": [],
+              "database": "",
+              "limit": 1000,
+              "mode": "list",
+              "queryType": "table",
+              "table": ""
+            }
+          },
+          "pluginVersion": "4.0.3",
+          "queryType": "table",
+          "rawSql": "SELECT name, value, latitude, longitude\r\nFROM innovacity.ebikes\r\nWHERE (name, timestamp) IN (\r\n  SELECT name, MAX(timestamp) AS latest_timestamp\r\n  FROM innovacity.ebikes\r\n  GROUP BY name\r\n);",
+          "refId": "A"
+        }
+      ],
+      "title": "Mappa: Biciclette elettriche",
+      "type": "geomap"
+    },
+    {
+      "datasource": {
+        "type": "grafana-clickhouse-datasource",
+        "uid": "PDEE91DDB90597936"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-GrYlRd"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 6,
+        "y": 8
+      },
+      "id": 1,
+      "options": {
+        "basemap": {
+          "config": {},
+          "name": "Layer 0",
+          "type": "default"
+        },
+        "controls": {
+          "mouseWheelZoom": true,
+          "showAttribution": true,
+          "showDebug": false,
+          "showMeasure": false,
+          "showScale": false,
+          "showZoom": true
+        },
+        "layers": [
+          {
+            "config": {
+              "showLegend": true,
+              "style": {
+                "color": {
+                  "fixed": "green"
+                },
+                "opacity": 0.3,
+                "rotation": {
+                  "fixed": 0,
+                  "max": 360,
+                  "min": -360,
+                  "mode": "mod"
+                },
+                "size": {
+                  "fixed": 5,
+                  "max": 15,
+                  "min": 2
+                },
+                "symbol": {
+                  "fixed": "img/icons/marker/dumpster.svg",
+                  "mode": "fixed"
+                },
+                "symbolAlign": {
+                  "horizontal": "center",
+                  "vertical": "center"
+                },
+                "textConfig": {
+                  "fontSize": 12,
+                  "offsetX": 0,
+                  "offsetY": 0,
+                  "textAlign": "center",
+                  "textBaseline": "middle"
+                }
+              }
+            },
+            "location": {
+              "mode": "auto"
+            },
+            "name": "Layer 1",
+            "tooltip": true,
+            "type": "markers"
+          }
+        ],
+        "tooltip": {
+          "mode": "details"
+        },
+        "view": {
+          "allLayers": true,
+          "id": "zero",
+          "lat": 0,
+          "lon": 0,
+          "zoom": 1
+        }
+      },
+      "pluginVersion": "10.2.3",
+      "targets": [
+        {
+          "builderOptions": {
+            "aggregates": [],
+            "columns": [
+              {
+                "custom": false,
+                "name": "latitude",
+                "type": "Float64"
+              },
+              {
+                "custom": false,
+                "name": "longitude",
+                "type": "Float64"
+              },
+              {
+                "custom": false,
+                "name": "name",
+                "type": "String"
+              }
+            ],
+            "database": "innovacity",
+            "filters": [],
+            "groupBy": [
+              "name",
+              "latitude",
+              "longitude"
+            ],
+            "limit": 0,
+            "meta": {},
+            "mode": "aggregate",
+            "orderBy": [
+              {
+                "dir": "ASC",
+                "name": "name"
+              }
+            ],
+            "queryType": "table",
+            "table": "eco_zone_topic_mv"
+          },
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "PDEE91DDB90597936"
+          },
+          "editorType": "sql",
+          "format": 1,
+          "meta": {
             "builderOptions": {
               "aggregates": [],
               "columns": [
@@ -175,227 +367,250 @@
               ],
               "queryType": "table",
               "table": "eco_zone_topic_mv"
-            },
-            "datasource": {
-              "type": "grafana-clickhouse-datasource",
-              "uid": "PDEE91DDB90597936"
-            },
-            "editorType": "sql",
-            "format": 1,
-            "meta": {
-              "builderOptions": {
-                "aggregates": [],
-                "columns": [
-                  {
-                    "custom": false,
-                    "name": "latitude",
-                    "type": "Float64"
-                  },
-                  {
-                    "custom": false,
-                    "name": "longitude",
-                    "type": "Float64"
-                  },
-                  {
-                    "custom": false,
-                    "name": "name",
-                    "type": "String"
-                  }
-                ],
-                "database": "innovacity",
-                "filters": [],
-                "groupBy": [
-                  "name",
-                  "latitude",
-                  "longitude"
-                ],
-                "limit": 0,
-                "meta": {},
-                "mode": "aggregate",
-                "orderBy": [
-                  {
-                    "dir": "ASC",
-                    "name": "name"
-                  }
-                ],
-                "queryType": "table",
-                "table": "eco_zone_topic_mv"
-              }
-            },
-            "pluginVersion": "4.0.3",
-            "queryType": "table",
-            "rawSql": "SELECT latitude, longitude, name FROM \"innovacity\".\"eco_zone_topic_mv\" GROUP BY name, latitude, longitude ORDER BY name ASC",
-            "refId": "A"
-          }
-        ],
-        "title": "mappacassonetto",
-        "transparent": true,
-        "type": "geomap"
-      },
-      {
-        "datasource": {
-          "type": "grafana-clickhouse-datasource",
-          "uid": "PDEE91DDB90597936"
-        },
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "thresholds"
-            },
-            "custom": {
-              "hideFrom": {
-                "legend": false,
-                "tooltip": false,
-                "viz": false
-              }
-            },
-            "mappings": [],
-            "thresholds": {
-              "mode": "percentage",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                },
-                {
-                  "color": "red",
-                  "value": 20
-                },
-                {
-                  "color": "orange",
-                  "value": 50
-                },
-                {
-                  "color": "yellow",
-                  "value": 70
-                }
-              ]
-            },
-            "unitScale": true
-          },
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 8,
-          "w": 12,
-          "x": 6,
-          "y": 8
-        },
-        "id": 2,
-        "options": {
-          "basemap": {
-            "config": {},
-            "name": "Layer 0",
-            "type": "default"
-          },
-          "controls": {
-            "mouseWheelZoom": true,
-            "showAttribution": true,
-            "showDebug": false,
-            "showMeasure": false,
-            "showScale": false,
-            "showZoom": true
-          },
-          "layers": [
-            {
-              "config": {
-                "showLegend": true,
-                "style": {
-                  "color": {
-                    "fixed": "dark-green"
-                  },
-                  "opacity": 0.4,
-                  "rotation": {
-                    "fixed": 0,
-                    "max": 360,
-                    "min": -360,
-                    "mode": "mod"
-                  },
-                  "size": {
-                    "fixed": 5,
-                    "max": 15,
-                    "min": 2
-                  },
-                  "symbol": {
-                    "fixed": "img/icons/marker/bike.svg",
-                    "mode": "fixed"
-                  },
-                  "symbolAlign": {
-                    "horizontal": "center",
-                    "vertical": "center"
-                  },
-                  "textConfig": {
-                    "fontSize": 12,
-                    "offsetX": 0,
-                    "offsetY": 0,
-                    "textAlign": "center",
-                    "textBaseline": "middle"
-                  }
-                }
-              },
-              "location": {
-                "mode": "auto"
-              },
-              "name": "Layer 1",
-              "tooltip": true,
-              "type": "markers"
             }
-          ],
-          "tooltip": {
-            "mode": "details"
           },
-          "view": {
-            "allLayers": true,
-            "id": "fit",
-            "lat": 0,
-            "lon": 0,
-            "padding": 50,
-            "zoom": 15
+          "pluginVersion": "4.0.3",
+          "queryType": "table",
+          "rawSql": "SELECT latitude, longitude, name FROM \"innovacity\".\"eco_zone_topic_mv\" GROUP BY name, latitude, longitude ORDER BY name ASC",
+          "refId": "A"
+        }
+      ],
+      "title": "mappacassonetto",
+      "transparent": true,
+      "type": "geomap"
+    },
+    {
+      "datasource": {
+        "type": "grafana-clickhouse-datasource",
+        "uid": "PDEE91DDB90597936"
+      },
+      "description": "ci sono ancora qualcosa da fare era più per vedere se aveva senso",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
           }
         },
-        "pluginVersion": "10.3.3",
-        "targets": [
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 6,
+        "y": 16
+      },
+      "id": 3,
+      "options": {
+        "controls": {
+          "mouseWheelZoom": true,
+          "showAttribution": true,
+          "showDebug": false,
+          "showMeasure": false,
+          "showScale": false,
+          "showZoom": true
+        },
+        "layers": [
           {
-            "datasource": {
-              "type": "grafana-clickhouse-datasource",
-              "uid": "PDEE91DDB90597936"
-            },
-            "editorType": "sql",
-            "format": 1,
-            "meta": {
-              "builderOptions": {
-                "columns": [],
-                "database": "",
-                "limit": 1000,
-                "mode": "list",
-                "queryType": "table",
-                "table": ""
+            "config": {
+              "showLegend": true,
+              "style": {
+                "color": {
+                  "fixed": "dark-green"
+                },
+                "opacity": 0.4,
+                "rotation": {
+                  "fixed": 0,
+                  "max": 360,
+                  "min": -360,
+                  "mode": "mod"
+                },
+                "size": {
+                  "fixed": 5,
+                  "max": 15,
+                  "min": 2
+                },
+                "symbol": {
+                  "fixed": "img/icons/marker/circle.svg",
+                  "mode": "fixed"
+                },
+                "symbolAlign": {
+                  "horizontal": "center",
+                  "vertical": "center"
+                },
+                "textConfig": {
+                  "fontSize": 12,
+                  "offsetX": 0,
+                  "offsetY": 0,
+                  "textAlign": "center",
+                  "textBaseline": "middle"
+                }
               }
             },
-            "pluginVersion": "4.0.3",
-            "queryType": "table",
-            "rawSql": "SELECT name, value, latitude, longitude\r\nFROM innovacity.ebikes\r\nWHERE (name, timestamp) IN (\r\n  SELECT name, MAX(timestamp) AS latest_timestamp\r\n  FROM innovacity.ebikes\r\n  GROUP BY name\r\n);",
-            "refId": "A"
+            "location": {
+              "mode": "auto"
+            },
+            "name": "Layer 1",
+            "tooltip": true,
+            "type": "markers"
           }
         ],
-        "title": "Mappa: Biciclette elettriche",
-        "type": "geomap"
-      }
-    ],
-    "refresh": "",
-    "schemaVersion": 39,
-    "tags": [],
-    "templating": {
-      "list": []
+        "tooltip": {
+          "mode": "details"
+        },
+        "view": {
+          "allLayers": true,
+          "id": "zero",
+          "lat": 0,
+          "lon": 0,
+          "zoom": 1
+        }
+      },
+      "pluginVersion": "10.2.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "PDEE91DDB90597936"
+          },
+          "editorType": "sql",
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "columns": [],
+              "database": "",
+              "limit": 1000,
+              "mode": "list",
+              "queryType": "table",
+              "table": ""
+            }
+          },
+          "pluginVersion": "4.0.3",
+          "queryType": "table",
+          "rawSql": "SELECT name, value, latitude, longitude\nFROM innovacity.charging_station\nWHERE (name, timestamp) IN (\n  SELECT name, MAX(timestamp) AS latest_timestamp\n  FROM innovacity.charging_station\n  GROUP BY name\n);",
+          "refId": "A"
+        }
+      ],
+      "title": "Mappa Stazioni di Ricarica",
+      "type": "geomap"
     },
-    "time": {
-      "from": "now-6h",
-      "to": "now"
-    },
-    "timepicker": {},
-    "timezone": "",
-    "title": "Urbanistica",
-    "uid": "db599846-eaca-47c2-93ae-697ac9408b2a",
-    "version": 2,
-    "weekStart": ""
-  }
+    {
+      "datasource": {
+        "type": "grafana-clickhouse-datasource",
+        "uid": "PDEE91DDB90597936"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 6,
+        "y": 24
+      },
+      "id": 4,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "10.2.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "PDEE91DDB90597936"
+          },
+          "editorType": "sql",
+          "format": 1,
+          "hide": false,
+          "meta": {
+            "builderOptions": {
+              "columns": [],
+              "database": "",
+              "limit": 1000,
+              "mode": "list",
+              "queryType": "table",
+              "table": ""
+            }
+          },
+          "pluginVersion": "4.0.3",
+          "queryType": "table",
+          "rawSql": "SELECT c.name, c.value, c.timestamp\nFROM innovacity.charging_station c\nJOIN (\n    SELECT name, MAX(timestamp) AS max_timestamp\n    FROM innovacity.charging_station\n    GROUP BY name\n) AS max_ts ON c.name = max_ts.name AND c.timestamp = max_ts.max_timestamp;",
+          "refId": "A"
+        }
+      ],
+      "title": "Panel Title",
+      "type": "table"
+    }
+  ],
+  "refresh": "",
+  "schemaVersion": 39,
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "Urbanistica",
+  "uid": "db599846-eaca-47c2-93ae-697ac9408b2a",
+  "version": 3,
+  "weekStart": ""
+}
