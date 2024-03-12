@@ -1,0 +1,250 @@
+{
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": {
+            "type": "grafana",
+            "uid": "-- Grafana --"
+          },
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "type": "dashboard"
+        }
+      ]
+    },
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "graphTooltip": 0,
+    "id": 1,
+    "links": [],
+    "liveNow": false,
+    "panels": [
+      {
+        "datasource": {
+          "type": "grafana-clickhouse-datasource",
+          "uid": "PDEE91DDB90597936"
+        },
+        "description": "Dislocazione geografica dei sensori di biciclette elettriche",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "custom": {
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "percentage",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 20
+                },
+                {
+                  "color": "orange",
+                  "value": 50
+                },
+                {
+                  "color": "yellow",
+                  "value": 70
+                }
+              ]
+            },
+            "unitScale": true
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 10,
+          "w": 13,
+          "x": 6,
+          "y": 0
+        },
+        "id": 1,
+        "options": {
+          "basemap": {
+            "config": {},
+            "name": "Layer 0",
+            "type": "default"
+          },
+          "controls": {
+            "mouseWheelZoom": true,
+            "showAttribution": true,
+            "showDebug": false,
+            "showMeasure": false,
+            "showScale": false,
+            "showZoom": true
+          },
+          "layers": [
+            {
+              "config": {
+                "showLegend": true,
+                "style": {
+                  "color": {
+                    "fixed": "dark-green"
+                  },
+                  "opacity": 0.4,
+                  "rotation": {
+                    "fixed": 0,
+                    "max": 360,
+                    "min": -360,
+                    "mode": "mod"
+                  },
+                  "size": {
+                    "fixed": 5,
+                    "max": 15,
+                    "min": 2
+                  },
+                  "symbol": {
+                    "fixed": "img/icons/marker/bike.svg",
+                    "mode": "fixed"
+                  },
+                  "symbolAlign": {
+                    "horizontal": "center",
+                    "vertical": "center"
+                  },
+                  "textConfig": {
+                    "fontSize": 12,
+                    "offsetX": 0,
+                    "offsetY": 0,
+                    "textAlign": "center",
+                    "textBaseline": "middle"
+                  }
+                }
+              },
+              "location": {
+                "mode": "auto"
+              },
+              "name": "Layer 1",
+              "tooltip": true,
+              "type": "markers"
+            }
+          ],
+          "tooltip": {
+            "mode": "details"
+          },
+          "view": {
+            "allLayers": true,
+            "id": "fit",
+            "lat": 0,
+            "lon": 0,
+            "padding": 50,
+            "zoom": 15
+          }
+        },
+        "pluginVersion": "10.3.3",
+        "targets": [
+          {
+            "builderOptions": {
+              "aggregates": [],
+              "columns": [
+                {
+                  "custom": false,
+                  "name": "name",
+                  "type": "String"
+                },
+                {
+                  "custom": false,
+                  "name": "value",
+                  "type": "Float64"
+                },
+                {
+                  "custom": false,
+                  "name": "latitude",
+                  "type": "Float64"
+                },
+                {
+                  "custom": false,
+                  "name": "longitude",
+                  "type": "Float64"
+                }
+              ],
+              "database": "innovacity",
+              "filters": [],
+              "groupBy": [],
+              "meta": {},
+              "mode": "list",
+              "orderBy": [],
+              "queryType": "table",
+              "table": "ebikes"
+            },
+            "datasource": {
+              "type": "grafana-clickhouse-datasource",
+              "uid": "PDEE91DDB90597936"
+            },
+            "editorType": "sql",
+            "format": 1,
+            "meta": {
+              "builderOptions": {
+                "aggregates": [],
+                "columns": [
+                  {
+                    "custom": false,
+                    "name": "name",
+                    "type": "String"
+                  },
+                  {
+                    "custom": false,
+                    "name": "value",
+                    "type": "Float64"
+                  },
+                  {
+                    "custom": false,
+                    "name": "latitude",
+                    "type": "Float64"
+                  },
+                  {
+                    "custom": false,
+                    "name": "longitude",
+                    "type": "Float64"
+                  }
+                ],
+                "database": "innovacity",
+                "filters": [],
+                "groupBy": [],
+                "meta": {},
+                "mode": "list",
+                "orderBy": [],
+                "queryType": "table",
+                "table": "ebikes"
+              }
+            },
+            "pluginVersion": "4.0.3",
+            "queryType": "table",
+            "rawSql": "SELECT name, value, latitude, longitude\r\nFROM innovacity.ebikes\r\nWHERE (name, timestamp) IN (\r\n    SELECT name, MAX(timestamp) AS latest_timestamp\r\n    FROM innovacity.ebikes\r\n    GROUP BY name\r\n);",
+            "refId": "A"
+          }
+        ],
+        "title": "Mappa Sensori Biciclette Elettriche",
+        "type": "geomap"
+      }
+    ],
+    "refresh": "5s",
+    "schemaVersion": 39,
+    "tags": [],
+    "templating": {
+      "list": []
+    },
+    "time": {
+      "from": "now-6h",
+      "to": "now"
+    },
+    "timepicker": {},
+    "timezone": "",
+    "title": "Dati urbanistici",
+    "uid": "a4e0d1c3-f36e-4140-b803-656a0538ba97",
+    "version": 3,
+    "weekStart": ""
+  }
