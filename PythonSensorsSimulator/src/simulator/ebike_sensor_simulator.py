@@ -1,5 +1,6 @@
-from random import Random
+from random import Random, choice, uniform
 from typing import Type
+import requests
 
 from src.simulator.sensor_simulator_strategy import SensorSimulatorStrategy
 from math import radians, sqrt
@@ -12,12 +13,20 @@ from src.utils.json_message_maker import json_message_maker
 
 class EBikeSensorSimulator(SensorSimulatorStrategy):
     __bike_percentage: float = 100
-    __last_coordinates: Coordinates = None
+
+    __last_coordinate_index: int = 0
+    __source: tuple = ()
+    __destination: tuple = ()
+    __route_coordinates: list = []
+
     __last_timestamp: datetime = None
     __is_charging: bool = False
 
     def __init__(self, sensor_name: str, random_obj: Random, datetime_obj: Type[datetime], coordinates: Coordinates):
         super().__init__(sensor_name, random_obj, datetime_obj, coordinates)
+        self.__source = json.loads(self._coordinates.get_geo_json())['coordinates']
+        self._pick_destination()
+        self._get_route_coordinates()
 
     def _charge_battery(self) -> None:
         if not self.__is_charging:
@@ -29,17 +38,68 @@ class EBikeSensorSimulator(SensorSimulatorStrategy):
         if self.__bike_percentage >= 99.99:
             self.__is_charging = False
 
+    def _pick_destination(self) -> None:
+        lat, lon = json.loads(self._coordinates.get_geo_json())['coordinates']
+        api_key = "5b3ce3597851110001cf62482b82ca6617c34da8b060268e6c505cc4"
+
+        lat_range = 0.1
+        lon_range = 0.1
+
+        dest_latitude = uniform(lat - lat_range, lat + lat_range)
+        dest_longitude = uniform(lon - lon_range, lon + lon_range)
+
+        url = f"https://api.openrouteservice.org/geocode/reverse?api_key={api_key}&point.lon={dest_longitude}&point.lat={dest_latitude}"
+
+        headers = {'Accept': 'application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8'}
+        response = requests.get(url, headers=headers)
+        #print("Calling API ...:", response.status_code, response.reason)
+
+        data = response.json()
+        coordinates = []
+        for feature in data['features']:
+            coordinates.append(feature['geometry']['coordinates'])
+
+        new_destination = choice(coordinates)
+        dest_longitude, dest_latitude = new_destination
+
+        self.__destination = (dest_latitude, dest_longitude)
+
+    def _get_route_coordinates(self) -> None:
+        source = self.__source
+        dest = self.__destination
+        start = "{},{}".format(source[1], source[0])
+        end = "{},{}".format(dest[1], dest[0])
+        api_key = "5b3ce3597851110001cf62482b82ca6617c34da8b060268e6c505cc4"
+
+        url = f"https://api.openrouteservice.org/v2/directions/cycling-electric?api_key={api_key}&start={start}&end={end}"
+
+        headers = {'Accept': 'application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8',}
+        call = requests.get(url, headers=headers)
+        #print("Calling API ...:", call.status_code, call.reason)
+        response_text = call.text
+
+        routejson = json.loads(response_text)
+        coordinates = []
+
+        for coordinate in routejson['features'][0]['geometry']['coordinates']:
+            coordinates.append((coordinate[0], coordinate[1]))
+
+        self.__route_coordinates = coordinates
+
     def _calculate_movement(self) -> None:
-        last_lon, last_lat = json.loads(self.__last_coordinates.get_geo_json())['coordinates']
+        if self.__last_coordinate_index == len(self.__route_coordinates) - 1:
+            self.__source = self.__destination
+            self._pick_destination()
+            self._get_route_coordinates()
+            self.__last_coordinate_index = 0
+        next_coordinate_index = self.__last_coordinate_index + 1
+        next_coordinate = self.__route_coordinates[next_coordinate_index]
 
-        new_lat = last_lat + self._random_obj.uniform(-0.001, 0.001)
-        new_lon = last_lon + self._random_obj.uniform(-0.001, 0.001)
-
-        self._coordinates = Coordinates(latitude=new_lat, longitude=new_lon)
+        self._coordinates = Coordinates(latitude=next_coordinate[0], longitude=next_coordinate[1])
 
     def _calculate_distance(self) -> float:
         lat1, lon1 = json.loads(self._coordinates.get_geo_json())['coordinates']
-        lat2, lon2 = json.loads(self.__last_coordinates.get_geo_json())['coordinates']
+        lat2, lon2 = self.__route_coordinates[self.__last_coordinate_index]
         lat1, lon1, lat2, lon2 = map(radians, [lat1, lon1, lat2, lon2])
 
         dlat = lat2 - lat1
@@ -50,7 +110,7 @@ class EBikeSensorSimulator(SensorSimulatorStrategy):
         return distance
 
     def _measure_battery_level(self) -> float:
-        if self.__last_coordinates is None or self.__last_timestamp is None:
+        if self.__last_timestamp is None:
             return self.__bike_percentage
 
         if self.__bike_percentage <= 0.01 or self.__is_charging == True:
@@ -59,11 +119,6 @@ class EBikeSensorSimulator(SensorSimulatorStrategy):
             return self.__bike_percentage
 
         self._calculate_movement()
-
-        l_lon, l_lat = json.loads(self.__last_coordinates.get_geo_json())['coordinates']
-        n_lon, n_lat = json.loads(self._coordinates.get_geo_json())['coordinates']
-        if l_lon == n_lon and l_lat == n_lat:
-            return self.__bike_percentage
 
         time_difference = (self._datetime_obj.now() - self.__last_timestamp).total_seconds()
         distance = self._calculate_distance()
@@ -84,7 +139,8 @@ class EBikeSensorSimulator(SensorSimulatorStrategy):
             "value": round(self.__bike_percentage, 2)
         }
 
-        self.__last_coordinates = self._coordinates
+        if not self.__is_charging:
+            self.__last_coordinate_index += 1
         self.__last_timestamp = self._datetime_obj.now()
 
         dato = json_message_maker(SensorTypes.ELECTRIC_BICYCLE, str(self.__last_timestamp), [reading],
