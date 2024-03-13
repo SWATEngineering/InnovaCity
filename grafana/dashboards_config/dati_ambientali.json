@@ -670,7 +670,8 @@
                 "value": 80
               }
             ]
-          }
+          },
+          "unit": "conμgm3"
         },
         "overrides": []
       },
@@ -1245,8 +1246,7 @@
             "mode": "percentage",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "super-light-green",
@@ -1443,8 +1443,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1530,6 +1529,6 @@
   "timezone": "",
   "title": "Ambientale",
   "uid": "fc312d0f-81a8-40f6-b70c-5b8f5ba76cce",
-  "version": 2,
+  "version": 3,
   "weekStart": ""
 }
