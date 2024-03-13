@@ -19,7 +19,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 1,
+  "id": 3,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -143,7 +143,7 @@
           "zoom": 15
         }
       },
-      "pluginVersion": "10.2.3",
+      "pluginVersion": "10.2.2",
       "targets": [
         {
           "datasource": {
@@ -176,6 +176,7 @@
         "type": "grafana-clickhouse-datasource",
         "uid": "PDEE91DDB90597936"
       },
+      "description": "Visualizzazione riempimento isole ecologiche",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -195,6 +196,10 @@
               {
                 "color": "green",
                 "value": null
+              },
+              {
+                "color": "#EAB839",
+                "value": 59.9997
               },
               {
                 "color": "red",
@@ -232,9 +237,10 @@
               "showLegend": true,
               "style": {
                 "color": {
+                  "field": "value",
                   "fixed": "green"
                 },
-                "opacity": 0.3,
+                "opacity": 0.4,
                 "rotation": {
                   "fixed": 0,
                   "max": 360,
@@ -254,12 +260,17 @@
                   "horizontal": "center",
                   "vertical": "center"
                 },
+                "text": {
+                  "field": "value",
+                  "fixed": "",
+                  "mode": "field"
+                },
                 "textConfig": {
-                  "fontSize": 12,
+                  "fontSize": 8,
                   "offsetX": 0,
-                  "offsetY": 0,
+                  "offsetY": 8,
                   "textAlign": "center",
-                  "textBaseline": "middle"
+                  "textBaseline": "top"
                 }
               }
             },
@@ -276,13 +287,13 @@
         },
         "view": {
           "allLayers": true,
-          "id": "zero",
+          "id": "fit",
           "lat": 0,
           "lon": 0,
-          "zoom": 1
+          "zoom": 15
         }
       },
-      "pluginVersion": "10.2.3",
+      "pluginVersion": "10.2.2",
       "targets": [
         {
           "builderOptions": {
@@ -371,11 +382,11 @@
           },
           "pluginVersion": "4.0.3",
           "queryType": "table",
-          "rawSql": "SELECT latitude, longitude, name FROM \"innovacity\".\"eco_zone_topic_mv\" GROUP BY name, latitude, longitude ORDER BY name ASC",
+          "rawSql": "SELECT name, value, latitude, longitude\nFROM innovacity.eco_zone\nWHERE (name, timestamp) IN (\n  SELECT name, MAX(timestamp) AS latest_timestamp\n  FROM innovacity.eco_zone\n  GROUP BY name\n);",
           "refId": "A"
         }
       ],
-      "title": "mappacassonetto",
+      "title": "Mappa: posizione isole ecologiche e riempimento",
       "transparent": true,
       "type": "geomap"
     },
@@ -486,7 +497,7 @@
           "zoom": 1
         }
       },
-      "pluginVersion": "10.2.3",
+      "pluginVersion": "10.2.2",
       "targets": [
         {
           "datasource": {
@@ -536,8 +547,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -598,7 +608,7 @@
     }
   ],
   "refresh": "",
-  "schemaVersion": 39,
+  "schemaVersion": 38,
   "tags": [],
   "templating": {
     "list": []
