@@ -19,7 +19,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 2,
+  "id": 1,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -28,10 +28,11 @@
         "type": "grafana-clickhouse-datasource",
         "uid": "PDEE91DDB90597936"
       },
+      "description": "Visualizzazione percentuale batteria delle biciclette elettriche",
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
+            "mode": "continuous-RdYlGr"
           },
           "custom": {
             "hideFrom": {
@@ -41,6 +42,8 @@
             }
           },
           "mappings": [],
+          "max": 100,
+          "min": 0,
           "thresholds": {
             "mode": "percentage",
             "steps": [
@@ -61,9 +64,48 @@
                 "value": 70
               }
             ]
-          }
+          },
+          "unit": "%",
+          "unitScale": true
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "value"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "%"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "latitude"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "degree"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "longitude"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "degree"
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 8,
@@ -92,9 +134,10 @@
               "showLegend": true,
               "style": {
                 "color": {
+                  "field": "value",
                   "fixed": "dark-green"
                 },
-                "opacity": 0.4,
+                "opacity": 0.7,
                 "rotation": {
                   "fixed": 0,
                   "max": 360,
@@ -102,7 +145,7 @@
                   "mode": "mod"
                 },
                 "size": {
-                  "fixed": 5,
+                  "fixed": 10,
                   "max": 15,
                   "min": 2
                 },
@@ -114,14 +157,23 @@
                   "horizontal": "center",
                   "vertical": "center"
                 },
+                "text": {
+                  "field": "value",
+                  "fixed": "",
+                  "mode": "field"
+                },
                 "textConfig": {
-                  "fontSize": 12,
+                  "fontSize": 10,
                   "offsetX": 0,
-                  "offsetY": 0,
+                  "offsetY": -15,
                   "textAlign": "center",
                   "textBaseline": "middle"
                 }
               }
+            },
+            "filterData": {
+              "id": "byRefId",
+              "options": "A"
             },
             "location": {
               "mode": "auto"
@@ -143,7 +195,7 @@
           "zoom": 15
         }
       },
-      "pluginVersion": "10.2.2",
+      "pluginVersion": "10.3.3",
       "targets": [
         {
           "datasource": {
@@ -168,7 +220,8 @@
           "refId": "A"
         }
       ],
-      "title": "Mappa: Biciclette elettriche",
+      "title": "Mappa: Biciclette elettriche e percentuale batteria",
+      "transparent": true,
       "type": "geomap"
     },
     {
@@ -221,7 +274,8 @@
               }
             ]
           },
-          "unit": "%"
+          "unit": "%",
+          "unitScale": true
         },
         "overrides": [
           {
@@ -349,7 +403,7 @@
           "zoom": 15
         }
       },
-      "pluginVersion": "10.2.2",
+      "pluginVersion": "10.3.3",
       "targets": [
         {
           "builderOptions": {
@@ -477,7 +531,8 @@
                 "value": 80
               }
             ]
-          }
+          },
+          "unitScale": true
         },
         "overrides": []
       },
@@ -553,7 +608,7 @@
           "zoom": 1
         }
       },
-      "pluginVersion": "10.2.2",
+      "pluginVersion": "10.3.3",
       "targets": [
         {
           "datasource": {
@@ -663,20 +718,20 @@
       "type": "table"
     }
   ],
-  "refresh": "",
-  "schemaVersion": 38,
+  "refresh": false,
+  "schemaVersion": 39,
   "tags": [],
   "templating": {
     "list": []
   },
   "time": {
-    "from": "now-6h",
-    "to": "now"
+    "from": "2024-03-13T04:46:49.889Z",
+    "to": "2024-03-13T16:46:49.891Z"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Urbanistica",
   "uid": "db599846-eaca-47c2-93ae-697ac9408b2a",
-  "version": 4,
+  "version": 3,
   "weekStart": ""
 }
