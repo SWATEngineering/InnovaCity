@@ -245,7 +245,7 @@
         "textMode": "value",
         "wideLayout": true
       },
-      "pluginVersion": "10.2.2",
+      "pluginVersion": "10.2.3",
       "targets": [
         {
           "datasource": {
@@ -453,7 +453,7 @@
         "showThresholdMarkers": true,
         "sizing": "auto"
       },
-      "pluginVersion": "10.2.2",
+      "pluginVersion": "10.2.3",
       "targets": [
         {
           "datasource": {
@@ -910,6 +910,10 @@
                 "temperature": {
                   "color": "orange",
                   "index": 1
+                },
+                "wind": {
+                  "color": "super-light-blue",
+                  "index": 3
                 }
               },
               "type": "value"
@@ -1027,7 +1031,7 @@
           "zoom": 15
         }
       },
-      "pluginVersion": "10.2.2",
+      "pluginVersion": "10.2.3",
       "targets": [
         {
           "builderOptions": {
@@ -1140,6 +1144,29 @@
           "rawSql": " SELECT\n    'reservoir' as Tipo,\n    name,\n    toStartOfMinute(timestamp1m) AS timestamp1m,\n    avgMerge(avgReservoir) as avgReservoir,\n    latitude,\n    longitude\nFROM innovacity.reservoirs1m\nGROUP BY (name, timestamp1m, latitude, longitude)\nHAVING ( timestamp1m >= $__fromTime AND timestamp1m <= $__toTime );",
           "refId": "C",
           "selectedFormat": 4
+        },
+        {
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "PDEE91DDB90597936"
+          },
+          "editorType": "sql",
+          "format": 1,
+          "hide": false,
+          "meta": {
+            "builderOptions": {
+              "columns": [],
+              "database": "",
+              "limit": 1000,
+              "mode": "list",
+              "queryType": "table",
+              "table": ""
+            }
+          },
+          "pluginVersion": "4.0.3",
+          "queryType": "table",
+          "rawSql": "SELECT name,\n       'wind' as Tipo,\n       argMax(value, timestamp) AS value,\n       argMax(latitude,timestamp) as latitude,\n       argMax(longitude,timestamp) as longitude\nFROM innovacity.wind\nGROUP BY name;",
+          "refId": "D"
         }
       ],
       "title": "Mappa Sensori",
@@ -1246,7 +1273,8 @@
             "mode": "percentage",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "super-light-green",
@@ -1392,7 +1420,7 @@
           "zoom": 15
         }
       },
-      "pluginVersion": "10.2.2",
+      "pluginVersion": "10.2.3",
       "targets": [
         {
           "datasource": {
@@ -1443,7 +1471,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -1486,7 +1515,7 @@
         },
         "showHeader": true
       },
-      "pluginVersion": "10.2.2",
+      "pluginVersion": "10.2.3",
       "targets": [
         {
           "datasource": {
@@ -1501,15 +1530,15 @@
       "type": "table"
     }
   ],
-  "refresh": false,
-  "schemaVersion": 38,
+  "refresh": "auto",
+  "schemaVersion": 39,
   "tags": [],
   "templating": {
     "list": []
   },
   "time": {
-    "from": "2024-03-13T07:53:00.000Z",
-    "to": "2024-03-13T07:58:00.000Z"
+    "from": "now-5m",
+    "to": "now"
   },
   "timepicker": {
     "refresh_intervals": [
@@ -1529,6 +1558,6 @@
   "timezone": "",
   "title": "Ambientale",
   "uid": "fc312d0f-81a8-40f6-b70c-5b8f5ba76cce",
-  "version": 3,
+  "version": 2,
   "weekStart": ""
 }
