@@ -785,17 +785,14 @@
         "type": "grafana-clickhouse-datasource",
         "uid": "PDEE91DDB90597936"
       },
-      "description": "ci sono ancora qualcosa da fare era più per vedere se aveva senso",
+      "description": "va ancora cambiata l'icona i colori sono già settati credo",
       "fieldConfig": {
         "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
           "custom": {
             "hideFrom": {
-              "legend": false,
               "tooltip": false,
-              "viz": false
+              "viz": false,
+              "legend": false
             }
           },
           "mappings": [],
@@ -807,10 +804,17 @@
                 "value": null
               },
               {
-                "color": "red",
-                "value": 80
+                "value": 0,
+                "color": "green"
+              },
+              {
+                "color": "dark-red",
+                "value": 1
               }
             ]
+          },
+          "color": {
+            "mode": "thresholds"
           }
         },
         "overrides": []
@@ -823,20 +827,36 @@
       },
       "id": 3,
       "options": {
+        "view": {
+          "allLayers": true,
+          "id": "fit",
+          "lat": 0,
+          "lon": 0,
+          "zoom": 15
+        },
         "controls": {
+          "showZoom": true,
           "mouseWheelZoom": true,
           "showAttribution": true,
-          "showDebug": false,
-          "showMeasure": false,
           "showScale": false,
-          "showZoom": true
+          "showMeasure": false,
+          "showDebug": false
+        },
+        "tooltip": {
+          "mode": "details"
+        },
+        "basemap": {
+          "config": {},
+          "name": "Layer 0",
+          "type": "default"
         },
         "layers": [
           {
             "config": {
-              "showLegend": true,
+              "showLegend": false,
               "style": {
                 "color": {
+                  "field": "availability",
                   "fixed": "dark-green"
                 },
                 "opacity": 0.4,
@@ -852,7 +872,7 @@
                   "min": 2
                 },
                 "symbol": {
-                  "fixed": "img/icons/marker/circle.svg",
+                  "fixed": "img/icons/marker/bike.svg",
                   "mode": "fixed"
                 },
                 "symbolAlign": {
@@ -875,17 +895,7 @@
             "tooltip": true,
             "type": "markers"
           }
-        ],
-        "tooltip": {
-          "mode": "details"
-        },
-        "view": {
-          "allLayers": true,
-          "id": "zero",
-          "lat": 0,
-          "lon": 0,
-          "zoom": 1
-        }
+        ]
       },
       "pluginVersion": "10.2.3",
       "targets": [
@@ -908,7 +918,7 @@
           },
           "pluginVersion": "4.0.3",
           "queryType": "table",
-          "rawSql": "SELECT name, value, latitude, longitude\nFROM innovacity.charging_station\nWHERE (name, timestamp) IN (\n  SELECT name, MAX(timestamp) AS latest_timestamp\n  FROM innovacity.charging_station\n  GROUP BY name\n);",
+          "rawSql": "SELECT name, availability, latitude, longitude\nFROM innovacity.charging_station\nWHERE (name, timestamp) IN (\n  SELECT name, MAX(timestamp) AS latest_timestamp\n  FROM innovacity.charging_station\n  GROUP BY name\n);",
           "refId": "A"
         }
       ],
@@ -917,14 +927,11 @@
     },
     {
       "datasource": {
-        "type": "grafana-clickhouse-datasource",
-        "uid": "PDEE91DDB90597936"
+        "uid": "PDEE91DDB90597936",
+        "type": "grafana-clickhouse-datasource"
       },
       "fieldConfig": {
         "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
           "custom": {
             "align": "auto",
             "cellOptions": {
@@ -945,26 +952,37 @@
                 "value": 80
               }
             ]
+          },
+          "color": {
+            "mode": "thresholds"
           }
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 6,
+        "h": 4,
+        "w": 5,
+        "x": 0,
         "y": 16
       },
       "id": 4,
       "options": {
+        "showHeader": true,
         "cellHeight": "sm",
         "footer": {
+          "show": false,
+          "reducer": [
+            "sum"
+          ],
           "countRows": false,
-          "fields": "",
-          "reducer": ["sum"],
-          "show": false
+          "fields": ""
         },
-        "showHeader": true
+        "sortBy": [
+          {
+            "displayName": "erogation_power",
+            "desc": false
+          }
+        ]
       },
       "pluginVersion": "10.2.3",
       "targets": [
@@ -988,11 +1006,11 @@
           },
           "pluginVersion": "4.0.3",
           "queryType": "table",
-          "rawSql": "SELECT c.name, c.value, c.timestamp\nFROM innovacity.charging_station c\nJOIN (\n    SELECT name, MAX(timestamp) AS max_timestamp\n    FROM innovacity.charging_station\n    GROUP BY name\n) AS max_ts ON c.name = max_ts.name AND c.timestamp = max_ts.max_timestamp;",
+          "rawSql": "\nSELECT c.name, c.erogation_power\nFROM innovacity.charging_station c\nJOIN (\n    SELECT name, MAX(timestamp) AS max_timestamp\n    FROM innovacity.charging_station\n    GROUP BY name\n) AS max_ts ON c.name = max_ts.name AND c.timestamp = max_ts.max_timestamp;",
           "refId": "A"
         }
       ],
-      "title": "Panel Title",
+      "title": "Erogazione Stazioni di RIcarica",
       "type": "table"
     }
   ],

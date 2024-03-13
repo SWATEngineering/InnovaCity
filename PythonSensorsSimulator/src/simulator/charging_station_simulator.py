@@ -28,7 +28,6 @@ class ChargingStationSimulator(SensorSimulatorStrategy):
         random_duration = self._random_obj.randint(-1800, 2 * 3600)
         self.__time_to_stop_charge = self.__time_to_complete_charge + \
             datetime.timedelta(seconds=random_duration)
-
         self.__in_use = True
 
     def __check_new_car(self):
@@ -71,7 +70,11 @@ class ChargingStationSimulator(SensorSimulatorStrategy):
         else:
             self.__remove_car_from_charging()
 
-        state = self.__in_use
+        if (self.__in_use):
+            state = "1"
+        else:
+            state = "0"
+
         erogation = self.__get_erogation()
 
         return json_message_maker(SensorTypes.CHARGING_STATION, str(self._datetime_obj.now()), [
@@ -81,6 +84,6 @@ class ChargingStationSimulator(SensorSimulatorStrategy):
             },
             {
                 "type": "availability",
-                "value": state
+                "value":  state 
             }
         ], self._sensor_name, self._coordinates)
