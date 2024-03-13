@@ -245,7 +245,7 @@
         "textMode": "value",
         "wideLayout": true
       },
-      "pluginVersion": "10.2.3",
+      "pluginVersion": "10.2.2",
       "targets": [
         {
           "datasource": {
@@ -453,7 +453,7 @@
         "showThresholdMarkers": true,
         "sizing": "auto"
       },
-      "pluginVersion": "10.2.3",
+      "pluginVersion": "10.2.2",
       "targets": [
         {
           "datasource": {
@@ -749,6 +749,138 @@
         "type": "grafana-clickhouse-datasource",
         "uid": "PDEE91DDB90597936"
       },
+      "description": "Misura la percentuale di umidità relativa presente nell'aria",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 1,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "%"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 19,
+        "x": 0,
+        "y": 36
+      },
+      "id": 16,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "PDEE91DDB90597936"
+          },
+          "editorType": "sql",
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "columns": [],
+              "database": "",
+              "limit": 1000,
+              "mode": "list",
+              "queryType": "table",
+              "table": ""
+            }
+          },
+          "pluginVersion": "4.0.3",
+          "queryType": "table",
+          "rawSql": "SELECT\n    name,\n    toStartOfMinute(timestamp1m) AS timestamp1m,\n    avgMerge(avgHumidity) as avgHumidity\nFROM innovacity.humidity1m\nGROUP BY (name, timestamp1m)\nHAVING ( timestamp1m  >= $__fromTime AND timestamp1m <= $__toTime ) ",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "PDEE91DDB90597936"
+          },
+          "editorType": "sql",
+          "format": 1,
+          "hide": false,
+          "meta": {
+            "builderOptions": {
+              "columns": [],
+              "database": "",
+              "limit": 1000,
+              "mode": "list",
+              "queryType": "table",
+              "table": ""
+            }
+          },
+          "pluginVersion": "4.0.3",
+          "queryType": "table",
+          "rawSql": "SELECT\n  timestamp1m,\n  AVG(moving_average) AS moving_average\nFROM (\n  SELECT\n    avgMerge(avgHumidity) OVER (ORDER BY timestamp1m ROWS BETWEEN 2 PRECEDING AND CURRENT ROW) as moving_average,\n    timestamp1m\n  FROM innovacity.humidity1m\n) AS subquery\nGROUP BY timestamp1m\nORDER BY timestamp1m;",
+          "refId": "B"
+        }
+      ],
+      "title": "Umidità relativa per minuto",
+      "transparent": true,
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-clickhouse-datasource",
+        "uid": "PDEE91DDB90597936"
+      },
       "description": "dislocazione geografica dei sensori ",
       "fieldConfig": {
         "defaults": {
@@ -810,7 +942,7 @@
         "h": 11,
         "w": 20,
         "x": 2,
-        "y": 36
+        "y": 42
       },
       "id": 4,
       "options": {
@@ -894,7 +1026,7 @@
           "zoom": 15
         }
       },
-      "pluginVersion": "10.2.3",
+      "pluginVersion": "10.2.2",
       "targets": [
         {
           "builderOptions": {
@@ -1179,7 +1311,7 @@
         "h": 8,
         "w": 11,
         "x": 2,
-        "y": 47
+        "y": 53
       },
       "id": 14,
       "options": {
@@ -1260,7 +1392,7 @@
           "zoom": 15
         }
       },
-      "pluginVersion": "10.2.3",
+      "pluginVersion": "10.2.2",
       "targets": [
         {
           "datasource": {
@@ -1340,7 +1472,7 @@
         "h": 8,
         "w": 9,
         "x": 13,
-        "y": 47
+        "y": 53
       },
       "id": 15,
       "options": {
@@ -1355,7 +1487,7 @@
         },
         "showHeader": true
       },
-      "pluginVersion": "10.2.3",
+      "pluginVersion": "10.2.2",
       "targets": [
         {
           "datasource": {
@@ -1370,15 +1502,15 @@
       "type": "table"
     }
   ],
-  "refresh": "auto",
-  "schemaVersion": 39,
+  "refresh": false,
+  "schemaVersion": 38,
   "tags": [],
   "templating": {
     "list": []
   },
   "time": {
-    "from": "2024-03-13T07:32:00.000Z",
-    "to": "2024-03-13T07:33:00.000Z"
+    "from": "2024-03-13T07:53:00.000Z",
+    "to": "2024-03-13T07:58:00.000Z"
   },
   "timepicker": {
     "refresh_intervals": [
@@ -1396,7 +1528,7 @@
     ]
   },
   "timezone": "",
-  "title": "Innovacity Copy",
+  "title": "Ambientale",
   "uid": "fc312d0f-81a8-40f6-b70c-5b8f5ba76cce",
   "version": 2,
   "weekStart": ""
