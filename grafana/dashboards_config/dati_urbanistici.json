@@ -190,7 +190,7 @@
             }
           },
           "mappings": [],
-          "max": 77,
+          "max": 80,
           "min": 0,
           "thresholds": {
             "mode": "percentage",
@@ -220,7 +220,8 @@
                 "value": 85
               }
             ]
-          }
+          },
+          "unit": "%"
         },
         "overrides": [
           {
@@ -676,6 +677,6 @@
   "timezone": "",
   "title": "Urbanistica",
   "uid": "db599846-eaca-47c2-93ae-697ac9408b2a",
-  "version": 2,
+  "version": 4,
   "weekStart": ""
 }
