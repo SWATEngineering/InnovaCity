@@ -19,7 +19,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 3,
+  "id": 2,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -190,25 +190,76 @@
             }
           },
           "mappings": [],
+          "max": 77,
+          "min": 0,
           "thresholds": {
-            "mode": "absolute",
+            "mode": "percentage",
             "steps": [
               {
                 "color": "green",
                 "value": null
               },
               {
-                "color": "#EAB839",
-                "value": 59.9997
+                "color": "dark-green",
+                "value": 20
               },
               {
-                "color": "red",
-                "value": 80
+                "color": "super-light-yellow",
+                "value": 30
+              },
+              {
+                "color": "yellow",
+                "value": 50
+              },
+              {
+                "color": "dark-orange",
+                "value": 60
+              },
+              {
+                "color": "dark-red",
+                "value": 85
               }
             ]
           }
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "value"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "%"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "latitude"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "degree"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "longitude"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "degree"
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 8,
@@ -248,7 +299,7 @@
                   "mode": "mod"
                 },
                 "size": {
-                  "fixed": 5,
+                  "fixed": 8,
                   "max": 15,
                   "min": 2
                 },
@@ -273,6 +324,10 @@
                   "textBaseline": "top"
                 }
               }
+            },
+            "filterData": {
+              "id": "byRefId",
+              "options": "A"
             },
             "location": {
               "mode": "auto"
@@ -621,6 +676,6 @@
   "timezone": "",
   "title": "Urbanistica",
   "uid": "db599846-eaca-47c2-93ae-697ac9408b2a",
-  "version": 3,
+  "version": 2,
   "weekStart": ""
 }
