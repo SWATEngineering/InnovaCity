@@ -19,10 +19,300 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 1,
+  "id": 3,
   "links": [],
   "liveNow": false,
   "panels": [
+    {
+      "datasource": {
+        "type": "grafana-clickhouse-datasource",
+        "uid": "PDEE91DDB90597936"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-RdYlGr"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 5,
+      "options": {
+        "basemap": {
+          "config": {},
+          "name": "Layer 0",
+          "type": "default"
+        },
+        "controls": {
+          "mouseWheelZoom": true,
+          "showAttribution": true,
+          "showDebug": false,
+          "showMeasure": false,
+          "showScale": false,
+          "showZoom": true
+        },
+        "layers": [
+          {
+            "config": {
+              "showLegend": true,
+              "style": {
+                "color": {
+                  "field": "remaining",
+                  "fixed": "dark-green"
+                },
+                "opacity": 0.9,
+                "rotation": {
+                  "fixed": 0,
+                  "max": 360,
+                  "min": -360,
+                  "mode": "mod"
+                },
+                "size": {
+                  "fixed": 10,
+                  "max": 15,
+                  "min": 2
+                },
+                "symbol": {
+                  "fixed": "img/icons/unicons/car.svg",
+                  "mode": "fixed"
+                },
+                "symbolAlign": {
+                  "horizontal": "left",
+                  "vertical": "top"
+                },
+                "text": {
+                  "field": "remaining",
+                  "fixed": "",
+                  "mode": "field"
+                },
+                "textConfig": {
+                  "fontSize": 15,
+                  "offsetX": 0,
+                  "offsetY": 0,
+                  "textAlign": "left",
+                  "textBaseline": "top"
+                }
+              }
+            },
+            "filterData": {
+              "id": "byRefId",
+              "options": "A"
+            },
+            "location": {
+              "latitude": "argMax(latitude, timestamp) {argMax(name, timestamp)=\"parking1\", name=\"parking1\"}",
+              "longitude": "argMax(longitude, timestamp) {argMax(name, timestamp)=\"parking1\", name=\"parking1\"}",
+              "mode": "coords"
+            },
+            "name": "Layer 1",
+            "tooltip": true,
+            "type": "markers"
+          }
+        ],
+        "tooltip": {
+          "mode": "details"
+        },
+        "view": {
+          "allLayers": true,
+          "id": "fit",
+          "lat": 0,
+          "lon": 0,
+          "zoom": 15
+        }
+      },
+      "pluginVersion": "10.2.3",
+      "targets": [
+        {
+          "builderOptions": {
+            "aggregates": [],
+            "columns": [
+              {
+                "custom": false,
+                "name": "name",
+                "type": "String"
+              },
+              {
+                "custom": false,
+                "name": "current",
+                "type": "Int32"
+              },
+              {
+                "custom": false,
+                "name": "max_slots",
+                "type": "Int32"
+              },
+              {
+                "custom": false,
+                "name": "latitude",
+                "type": "Float64"
+              },
+              {
+                "custom": false,
+                "name": "longitude",
+                "type": "Float64"
+              },
+              {
+                "hint": "time",
+                "name": "timestamp",
+                "type": "DateTime64(3)"
+              }
+            ],
+            "database": "innovacity",
+            "filters": [
+              {
+                "condition": "AND",
+                "filterType": "custom",
+                "hint": "time",
+                "key": "",
+                "operator": "WITH IN DASHBOARD TIME RANGE",
+                "type": "datetime"
+              }
+            ],
+            "groupBy": [],
+            "limit": 1000,
+            "meta": {},
+            "mode": "aggregate",
+            "orderBy": [
+              {
+                "default": true,
+                "dir": "DESC",
+                "hint": "time",
+                "name": ""
+              }
+            ],
+            "queryType": "timeseries",
+            "table": "parking"
+          },
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "PDEE91DDB90597936"
+          },
+          "editorType": "sql",
+          "format": 0,
+          "meta": {
+            "builderOptions": {
+              "aggregates": [],
+              "columns": [
+                {
+                  "custom": false,
+                  "name": "name",
+                  "type": "String"
+                },
+                {
+                  "custom": false,
+                  "name": "current",
+                  "type": "Int32"
+                },
+                {
+                  "custom": false,
+                  "name": "max_slots",
+                  "type": "Int32"
+                },
+                {
+                  "custom": false,
+                  "name": "latitude",
+                  "type": "Float64"
+                },
+                {
+                  "custom": false,
+                  "name": "longitude",
+                  "type": "Float64"
+                },
+                {
+                  "hint": "time",
+                  "name": "timestamp",
+                  "type": "DateTime64(3)"
+                }
+              ],
+              "database": "innovacity",
+              "filters": [
+                {
+                  "condition": "AND",
+                  "filterType": "custom",
+                  "hint": "time",
+                  "key": "",
+                  "operator": "WITH IN DASHBOARD TIME RANGE",
+                  "type": "datetime"
+                }
+              ],
+              "groupBy": [],
+              "limit": 1000,
+              "meta": {},
+              "mode": "aggregate",
+              "orderBy": [
+                {
+                  "default": true,
+                  "dir": "DESC",
+                  "hint": "time",
+                  "name": ""
+                }
+              ],
+              "queryType": "timeseries",
+              "table": "parking"
+            }
+          },
+          "pluginVersion": "4.0.3",
+          "queryType": "timeseries",
+          "rawSql": "SELECT \n  name, \n  argMax(name, timestamp),\n  argMax(timestamp, timestamp),\n  argMax(latitude, timestamp),\n  argMax(longitude, timestamp),\n  argMax(current, timestamp),\n  argMax(max_slots, timestamp),\nFROM innovacity.parking \nGROUP BY name",
+          "refId": "A"
+        }
+      ],
+      "title": "Disponibilità Parcheggi",
+      "transformations": [
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "remaining",
+            "binary": {
+              "left": "argMax(max_slots, timestamp) {argMax(name, timestamp)=\"parking1\", name=\"parking1\"}",
+              "operator": "-",
+              "right": "argMax(current, timestamp) {argMax(name, timestamp)=\"parking1\", name=\"parking1\"}"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "configFromData",
+          "options": {
+            "configRefId": "A",
+            "mappings": [
+              {
+                "fieldName": "argMax(max_slots, timestamp) {argMax(name, timestamp)=\"parking1\", name=\"parking1\"}",
+                "handlerKey": "max"
+              }
+            ]
+          }
+        }
+      ],
+      "type": "geomap"
+    },
     {
       "datasource": {
         "type": "grafana-clickhouse-datasource",
@@ -65,8 +355,7 @@
               }
             ]
           },
-          "unit": "%",
-          "unitScale": true
+          "unit": "%"
         },
         "overrides": [
           {
@@ -110,7 +399,7 @@
       "gridPos": {
         "h": 8,
         "w": 12,
-        "x": 6,
+        "x": 12,
         "y": 0
       },
       "id": 2,
@@ -195,7 +484,7 @@
           "zoom": 15
         }
       },
-      "pluginVersion": "10.3.3",
+      "pluginVersion": "10.2.3",
       "targets": [
         {
           "datasource": {
@@ -274,8 +563,7 @@
               }
             ]
           },
-          "unit": "%",
-          "unitScale": true
+          "unit": "%"
         },
         "overrides": [
           {
@@ -319,7 +607,7 @@
       "gridPos": {
         "h": 8,
         "w": 12,
-        "x": 6,
+        "x": 0,
         "y": 8
       },
       "id": 1,
@@ -403,7 +691,7 @@
           "zoom": 15
         }
       },
-      "pluginVersion": "10.3.3",
+      "pluginVersion": "10.2.3",
       "targets": [
         {
           "builderOptions": {
@@ -427,11 +715,7 @@
             ],
             "database": "innovacity",
             "filters": [],
-            "groupBy": [
-              "name",
-              "latitude",
-              "longitude"
-            ],
+            "groupBy": ["name", "latitude", "longitude"],
             "limit": 0,
             "meta": {},
             "mode": "aggregate",
@@ -472,11 +756,7 @@
               ],
               "database": "innovacity",
               "filters": [],
-              "groupBy": [
-                "name",
-                "latitude",
-                "longitude"
-              ],
+              "groupBy": ["name", "latitude", "longitude"],
               "limit": 0,
               "meta": {},
               "mode": "aggregate",
@@ -531,16 +811,15 @@
                 "value": 80
               }
             ]
-          },
-          "unitScale": true
+          }
         },
         "overrides": []
       },
       "gridPos": {
         "h": 8,
         "w": 12,
-        "x": 6,
-        "y": 16
+        "x": 12,
+        "y": 8
       },
       "id": 3,
       "options": {
@@ -608,7 +887,7 @@
           "zoom": 1
         }
       },
-      "pluginVersion": "10.3.3",
+      "pluginVersion": "10.2.3",
       "targets": [
         {
           "datasource": {
@@ -658,7 +937,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -673,7 +953,7 @@
         "h": 8,
         "w": 12,
         "x": 6,
-        "y": 24
+        "y": 16
       },
       "id": 4,
       "options": {
@@ -681,9 +961,7 @@
         "footer": {
           "countRows": false,
           "fields": "",
-          "reducer": [
-            "sum"
-          ],
+          "reducer": ["sum"],
           "show": false
         },
         "showHeader": true
@@ -718,20 +996,20 @@
       "type": "table"
     }
   ],
-  "refresh": false,
+  "refresh": "5s",
   "schemaVersion": 39,
   "tags": [],
   "templating": {
     "list": []
   },
   "time": {
-    "from": "2024-03-13T04:46:49.889Z",
-    "to": "2024-03-13T16:46:49.891Z"
+    "from": "now-5m",
+    "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Urbanistica",
   "uid": "db599846-eaca-47c2-93ae-697ac9408b2a",
-  "version": 3,
+  "version": 5,
   "weekStart": ""
 }
