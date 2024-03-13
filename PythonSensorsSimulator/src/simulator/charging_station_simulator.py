@@ -10,19 +10,26 @@ class ChargingStationSimulator(SensorSimulatorStrategy):
         super().__init__(**data)
         self.__in_use = False
         self.__time_to_complete_charge = None
-        self.__next_connection = self._datetime_obj.now() + \
-            datetime.timedelta(
-                seconds=self._random_obj.randint(1800, 7000))
+        self.__time_to_stop_charge = None
+        # self.__next_connection = self._datetime_obj.now() + \
+        # datetime.timedelta(
+        # seconds=self._random_obj.randint(1800, 7000))
+        self.__next_connection = self._datetime_obj.now()
+        # solo per provare
 
     def __connect_car(self):
-        self.__in_use = True
-
         self.__mean_erogation_power = self._random_obj.uniform(20, 80)
-        # sono più o meno i tempi per la ricarica di con un erogazione di 50 wat
-        # quindi 2 è il tempo di ricarica per avere il 100%
-        random_duration = self._random_obj.randint(int(0.5 * 3600), 2 * 3600)
+        # momento nel tempo in cui la macchina sarebbe carica al 100 percento
+        random_duration = self._random_obj.randint(3600, 2 * 3600)
         self.__time_to_complete_charge = self._datetime_obj.now() + \
             datetime.timedelta(seconds=random_duration)
+
+        # memento in cui la macchina viene effettivamente staccata dalla carica, puo essere mezzora prima o 2 ore dopo l'ora di effettivo completameno
+        random_duration = self._random_obj.randint(-1800, 2 * 3600)
+        self.__time_to_stop_charge = self.__time_to_complete_charge + \
+            datetime.timedelta(seconds=random_duration)
+
+        self.__in_use = True
 
     def __check_new_car(self):
         if self.__next_connection is None or self._datetime_obj.now() >= self.__next_connection:
@@ -30,21 +37,18 @@ class ChargingStationSimulator(SensorSimulatorStrategy):
 
     def __remove_car_from_charging(self):
         # l'auto viene rimossa dalla carica solo se al 100%
-        if self._datetime_obj.now() >= self.__time_to_complete_charge:
-            disconnect_probability = 1 / 1800
-            random_number = self._random_obj.random()
-            if random_number < disconnect_probability:
-                self.__in_use = False
-                self.__next_connection = self._datetime_obj.now() + \
-                    datetime.timedelta(
-                        seconds=self._random_obj.randint(1800, 7000))
+        if self._datetime_obj.now() >= self.__time_to_stop_charge:
+            # si fissa l'orario della prossima ricarica
+            self.__next_connection = self._datetime_obj.now() + \
+                datetime.timedelta(
+                    seconds=self._random_obj.randint(1800, 7000))
+            self.__in_use = False
 
     def __get_erogation(self) -> int:
         if not self.__in_use:
             return 0  # No charging if the column is not in use
         if self._datetime_obj.now() < self.__time_to_complete_charge:
             # voglio che più tempo manca alla carica più forte è l'erogazione
-
             current_time = self._datetime_obj.now().time()
             completion_time = self.__time_to_complete_charge.time()
             # il tempo mancante alla fine della carica
