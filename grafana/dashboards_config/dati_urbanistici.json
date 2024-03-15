@@ -513,6 +513,292 @@
       "transparent": true,
       "type": "geomap"
     },
+        {
+      "datasource": {
+        "type": "grafana-clickhouse-datasource",
+        "uid": "PDEE91DDB90597936"
+      },
+      "description": "Visualizza il livello di traffico e il numero di macchine sulle diverse strade",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "semi-dark-blue",
+            "mode": "continuous-GrYlRd"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": [
+            {
+              "options": {
+                "BLOCKED": {
+                  "color": "red",
+                  "index": 3
+                },
+                "HIGH": {
+                  "color": "orange",
+                  "index": 2
+                },
+                "LOW": {
+                  "color": "green",
+                  "index": 0
+                },
+                "MEDIUM": {
+                  "color": "yellow",
+                  "index": 1
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "min": 0,
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              {
+                "color": "dark-orange",
+                "value": null
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "id": 6,
+      "options": {
+        "basemap": {
+          "config": {},
+          "name": "Layer 0",
+          "type": "default"
+        },
+        "controls": {
+          "mouseWheelZoom": true,
+          "showAttribution": true,
+          "showDebug": false,
+          "showMeasure": false,
+          "showScale": false,
+          "showZoom": true
+        },
+        "layers": [
+          {
+            "config": {
+              "showLegend": false,
+              "style": {
+                "color": {
+                  "field": "argMax(traffic_level, timestamp)",
+                  "fixed": "dark-green"
+                },
+                "opacity": 1,
+                "rotation": {
+                  "fixed": 0,
+                  "max": 360,
+                  "min": -360,
+                  "mode": "mod"
+                },
+                "size": {
+                  "fixed": 15,
+                  "max": 15,
+                  "min": 2
+                },
+                "symbol": {
+                  "fixed": "img/icons/unicons/car.svg",
+                  "mode": "fixed"
+                },
+                "symbolAlign": {
+                  "horizontal": "left",
+                  "vertical": "top"
+                },
+                "text": {
+                  "field": "argMax(traffic_level, timestamp)",
+                  "fixed": "",
+                  "mode": "field"
+                },
+                "textConfig": {
+                  "fontSize": 12,
+                  "offsetX": 0,
+                  "offsetY": 0,
+                  "textAlign": "left",
+                  "textBaseline": "top"
+                }
+              }
+            },
+            "filterData": {
+              "id": "byRefId",
+              "options": "A"
+            },
+            "location": {
+              "latitude": "argMax(latitude, timestamp)",
+              "longitude": "argMax(longitude, timestamp)",
+              "mode": "coords"
+            },
+            "name": "Layer 1",
+            "tooltip": true,
+            "type": "markers"
+          }
+        ],
+        "tooltip": {
+          "mode": "details"
+        },
+        "view": {
+          "allLayers": true,
+          "id": "fit",
+          "lat": 0,
+          "lon": 0,
+          "zoom": 15
+        }
+      },
+      "pluginVersion": "10.2.2",
+      "targets": [
+        {
+          "builderOptions": {
+            "aggregates": [],
+            "columns": [
+              {
+                "custom": false,
+                "name": "name",
+                "type": "String"
+              },
+              {
+                "custom": false,
+                "name": "current",
+                "type": "Int32"
+              },
+              {
+                "custom": false,
+                "name": "max_slots",
+                "type": "Int32"
+              },
+              {
+                "custom": false,
+                "name": "latitude",
+                "type": "Float64"
+              },
+              {
+                "custom": false,
+                "name": "longitude",
+                "type": "Float64"
+              },
+              {
+                "hint": "time",
+                "name": "timestamp",
+                "type": "DateTime64(3)"
+              }
+            ],
+            "database": "innovacity",
+            "filters": [
+              {
+                "condition": "AND",
+                "filterType": "custom",
+                "hint": "time",
+                "key": "",
+                "operator": "WITH IN DASHBOARD TIME RANGE",
+                "type": "datetime"
+              }
+            ],
+            "groupBy": [],
+            "limit": 1000,
+            "meta": {},
+            "mode": "aggregate",
+            "orderBy": [
+              {
+                "default": true,
+                "dir": "DESC",
+                "hint": "time",
+                "name": ""
+              }
+            ],
+            "queryType": "timeseries",
+            "table": "parking"
+          },
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "PDEE91DDB90597936"
+          },
+          "editorType": "sql",
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "aggregates": [],
+              "columns": [
+                {
+                  "custom": false,
+                  "name": "name",
+                  "type": "String"
+                },
+                {
+                  "custom": false,
+                  "name": "current",
+                  "type": "Int32"
+                },
+                {
+                  "custom": false,
+                  "name": "max_slots",
+                  "type": "Int32"
+                },
+                {
+                  "custom": false,
+                  "name": "latitude",
+                  "type": "Float64"
+                },
+                {
+                  "custom": false,
+                  "name": "longitude",
+                  "type": "Float64"
+                },
+                {
+                  "hint": "time",
+                  "name": "timestamp",
+                  "type": "DateTime64(3)"
+                }
+              ],
+              "database": "innovacity",
+              "filters": [
+                {
+                  "condition": "AND",
+                  "filterType": "custom",
+                  "hint": "time",
+                  "key": "",
+                  "operator": "WITH IN DASHBOARD TIME RANGE",
+                  "type": "datetime"
+                }
+              ],
+              "groupBy": [],
+              "limit": 1000,
+              "meta": {},
+              "mode": "aggregate",
+              "orderBy": [
+                {
+                  "default": true,
+                  "dir": "DESC",
+                  "hint": "time",
+                  "name": ""
+                }
+              ],
+              "queryType": "timeseries",
+              "table": "parking"
+            }
+          },
+          "pluginVersion": "4.0.3",
+          "queryType": "table",
+          "rawSql": "SELECT \n  name, \n  argMax(name, timestamp),\n  argMax(timestamp, timestamp),\n  argMax(latitude, timestamp),\n  argMax(longitude, timestamp),\n  argMax(num_cars, timestamp),\n  argMax(avg_time, timestamp),\n  argMax(traffic_level, timestamp)\nFROM innovacity.traffic\nGROUP BY name",
+          "refId": "A"
+        }
+      ],
+      "title": "Traffico",
+      "transformations": [],
+      "type": "geomap"
+    },
     {
       "datasource": {
         "type": "grafana-clickhouse-datasource",

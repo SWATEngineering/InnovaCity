@@ -40,14 +40,6 @@
     }
   },
   {
-    "type": "electric_bicycle",
-    "wait_time_in_seconds": 1.0,
-    "location": {
-      "type": "Point",
-      "coordinates": [45.398214, 11.851271]
-    }
-  },
-  {
     "type": "wind",
     "wait_time_in_seconds": 0.5,
     "location": {
@@ -81,5 +73,13 @@
       "type": "Point",
       "coordinates": [45.398214, 11.851271]
     }
-  } 
+  },
+  {
+    "type": "traffic",
+    "wait_time_in_seconds": 2,
+    "location": {
+      "type": "Point",
+      "coordinates": [45.398214, 11.851271]
+    }
+  }
 ]
