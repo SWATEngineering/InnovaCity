@@ -1,6 +1,7 @@
 from random import Random, choice, uniform
 from typing import Type
 import requests
+import os
 
 from src.simulator.sensor_simulator_strategy import SensorSimulatorStrategy
 from math import radians, sqrt
@@ -40,7 +41,7 @@ class EBikeSensorSimulator(SensorSimulatorStrategy):
 
     def _pick_destination(self) -> None:
         lat, lon = json.loads(self._coordinates.get_geo_json())['coordinates']
-        api_key = "5b3ce3597851110001cf62482b82ca6617c34da8b060268e6c505cc4"
+        API_KEY = os.environ.get("ORS_API_KEY")
 
         lat_range = 0.1
         lon_range = 0.1
@@ -48,7 +49,7 @@ class EBikeSensorSimulator(SensorSimulatorStrategy):
         dest_latitude = uniform(lat - lat_range, lat + lat_range)
         dest_longitude = uniform(lon - lon_range, lon + lon_range)
 
-        url = f"https://api.openrouteservice.org/geocode/reverse?api_key={api_key}&point.lon={dest_longitude}&point.lat={dest_latitude}"
+        url = f"https://api.openrouteservice.org/geocode/reverse?api_key={API_KEY}&point.lon={dest_longitude}&point.lat={dest_latitude}"
 
         headers = {'Accept': 'application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8'}
         response = requests.get(url, headers=headers)
@@ -69,9 +70,9 @@ class EBikeSensorSimulator(SensorSimulatorStrategy):
         dest = self.__destination
         start = "{},{}".format(source[1], source[0])
         end = "{},{}".format(dest[1], dest[0])
-        api_key = "5b3ce3597851110001cf62482b82ca6617c34da8b060268e6c505cc4"
+        API_KEY = os.environ.get("ORS_API_KEY")
 
-        url = f"https://api.openrouteservice.org/v2/directions/cycling-electric?api_key={api_key}&start={start}&end={end}"
+        url = f"https://api.openrouteservice.org/v2/directions/cycling-electric?api_key={API_KEY}&start={start}&end={end}"
 
         headers = {'Accept': 'application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8',}
         call = requests.get(url, headers=headers)
