@@ -1,21 +1,27 @@
+from datetime import datetime
+from random import Random
+from typing import Type
+
 from src.simulator.sensor_simulator_strategy import SensorSimulatorStrategy
-from src.utils.sensor_types import SensorTypes
 from src.utils.json_message_maker import json_message_maker
-import datetime
+from src.utils.sensor_types import SensorTypes
+from src.utils.coordinates import Coordinates
 
 
 class ChargingStationSimulator(SensorSimulatorStrategy):
 
-    def __init__(self, **data):
-        super().__init__(**data)
+    def __init__(self, sensor_name: str, random_obj: Random, datetime_obj: Type[datetime], coordinates: Coordinates):
+        super().__init__(sensor_name, random_obj, datetime_obj, coordinates)
         self.__in_use = False
         self.__time_to_complete_charge = None
         self.__time_to_stop_charge = None
-        # self.__next_connection = self._datetime_obj.now() + \
-        # datetime.timedelta(
-        # seconds=self._random_obj.randint(1800, 7000))
-        self.__next_connection = self._datetime_obj.now()
-        # solo per provare
+
+        if self._random_obj.random() <= 0.5:
+            self.__next_connection = self._datetime_obj.now()
+        else:
+            self.__next_connection = self._datetime_obj.now() + \
+                datetime.timedelta(
+                seconds=self._random_obj.randint(1800, 7000))
 
     def __connect_car(self):
         self.__mean_erogation_power = self._random_obj.uniform(20, 80)
@@ -84,6 +90,6 @@ class ChargingStationSimulator(SensorSimulatorStrategy):
             },
             {
                 "type": "availability",
-                "value":  state 
+                "value":  state
             }
         ], self._sensor_name, self._coordinates)
