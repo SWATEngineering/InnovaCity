@@ -81,7 +81,7 @@
         },
         "showHeader": true
       },
-      "pluginVersion": "10.2.3",
+      "pluginVersion": "10.2.2",
       "targets": [
         {
           "builderOptions": {
@@ -158,9 +158,9 @@
               "table": "temperatures"
             }
           },
-          "pluginVersion": "4.0.0-beta",
+          "pluginVersion": "4.0.3",
           "queryType": "table",
-          "rawSql": "SELECT * FROM \"innovacity\".\"temperatures\" WHERE type IN (${tipo_sensore}) AND nome_sensore IN (${nome_sensore}) ORDER BY timestamp DESC LIMIT ${limit}",
+          "rawSql": "SELECT * \nFROM innovacity.temperatures\nWHERE type IN (${tipo_sensore}) \n  AND name IN (${nome_sensore}) \nUNION ALL\nSELECT * \nFROM innovacity.rain\nWHERE type IN (${tipo_sensore}) \n  AND name IN (${nome_sensore})\nUNION ALL\nSELECT * \nFROM innovacity.reservoirs\nWHERE type IN (${tipo_sensore}) \n  AND name IN (${nome_sensore})\nUNION ALL\nSELECT * \nFROM innovacity.air_pollution\nWHERE type IN (${tipo_sensore}) \n  AND name IN (${nome_sensore})\nUNION ALL\nSELECT * \nFROM innovacity.eco_zone\nWHERE type IN (${tipo_sensore}) \n  AND name IN (${nome_sensore})\nUNION ALL\nSELECT * \nFROM innovacity.humidity\nWHERE type IN (${tipo_sensore}) \n  AND name IN (${nome_sensore})\nORDER BY timestamp DESC \nLIMIT ${limit}",
           "refId": "A"
         }
       ],
@@ -169,7 +169,7 @@
     }
   ],
   "refresh": "10s",
-  "schemaVersion": 39,
+  "schemaVersion": 38,
   "tags": [],
   "templating": {
     "list": [
@@ -178,26 +178,24 @@
         "current": {
           "selected": true,
           "text": [
-            "Sensore di Temperatura 3",
-            "Sensore di Temperatura 5"
+            "reservoir1"
           ],
           "value": [
-            "Sensore di Temperatura 3",
-            "Sensore di Temperatura 5"
+            "reservoir1"
           ]
         },
         "datasource": {
           "type": "grafana-clickhouse-datasource",
           "uid": "PDEE91DDB90597936"
         },
-        "definition": "(SELECT nome_sensore AS __text, nome_sensore AS __value FROM innovacity.temperatures) UNION ALL (SELECT nome_sensore AS _text, nome_sensore AS __value FROM innovacity.rain) UNION ALL (SELECT nome_sensore AS __text, nome_sensore AS __value FROM innovacity.reservoirs)",
+        "definition": "(SELECT name AS __text, name AS __value FROM innovacity.temperatures) UNION ALL (SELECT name AS __text, name AS __value FROM innovacity.rain) UNION ALL (SELECT name AS __text, name AS __value FROM innovacity.reservoirs)  UNION ALL (SELECT name AS __text, name AS __value FROM innovacity.air_pollution) UNION ALL (SELECT name AS __text, name AS __value FROM innovacity.ebikes) UNION ALL (SELECT name AS __text, name AS __value FROM innovacity.eco_zone) UNION ALL (SELECT name AS __text, name AS __value FROM innovacity.humidity) UNION ALL (SELECT name AS __text, name AS __value FROM innovacity.parking) UNION ALL (SELECT name AS __text, name AS __value FROM innovacity.charging_station) UNION ALL (SELECT name AS __text, name AS __value FROM innovacity.traffic) UNION ALL (SELECT name AS __text, name AS __value FROM innovacity.wind)  ",
         "hide": 0,
         "includeAll": false,
         "label": "Nome Sensore",
         "multi": true,
         "name": "nome_sensore",
         "options": [],
-        "query": "(SELECT nome_sensore AS __text, nome_sensore AS __value FROM innovacity.temperatures) UNION ALL (SELECT nome_sensore AS _text, nome_sensore AS __value FROM innovacity.rain) UNION ALL (SELECT nome_sensore AS _text, nome_sensore AS __value FROM innovacity.reservoirs)",
+        "query": "(SELECT name AS __text, name AS __value FROM innovacity.temperatures) UNION ALL (SELECT name AS __text, name AS __value FROM innovacity.rain) UNION ALL (SELECT name AS __text, name AS __value FROM innovacity.reservoirs)  UNION ALL (SELECT name AS __text, name AS __value FROM innovacity.air_pollution) UNION ALL (SELECT name AS __text, name AS __value FROM innovacity.ebikes) UNION ALL (SELECT name AS __text, name AS __value FROM innovacity.eco_zone) UNION ALL (SELECT name AS __text, name AS __value FROM innovacity.humidity) UNION ALL (SELECT name AS __text, name AS __value FROM innovacity.parking) UNION ALL (SELECT name AS __text, name AS __value FROM innovacity.charging_station) UNION ALL (SELECT name AS __text, name AS __value FROM innovacity.traffic) UNION ALL (SELECT name AS __text, name AS __value FROM innovacity.wind)  ",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -251,28 +249,28 @@
         "current": {
           "selected": true,
           "text": [
-            "TemperatureSimulator"
+            "reservoir"
           ],
           "value": [
-            "TemperatureSimulator"
+            "reservoir"
           ]
         },
         "datasource": {
           "type": "grafana-clickhouse-datasource",
           "uid": "PDEE91DDB90597936"
         },
-        "definition": "(SELECT type AS __text, type AS __value FROM innovacity.temperatures) UNION ALL (SELECT type AS __text, type AS __value FROM innovacity.rain) UNION ALL (SELECT type AS __text, type AS __value FROM innovacity.reservoirs)",
+        "definition": "(SELECT type AS __text, type AS __value FROM innovacity.temperatures) UNION ALL (SELECT type AS __text, type AS __value FROM innovacity.rain) UNION ALL (SELECT type AS __text, type AS __value FROM innovacity.reservoirs)  UNION ALL \n(SELECT type AS __text, type AS __value FROM innovacity.air_pollution) \nUNION ALL \n(SELECT type AS __text, type AS __value FROM innovacity.ebikes) \nUNION ALL \n(SELECT type AS __text, type AS __value FROM innovacity.eco_zone) \nUNION ALL \n(SELECT type AS __text, type AS __value FROM innovacity.humidity) \nUNION ALL \n(SELECT type AS __text, type AS __value FROM innovacity.parking) \nUNION ALL \n(SELECT type AS __text, type AS __value FROM innovacity.charging_station) \nUNION ALL \n(SELECT type AS __text, type AS __value FROM innovacity.traffic) \nUNION ALL \n(SELECT type AS __text, type AS __value FROM innovacity.wind)",
         "hide": 0,
         "includeAll": false,
         "label": "Tipo Sensore",
         "multi": true,
         "name": "tipo_sensore",
         "options": [],
-        "query": "(SELECT type AS __text, type AS __value FROM innovacity.temperatures) UNION ALL (SELECT type AS __text, type AS __value FROM innovacity.rain) UNION ALL (SELECT type AS __text, type AS __value FROM innovacity.reservoirs)",
+        "query": "(SELECT type AS __text, type AS __value FROM innovacity.temperatures) UNION ALL (SELECT type AS __text, type AS __value FROM innovacity.rain) UNION ALL (SELECT type AS __text, type AS __value FROM innovacity.reservoirs)  UNION ALL \n(SELECT type AS __text, type AS __value FROM innovacity.air_pollution) \nUNION ALL \n(SELECT type AS __text, type AS __value FROM innovacity.ebikes) \nUNION ALL \n(SELECT type AS __text, type AS __value FROM innovacity.eco_zone) \nUNION ALL \n(SELECT type AS __text, type AS __value FROM innovacity.humidity) \nUNION ALL \n(SELECT type AS __text, type AS __value FROM innovacity.parking) \nUNION ALL \n(SELECT type AS __text, type AS __value FROM innovacity.charging_station) \nUNION ALL \n(SELECT type AS __text, type AS __value FROM innovacity.traffic) \nUNION ALL \n(SELECT type AS __text, type AS __value FROM innovacity.wind)",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
-        "sort": 0,
+        "sort": 1,
         "type": "query"
       }
     ]
@@ -291,6 +289,6 @@
   "timezone": "",
   "title": "Dati Grezzi",
   "uid": "f134d917-32f5-40b7-bcab-0c8ba22db22a",
-  "version": 12,
+  "version": 1,
   "weekStart": ""
 }
