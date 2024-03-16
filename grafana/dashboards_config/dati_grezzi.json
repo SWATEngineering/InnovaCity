@@ -46,6 +46,7 @@
             "inspect": false
           },
           "mappings": [],
+          "noValue": "NULL",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -60,7 +61,24 @@
             ]
           }
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byValue",
+              "options": {
+                "op": "eq",
+                "reducer": "allIsNull",
+                "value": 0
+              }
+            },
+            "properties": [
+              {
+                "id": "custom.hidden",
+                "value": true
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 16,
@@ -79,6 +97,7 @@
           ],
           "show": false
         },
+        "frameIndex": 0,
         "showHeader": true
       },
       "pluginVersion": "10.2.2",
@@ -160,11 +179,13 @@
           },
           "pluginVersion": "4.0.3",
           "queryType": "table",
-          "rawSql": "SELECT * \nFROM innovacity.temperatures\nWHERE type IN (${tipo_sensore}) \n  AND name IN (${nome_sensore}) \nUNION ALL\nSELECT * \nFROM innovacity.rain\nWHERE type IN (${tipo_sensore}) \n  AND name IN (${nome_sensore})\nUNION ALL\nSELECT * \nFROM innovacity.reservoirs\nWHERE type IN (${tipo_sensore}) \n  AND name IN (${nome_sensore})\nUNION ALL\nSELECT * \nFROM innovacity.air_pollution\nWHERE type IN (${tipo_sensore}) \n  AND name IN (${nome_sensore})\nUNION ALL\nSELECT * \nFROM innovacity.eco_zone\nWHERE type IN (${tipo_sensore}) \n  AND name IN (${nome_sensore})\nUNION ALL\nSELECT * \nFROM innovacity.humidity\nWHERE type IN (${tipo_sensore}) \n  AND name IN (${nome_sensore})\nORDER BY timestamp DESC \nLIMIT ${limit}",
+          "rawSql": "SELECT \n    name, \n    type,\n    timestamp, \n    value AS current, \n    NULL AS max_slots, \n    NULL AS erogation_power, \n    NULL AS availability, \n    NULL AS num_cars, \n    NULL AS traffic_level, \n    NULL AS avg_time, \n    NULL AS direction,\n    latitude,\n    longitude\nFROM innovacity.temperatures \nWHERE type IN (${tipo_sensore}) \n  AND name IN (${nome_sensore}) \nUNION ALL\nSELECT \n    name, \n    type,\n    timestamp, \n    value AS current, \n    NULL AS max_slots, \n    NULL AS erogation_power, \n    NULL AS availability, \n    NULL AS num_cars, \n    NULL AS traffic_level, \n    NULL AS avg_time, \n    NULL AS direction,\n    latitude,\n    longitude\nFROM innovacity.rain\nWHERE type IN (${tipo_sensore}) \n  AND name IN (${nome_sensore})\nUNION ALL\nSELECT \n    name, \n    type,\n    timestamp, \n    value AS current, \n    NULL AS max_slots, \n    NULL AS erogation_power, \n    NULL AS availability, \n    NULL AS num_cars, \n    NULL AS traffic_level, \n    NULL AS avg_time, \n    NULL AS direction,\n    latitude,\n    longitude\nFROM innovacity.reservoirs\nWHERE type IN (${tipo_sensore}) \n  AND name IN (${nome_sensore})\nUNION ALL\nSELECT \n    name, \n    type,\n    timestamp, \n    value AS current, \n    NULL AS max_slots, \n    NULL AS erogation_power, \n    NULL AS availability, \n    NULL AS num_cars, \n    NULL AS traffic_level, \n    NULL AS avg_time, \n    NULL AS direction,\n    latitude,\n    longitude\nFROM innovacity.air_pollution\nWHERE type IN (${tipo_sensore}) \n  AND name IN (${nome_sensore})\nUNION ALL\nSELECT \n    name, \n    type,\n    timestamp, \n    NULL AS current, \n    NULL AS max_slots, \n    erogation_power,\n    availability,\n    NULL AS num_cars, \n    NULL AS traffic_level, \n    NULL AS avg_time, \n    NULL AS direction,\n    latitude,\n    longitude\nFROM innovacity.charging_station\nWHERE type IN (${tipo_sensore}) \n  AND name IN (${nome_sensore})\nUNION ALL\nSELECT \n    name, \n    type,\n    timestamp, \n    NULL AS current, \n    NULL AS max_slots, \n    NULL AS erogation_power, \n    NULL AS availability, \n    num_cars,\n    traffic_level,\n    avg_time,\n    NULL AS direction,\n    latitude,\n    longitude\nFROM innovacity.traffic\nWHERE type IN (${tipo_sensore}) \n  AND name IN (${nome_sensore})\nUNION ALL\nSELECT \n    name, \n    type,\n    timestamp, \n    value AS current, \n    NULL AS max_slots, \n    NULL AS erogation_power, \n    NULL AS availability, \n    NULL AS num_cars, \n    NULL AS traffic_level, \n    NULL AS avg_time, \n    direction,\n    latitude,\n    longitude\nFROM innovacity.wind\nWHERE type IN (${tipo_sensore}) \n  AND name IN (${nome_sensore})\n\nUNION ALL\nSELECT \n    name, \n    type,\n    timestamp, \n    value AS current, \n    NULL AS max_slots, \n    NULL AS erogation_power, \n    NULL AS availability, \n    NULL AS num_cars, \n    NULL AS traffic_level, \n    NULL AS avg_time, \n    NULL AS direction,\n    latitude,\n    longitude\nFROM innovacity.humidity\nWHERE type IN (${tipo_sensore}) \n  AND name IN (${nome_sensore})\n\nUNION ALL\nSELECT \n    name, \n    type,\n    timestamp, \n    value AS current, \n    NULL AS max_slots, \n    NULL AS erogation_power, \n    NULL AS availability, \n    NULL AS num_cars, \n    NULL AS traffic_level, \n    NULL AS avg_time, \n    NULL AS direction,\n    latitude,\n    longitude\nFROM innovacity.ebikes\nWHERE type IN (${tipo_sensore}) \n  AND name IN (${nome_sensore})\n\nUNION ALL\nSELECT \n    name, \n    type,\n    timestamp, \n    value AS current, \n    NULL AS max_slots, \n    NULL AS erogation_power, \n    NULL AS availability, \n    NULL AS num_cars, \n    NULL AS traffic_level, \n    NULL AS avg_time, \n    NULL AS direction,\n    latitude,\n    longitude\nFROM innovacity.eco_zone\nWHERE type IN (${tipo_sensore}) \n  AND name IN (${nome_sensore})\nORDER BY timestamp DESC \nLIMIT ${limit}\n",
           "refId": "A"
         }
       ],
       "title": "Dati Grezzi",
+      "transformations": [],
+      "transparent": true,
       "type": "table"
     }
   ],
@@ -178,10 +199,10 @@
         "current": {
           "selected": true,
           "text": [
-            "reservoir1"
+            "wind1"
           ],
           "value": [
-            "reservoir1"
+            "wind1"
           ]
         },
         "datasource": {
@@ -204,7 +225,7 @@
       },
       {
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "100",
           "value": "100"
         },
@@ -249,10 +270,10 @@
         "current": {
           "selected": true,
           "text": [
-            "reservoir"
+            "wind"
           ],
           "value": [
-            "reservoir"
+            "wind"
           ]
         },
         "datasource": {
