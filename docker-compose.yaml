@@ -56,6 +56,7 @@ services:
       - "3000:3000"
     volumes:
       - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+      - ./grafana/provisioning/alerting:/etc/grafana/provisioning/alerting
       - ./grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
       - ./grafana/dashboards_config:/etc/grafana/dashboards_config
       - ./grafana/icons:/usr/share/grafana/public/img/icons/marker
