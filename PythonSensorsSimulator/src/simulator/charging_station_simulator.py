@@ -1,6 +1,7 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from random import Random
 from typing import Type
+
 
 from src.simulator.sensor_simulator_strategy import SensorSimulatorStrategy
 from src.utils.json_message_maker import json_message_maker
@@ -20,20 +21,19 @@ class ChargingStationSimulator(SensorSimulatorStrategy):
             self.__next_connection = self._datetime_obj.now()
         else:
             self.__next_connection = self._datetime_obj.now() + \
-                datetime.timedelta(
-                seconds=self._random_obj.randint(1800, 7000))
+                timedelta(seconds=self._random_obj.randint(1800, 7000))
 
     def __connect_car(self):
         self.__mean_erogation_power = self._random_obj.uniform(20, 80)
         # momento nel tempo in cui la macchina sarebbe carica al 100 percento
         random_duration = self._random_obj.randint(3600, 2 * 3600)
         self.__time_to_complete_charge = self._datetime_obj.now() + \
-            datetime.timedelta(seconds=random_duration)
+            timedelta(seconds=random_duration)
 
         # memento in cui la macchina viene effettivamente staccata dalla carica, puo essere mezzora prima o 2 ore dopo l'ora di effettivo completameno
         random_duration = self._random_obj.randint(-1800, 2 * 3600)
         self.__time_to_stop_charge = self.__time_to_complete_charge + \
-            datetime.timedelta(seconds=random_duration)
+            timedelta(seconds=random_duration)
         self.__in_use = True
 
     def __check_new_car(self):
@@ -45,7 +45,7 @@ class ChargingStationSimulator(SensorSimulatorStrategy):
         if self._datetime_obj.now() >= self.__time_to_stop_charge:
             # si fissa l'orario della prossima ricarica
             self.__next_connection = self._datetime_obj.now() + \
-                datetime.timedelta(
+                timedelta(
                     seconds=self._random_obj.randint(1800, 7000))
             self.__in_use = False
 
