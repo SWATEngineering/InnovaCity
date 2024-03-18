@@ -2,6 +2,11 @@ from src.simulator.sensor_simulator_strategy import SensorSimulatorStrategy
 from src.utils.sensor_types import SensorTypes
 from src.utils.json_message_maker import json_message_maker
 import math
+from datetime import datetime
+from random import Random
+from src.utils.coordinates import Coordinates
+from typing import Type
+
 
 class TrafficSensorSimulator(SensorSimulatorStrategy):
     __num_cars: int
@@ -13,8 +18,8 @@ class TrafficSensorSimulator(SensorSimulatorStrategy):
     __MEDIUM_THRESHOLD = 15
     __HIGH_THRESHOLD = 30
 
-    def __init__(self, **data):
-        super().__init__(**data)
+    def __init__(self, sensor_name: str, random_obj: Random, datetime_obj: Type[datetime], coordinates: Coordinates):
+        super().__init__(sensor_name, random_obj, datetime_obj, coordinates)
         self.__num_cars = self._random_obj.uniform(5, 10)
         self.__base_time = 5
 
@@ -22,7 +27,9 @@ class TrafficSensorSimulator(SensorSimulatorStrategy):
         self.__num_cars += self._random_obj.uniform(-0.5, 0.5)
 
     def _update_average_time(self):
-        self.__average_time = self.__base_time + self._random_obj.uniform(-0.5, 0.5)  + math.sqrt(self._get_datetime_factor() * self.__num_cars)
+        self.__average_time = self.__base_time + \
+            self._random_obj.uniform(-0.5, 0.5) + \
+            math.sqrt(self._get_datetime_factor() * self.__num_cars)
         # check if average time is too low
         if self.__average_time < self.__base_time:
             self.__average_time = self.__base_time
@@ -32,7 +39,7 @@ class TrafficSensorSimulator(SensorSimulatorStrategy):
         hour = self._datetime_obj.now().hour
         day = self._datetime_obj.now().weekday()
 
-        if 0 <= day <= 6 and  (6 <= hour <= 9 or 16 <= hour <= 19):     # rush hour
+        if 0 <= day <= 6 and (6 <= hour <= 9 or 16 <= hour <= 19):     # rush hour
             factor = 2
         elif 0 <= day <= 6 and (9 < hour < 16 or 19 < hour < 24):       # week day
             factor = 1.5
