@@ -1,5 +1,5 @@
 import math
-from datetime import datetime
+from datetime import datetime, timedelta
 from random import Random
 from typing import Type
 
@@ -11,60 +11,62 @@ from src.utils.coordinates import Coordinates
 
 class RainSensorSensorSimulator(SensorSimulatorStrategy):
     __rain_intensity: int
-    __rain_duration: int
-    __second_rain_left: int
-    # TODO
-    # frequency_in_s = wait_time_in_seconds dentro a SimulatorThread
-    # per il momento assumeremo che sia sempre di un secondo
-    __frequency_in_s = 1
+    __rain_start_time: datetime
+    __rain_end_time: datetime
 
     def __init__(self, sensor_name: str, random_obj: Random, datetime_obj: Type[datetime], coordinates: Coordinates):
         super().__init__(sensor_name, random_obj, datetime_obj, coordinates)
         self.__rain_intensity = 0
-        self.__rain_duration = 0
-        self.__second_rain_left = 0
+        # Start the rain between 0 and 1 hour from the simulator's start
+        self.__rain_start_time = self._datetime_obj.now(
+        ) + timedelta(seconds=self._random_obj.randint(0, 3600))
+        self.__rain_end_time = None
 
     def __generate_value(self) -> float:
         if self.__rain_intensity == 0:
             return 0.0
         else:
-            angle = ((self.__second_rain_left /
-                      self.__rain_duration)) * math.pi
+            time_difference = self._datetime_obj.now() - self.__rain_start_time
+            time_passed = time_difference.total_seconds()
+            total_time_datetime = self.__rain_end_time - self.__rain_start_time
+            total_time = total_time_datetime.total_seconds()
+            angle = (time_passed / total_time) * math.pi
             random_factor = 1.0 + self._random_obj.uniform(-0.1, 0.1)
-            return math.sin(angle) * self.__rain_intensity * random_factor
+            return math.sin(angle) * (self.__rain_intensity**2) * random_factor
 
-    def __try_initiate_rain(self):
-        if self._random_obj.random() < 1 / (3 * 3600 / self.__frequency_in_s):
-            self.__rain_intensity = self._random_obj.randint(1, 5)
-            self.__rain_duration = self._random_obj.randint(7200, 14000)
-            self.__second_rain_left = self.__rain_duration
+    def __initiate_rain(self):
+        self.__rain_intensity = self._random_obj.randint(1, 5)
+        # Set the initial rain duration
+        rain_duration = self._random_obj.randint(7200, 14000)
+        self.__rain_end_time = self.__rain_start_time + \
+            timedelta(seconds=rain_duration)
 
     def __stop_rain(self):
         self.__rain_intensity = 0
-        self.__rain_duration = 0
-        self.__second_rain_left = 0
+        self.__rain_end_time = None
+        not_rain_duration = self._random_obj.randint(14000, 28000)
+        self.__rain_start_time = self._datetime_obj.now(
+        ) + timedelta(seconds=not_rain_duration)
 
     def simulate(self) -> str:
-        now = self._datetime_obj.now()
+        if self.__rain_intensity == 0 and self._datetime_obj.now() >= self.__rain_start_time:
+            self.__initiate_rain()
 
-        if self.__rain_intensity == 0:
-            self.__try_initiate_rain()
-
-        self.__second_rain_left = self.__second_rain_left - self.__frequency_in_s
-        if self.__second_rain_left == 1:
+        if self.__rain_end_time and self._datetime_obj.now() >= self.__rain_end_time:
             self.__stop_rain()
 
         reading = {
             "type": "mm/mc",
             "value": round(self.__generate_value(), 2)
         }
+        print(self.__rain_intensity)
 
-        dato = json_message_maker(
+        data = json_message_maker(
             SensorTypes.RAIN,
-            str(now),
+            str(self._datetime_obj.now()),
             [reading],
             self._sensor_name,
             self._coordinates
         )
 
-        return dato
+        return data
