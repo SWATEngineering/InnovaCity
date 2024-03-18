@@ -1,8 +1,8 @@
 import json
 from datetime import datetime, timedelta
 from unittest.mock import patch
-from PythonSensorsSimulator.src.simulator.temperature_sensor_simulator import TemperatureSensorSensorSimulator
-from PythonSensorsSimulator.src.utils.coordinates import Coordinates
+from src.simulator.temperature_sensor_simulator import TemperatureSensorSensorSimulator
+from src.utils.coordinates import Coordinates
 from random import Random
 
 

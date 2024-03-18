@@ -62,17 +62,3 @@ class AirPollutionSensorSimulator(SensorSimulatorStrategy):
                                   self._coordinates)
 
         return dato
-
-    # def simulate_and_plot(self, num_iterations=100):
-        # pollution_values = []
-
-        # for _ in range(num_iterations):
-            # value = self._generate_air_pollution()
-            # pollution_values.append(value)
-
-        # plt.plot(range(1, num_iterations + 1), pollution_values, marker='o')
-        # plt.xlabel('Iterations')
-        # plt.ylabel('Air Pollution Value')
-        # plt.title('Air Pollution Simulation Results')
-        # plt.grid(True)
-        # plt.show()
