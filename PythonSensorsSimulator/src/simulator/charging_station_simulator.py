@@ -54,17 +54,18 @@ class ChargingStationSimulator(SensorSimulatorStrategy):
             return 0  # No charging if the column is not in use
         if self._datetime_obj.now() < self.__time_to_complete_charge:
             # voglio che più tempo manca alla carica più forte è l'erogazione
-            current_time = self._datetime_obj.now().time()
-            completion_time = self.__time_to_complete_charge.time()
+            current_time = self._datetime_obj.now()
+            completion_time = self.__time_to_complete_charge
             # il tempo mancante alla fine della carica
-            time_difference_seconds = (current_time.hour * 3600 + current_time.minute * 60 + current_time.second) - \
-                (completion_time.hour * 3600 +
-                 completion_time.minute * 60 + completion_time.second)
+            time_difference = current_time - completion_time
+            time_difference_seconds = time_difference.total_seconds()
 
             erogation = self.__mean_erogation_power + \
                 self._random_obj.uniform(-0.05, 0.05) - \
                 (self.__mean_erogation_power * 0.1) * \
                 time_difference_seconds / (2*3600)
+            print(self.__mean_erogation_power)
+            print(time_difference_seconds)
             # cosi ad intuito dovrebbe funzionare come si deve
         else:
             erogation = 0.1 + self._random_obj.uniform(-0.05, 0.05)
