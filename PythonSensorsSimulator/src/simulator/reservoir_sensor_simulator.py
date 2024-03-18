@@ -10,10 +10,11 @@ from src.utils.coordinates import Coordinates
 
 
 class ReservoirSensorSimulator(SensorSimulatorStrategy):
-    __reservoir_percentage: float = 95.0
+    __reservoir_percentage: float
 
     def __init__(self, sensor_name: str, random_obj: Random, datetime_obj: Type[datetime], coordinates: Coordinates):
         super().__init__(sensor_name, random_obj, datetime_obj, coordinates)
+        self.__reservoir_percentage = random_obj.uniform(75, 95)
 
     def _calculate_evaporation_rate(self) -> float:
 
