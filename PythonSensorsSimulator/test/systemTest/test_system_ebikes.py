@@ -6,16 +6,16 @@ import pytest
 import clickhouse_connect
 from src.utils.sensor_types import SensorTypes
 from src.writer.kafka_logic.adapter_producer import AdapterProducer
-from src.simulator.temperature_sensor_simulator import TemperatureSensorSensorSimulator
+from src.simulator.ebike_sensor_simulator import EBikeSensorSimulator
 from src.utils.coordinates import Coordinates
 
 
-class TestTemperature:
+class TestEbike:
     @pytest.fixture(scope="class")
     def setup_adapter_producer(self):
-        topic = SensorTypes.TEMPERATURE
         ip = "localhost"
         port = 9093
+        topic = SensorTypes.ELECTRIC_BICYCLE
         return AdapterProducer(topic, ip, port)
 
     @pytest.fixture(scope="class")
@@ -29,7 +29,7 @@ class TestTemperature:
         random_obj = Random()
         datetime_obj = datetime
         coordinates = Coordinates(0.0, 0.0)
-        return TemperatureSensorSensorSimulator(sensor_name, random_obj, datetime_obj, coordinates)
+        return EBikeSensorSimulator(sensor_name, random_obj, datetime_obj, coordinates)
 
     def setup_before_test(self, setup_adapter_producer, setup_simulator):
         adapter_producer = setup_adapter_producer
@@ -38,9 +38,7 @@ class TestTemperature:
         adapter_producer.produce(message, None)
 
     def teardown_after_test(self, setup_client):
-        query = "DELETE FROM innovacity.temperatures WHERE name = 'Test';"
-        setup_client.query(query)
-        query = "DELETE FROM innovacity.temperatures1m WHERE name = 'Test';"
+        query = "DELETE FROM innovacity.ebikes WHERE name = 'Test';"
         setup_client.query(query)
 
     def test_persistence(self, setup_client, setup_adapter_producer, setup_simulator):
@@ -48,7 +46,7 @@ class TestTemperature:
         timeout = 30
         start_time = time.time()
         while True:
-            query = "SELECT name FROM innovacity.temperatures WHERE name = 'Test';"
+            query = "SELECT name FROM innovacity.ebikes WHERE name = 'Test';"
             result = setup_client.query(query)
             if result.result_rows:
                 fetched_row = result.result_rows[0]
@@ -60,23 +58,4 @@ class TestTemperature:
                     "Timeout reached. No entry fetched from the database within the specified timeout period.")
             else:
                 time.sleep(1)  # Wait for 1 second before retrying
-        self.teardown_after_test(setup_client)
-
-    def test_persistence_aggregate(self,  setup_client, setup_adapter_producer, setup_simulator):
-        self.setup_before_test(setup_adapter_producer, setup_simulator)
-        timeout = 30
-        start_time = time.time()
-        while True:
-            query = "SELECT name FROM innovacity.temperatures1m  WHERE name = 'Test';"
-            result = setup_client.query(query)
-            if result.result_rows:
-                fetched_row = result.result_rows[0]
-                fetched_timestamp = fetched_row[0]
-                assert fetched_timestamp is not None, "No entry fetched from the database."
-                break
-            elif time.time() - start_time >= timeout:
-                pytest.fail(
-                    "Timeout reached. No entry fetched from the database within the specified timeout period.")
-            else:
-                time.sleep(1)
         self.teardown_after_test(setup_client)

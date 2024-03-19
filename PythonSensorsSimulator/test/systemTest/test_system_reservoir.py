@@ -11,7 +11,7 @@ from src.simulator.reservoir_sensor_simulator import ReservoirSensorSimulator
 from src.utils.coordinates import Coordinates
 
 
-class TestRain:
+class TestReservoir:
     @pytest.fixture(scope="class")
     def setup_adapter_producer(self):
         topic = SensorTypes.RESERVOIR

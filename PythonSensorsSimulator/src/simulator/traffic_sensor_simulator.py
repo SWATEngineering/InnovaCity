@@ -71,12 +71,12 @@ class TrafficSensorSimulator(SensorSimulatorStrategy):
         }
 
         reading2 = {
-            "type": "level",
+            "type": "Level",
             "value": self.__traffic_level
         }
 
         reading3 = {
-            "type": "km/h",
+            "type": "Minutes",
             "value": self.__average_time
         }
 
