@@ -80,6 +80,5 @@ def test_charging_station_simulation_power_range():
 
             # Extracting the power delivery value
             power = float(parsed_json['readings'][0]['value'])
-            print(power)
             # Assert that the power delivery is within the specified range
             assert min_power <= power <= max_power
