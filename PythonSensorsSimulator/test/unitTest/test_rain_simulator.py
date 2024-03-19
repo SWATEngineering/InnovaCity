@@ -80,6 +80,4 @@ def test_rain_sensor_simulation_intensity_range():
             # Extracting the rain intensity value
             intensity = float(parsed_json['readings'][0]['value'])
             # Assert that the rain intensity is within the specified range
-            print(intensity)
             assert min_rain <= intensity <= max_rain
-    assert False
