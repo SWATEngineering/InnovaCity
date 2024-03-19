@@ -1,5 +1,8 @@
 import numpy as np
-
+from datetime import datetime
+from random import Random
+from src.utils.coordinates import Coordinates
+from typing import Type
 from src.simulator.sensor_simulator_strategy import SensorSimulatorStrategy
 from src.utils.json_message_maker import json_message_maker
 from src.utils.sensor_types import SensorTypes
@@ -17,8 +20,8 @@ class ParkingSensorSimulator(SensorSimulatorStrategy):
     __noise_scale: float
     __daily_data: np.ndarray
 
-    def __init__(self, **data):
-        super().__init__(**data)
+    def __init__(self, sensor_name: str, random_obj: Random, datetime_obj: Type[datetime], coordinates: Coordinates):
+        super().__init__(sensor_name, random_obj, datetime_obj, coordinates)
         self.__max_cars = 100
         self.__peak1_mean_minutes = 12 * 60
         self.__peak1_weight = 0.6
@@ -38,9 +41,11 @@ class ParkingSensorSimulator(SensorSimulatorStrategy):
                  np.exp(-((minutes - self.__peak2_mean_minutes) / self.__peak2_std_dev_minutes) ** 2))
 
         # Adding random noise to the peaks
-        peak1 += self.__noise_scale * np.random.normal(0, 1, self.__total_minutes_in_day)
+        peak1 += self.__noise_scale * \
+            np.random.normal(0, 1, self.__total_minutes_in_day)
         peak1[peak1 < 0] = 0  # Set negative values to 0
-        peak2 += self.__noise_scale * np.random.normal(0, 1, self.__total_minutes_in_day)
+        peak2 += self.__noise_scale * \
+            np.random.normal(0, 1, self.__total_minutes_in_day)
         peak2[peak2 < 0] = 0  # Set negative values to 0
 
         total_cars = peak1 + peak2
