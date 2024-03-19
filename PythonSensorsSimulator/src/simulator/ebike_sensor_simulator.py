@@ -26,8 +26,8 @@ class EBikeSensorSimulator(SensorSimulatorStrategy):
     def __init__(self, sensor_name: str, random_obj: Random, datetime_obj: Type[datetime], coordinates: Coordinates):
         super().__init__(sensor_name, random_obj, datetime_obj, coordinates)
         self.__source = json.loads(self._coordinates.get_geo_json())['coordinates']
-        self._pick_destination()
-        self._get_route_coordinates()
+        self.__destination = self._pick_destination()
+        self.__route_coordinates = self._get_route_coordinates()
 
     def _charge_battery(self) -> None:
         if not self.__is_charging:
@@ -39,7 +39,7 @@ class EBikeSensorSimulator(SensorSimulatorStrategy):
         if self.__bike_percentage >= 99.99:
             self.__is_charging = False
 
-    def _pick_destination(self) -> None:
+    def _pick_destination(self) -> tuple:
         lat, lon = json.loads(self._coordinates.get_geo_json())['coordinates']
         API_KEY = os.environ.get("ORS_API_KEY")
 
@@ -63,9 +63,9 @@ class EBikeSensorSimulator(SensorSimulatorStrategy):
         new_destination = choice(coordinates)
         dest_longitude, dest_latitude = new_destination
 
-        self.__destination = (dest_latitude, dest_longitude)
+        return (dest_latitude, dest_longitude)
 
-    def _get_route_coordinates(self) -> None:
+    def _get_route_coordinates(self) -> list:
         source = self.__source
         dest = self.__destination
         start = "{},{}".format(source[1], source[0])
@@ -85,7 +85,7 @@ class EBikeSensorSimulator(SensorSimulatorStrategy):
         for coordinate in routejson['features'][0]['geometry']['coordinates']:
             coordinates.append((coordinate[0], coordinate[1]))
 
-        self.__route_coordinates = coordinates
+        return coordinates
 
     def _calculate_movement(self) -> None:
         if self.__last_coordinate_index == len(self.__route_coordinates) - 1:
@@ -140,7 +140,7 @@ class EBikeSensorSimulator(SensorSimulatorStrategy):
             "value": round(self.__bike_percentage, 2)
         }
 
-        if not self.__is_charging:
+        if not self.__last_timestamp is None and not self.__is_charging:
             self.__last_coordinate_index += 1
         self.__last_timestamp = self._datetime_obj.now()
 
