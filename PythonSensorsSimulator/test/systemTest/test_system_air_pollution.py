@@ -6,14 +6,14 @@ import pytest
 import clickhouse_connect
 from src.utils.sensor_types import SensorTypes
 from src.writer.kafka_logic.adapter_producer import AdapterProducer
-from src.simulator.temperature_sensor_simulator import TemperatureSensorSensorSimulator
+from src.simulator.air_pollution_simulator import AirPollutionSensorSimulator
 from src.utils.coordinates import Coordinates
 
 
-class TestTemperature:
+class TestAirPollutionSensor:
     @pytest.fixture(scope="class")
     def setup_adapter_producer(self):
-        topic = SensorTypes.TEMPERATURE
+        topic = SensorTypes.AIR_POLLUTION
         ip = "localhost"
         port = 9093
         return AdapterProducer(topic, ip, port)
@@ -29,7 +29,7 @@ class TestTemperature:
         random_obj = Random()
         datetime_obj = datetime
         coordinates = Coordinates(0.0, 0.0)
-        return TemperatureSensorSensorSimulator(sensor_name, random_obj, datetime_obj, coordinates)
+        return AirPollutionSensorSimulator(sensor_name, random_obj, datetime_obj, coordinates)
 
     def setup_before_test(self, setup_adapter_producer, setup_simulator):
         adapter_producer = setup_adapter_producer
@@ -38,9 +38,9 @@ class TestTemperature:
         adapter_producer.produce(message, None)
 
     def teardown_after_test(self, setup_client):
-        query = "DELETE FROM innovacity.temperatures WHERE name = 'Test';"
+        query = "DELETE FROM innovacity.air_pollution WHERE name = 'Test';"
         setup_client.query(query)
-        query = "DELETE FROM innovacity.temperatures1m WHERE name = 'Test';"
+        query = "DELETE FROM innovacity.air_pollution1m WHERE name = 'Test';"
         setup_client.query(query)
 
     def test_persistence(self, setup_client, setup_adapter_producer, setup_simulator):
@@ -48,7 +48,7 @@ class TestTemperature:
         timeout = 30
         start_time = time.time()
         while True:
-            query = "SELECT name FROM innovacity.temperatures WHERE name = 'Test';"
+            query = "SELECT name FROM innovacity.air_pollution WHERE name = 'Test';"
             result = setup_client.query(query)
             if result.result_rows:
                 fetched_row = result.result_rows[0]
@@ -64,10 +64,10 @@ class TestTemperature:
 
     def test_persistence_aggregate(self,  setup_client, setup_adapter_producer, setup_simulator):
         self.setup_before_test(setup_adapter_producer, setup_simulator)
-        timeout = 30
+        timeout = 30  # Timeout in seconds
         start_time = time.time()
         while True:
-            query = "SELECT name FROM innovacity.temperatures1m  WHERE name = 'Test';"
+            query = "SELECT name FROM innovacity.air_pollution1m WHERE name = 'Test';"
             result = setup_client.query(query)
             if result.result_rows:
                 fetched_row = result.result_rows[0]

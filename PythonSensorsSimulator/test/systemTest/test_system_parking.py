@@ -10,7 +10,7 @@ from src.simulator.parking_sensor_simulator import ParkingSensorSimulator
 from src.utils.coordinates import Coordinates
 
 
-class TestRain:
+class TestParking:
     @pytest.fixture(scope="class")
     def setup_adapter_producer(self):
         topic = SensorTypes.PARKING

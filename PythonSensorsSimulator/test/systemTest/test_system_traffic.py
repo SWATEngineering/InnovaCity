@@ -10,7 +10,7 @@ from src.simulator.traffic_sensor_simulator import TrafficSensorSimulator
 from src.utils.coordinates import Coordinates
 
 
-class TestRain:
+class TestTraffic:
     @pytest.fixture(scope="class")
     def setup_adapter_producer(self):
         topic = SensorTypes.TRAFFIC
