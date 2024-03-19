@@ -36,7 +36,7 @@ class WindSensorSensorSimulator(SensorSimulatorStrategy):
         decisor = self._random_obj.random() * (prob_dx + prob_sx)
 
         self.__speed = self.__speed - move_sx if prob_sx > decisor else self.__speed + move_dx
-        self.__direction += (self._random_obj.random() * 4 - 2) % 360
+        self.__direction = int(self._random_obj.random() * 4 - 2 + self.__direction) % 360
 
         return json_message_maker(SensorTypes.WIND, str(self._datetime_obj.now()), [
             {
