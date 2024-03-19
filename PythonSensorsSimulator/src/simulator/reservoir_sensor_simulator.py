@@ -14,8 +14,19 @@ class ReservoirSensorSimulator(SensorSimulatorStrategy):
 
     def __init__(self, sensor_name: str, random_obj: Random, datetime_obj: Type[datetime], coordinates: Coordinates):
         super().__init__(sensor_name, random_obj, datetime_obj, coordinates)
-        self.__reservoir_percentage = random_obj.uniform(75, 95)
-
+        self._set_reservoir_percentage()
+        
+    def _set_reservoir_percentage(self) -> None:
+        month = self._datetime_obj.now().month
+        if 3 <= month < 6:
+            self.__reservoir_percentage = self._random_obj.uniform(80, 85)
+        elif 6 <= month < 9:
+            self.__reservoir_percentage = self._random_obj.uniform(75, 80)
+        elif 9 <= month < 12:
+            self.__reservoir_percentage = self._random_obj.uniform(85, 90)
+        else:
+            self.__reservoir_percentage = self._random_obj.uniform(90, 95)
+        
     def _calculate_evaporation_rate(self) -> float:
 
         hour = self._datetime_obj.now().hour
