@@ -1,0 +1,89 @@
+************* Module simulator.wind_sensor_simulator
+PythonSensorsSimulator/src/simulator/wind_sensor_simulator.py:16:0: C0301: Line too long (117/100) (line-too-long)
+PythonSensorsSimulator/src/simulator/wind_sensor_simulator.py:16:4: W0246: Useless parent or super() delegation in method '__init__' (useless-parent-delegation)
+************* Module simulator.traffic_sensor_simulator
+PythonSensorsSimulator/src/simulator/traffic_sensor_simulator.py:25:0: C0301: Line too long (144/100) (line-too-long)
+PythonSensorsSimulator/src/simulator/traffic_sensor_simulator.py:76:0: C0301: Line too long (121/100) (line-too-long)
+PythonSensorsSimulator/src/simulator/traffic_sensor_simulator.py:79:0: C0304: Final newline missing (missing-final-newline)
+PythonSensorsSimulator/src/simulator/traffic_sensor_simulator.py:44:4: R1260: '_update_traffic_level' is too complex. The McCabe rating is 4 (too-complex)
+PythonSensorsSimulator/src/simulator/traffic_sensor_simulator.py:27:8: R1731: Consider using '__average_time = max(__average_time, __base_time)' instead of unnecessary if block (consider-using-max-builtin)
+************* Module simulator.ecozone_sensor_simulator
+PythonSensorsSimulator/src/simulator/ecozone_sensor_simulator.py:19:0: C0301: Line too long (117/100) (line-too-long)
+PythonSensorsSimulator/src/simulator/ecozone_sensor_simulator.py:28:0: C0301: Line too long (117/100) (line-too-long)
+PythonSensorsSimulator/src/simulator/ecozone_sensor_simulator.py:56:0: C0301: Line too long (120/100) (line-too-long)
+PythonSensorsSimulator/src/simulator/ecozone_sensor_simulator.py:6:0: W0611: Unused import math (unused-import)
+************* Module simulator.humidity_sensor_simulator
+PythonSensorsSimulator/src/simulator/humidity_sensor_simulator.py:13:0: C0301: Line too long (115/100) (line-too-long)
+PythonSensorsSimulator/src/simulator/humidity_sensor_simulator.py:17:0: C0301: Line too long (117/100) (line-too-long)
+PythonSensorsSimulator/src/simulator/humidity_sensor_simulator.py:36:0: C0301: Line too long (108/100) (line-too-long)
+PythonSensorsSimulator/src/simulator/humidity_sensor_simulator.py:53:0: C0301: Line too long (120/100) (line-too-long)
+PythonSensorsSimulator/src/simulator/humidity_sensor_simulator.py:21:4: R1260: '_calculate_ampiezza' is too complex. The McCabe rating is 4 (too-complex)
+PythonSensorsSimulator/src/simulator/humidity_sensor_simulator.py:24:8: R1705: Unnecessary "elif" after "return", remove the leading "el" from "elif" (no-else-return)
+************* Module simulator.air_pollution_simulator
+PythonSensorsSimulator/src/simulator/air_pollution_simulator.py:22:0: C0301: Line too long (117/100) (line-too-long)
+PythonSensorsSimulator/src/simulator/air_pollution_simulator.py:61:0: C0301: Line too long (106/100) (line-too-long)
+PythonSensorsSimulator/src/simulator/air_pollution_simulator.py:64:0: C0304: Final newline missing (missing-final-newline)
+PythonSensorsSimulator/src/simulator/air_pollution_simulator.py:27:4: R1260: '_get_seasonal_variation' is too complex. The McCabe rating is 5 (too-complex)
+PythonSensorsSimulator/src/simulator/air_pollution_simulator.py:29:8: R1705: Unnecessary "elif" after "return", remove the leading "el" from "elif" (no-else-return)
+PythonSensorsSimulator/src/simulator/air_pollution_simulator.py:40:12: R1722: Consider using 'sys.exit' instead (consider-using-sys-exit)
+PythonSensorsSimulator/src/simulator/air_pollution_simulator.py:27:4: R1710: Either all return statements in a function should return an expression, or none of them should. (inconsistent-return-statements)
+************* Module simulator.ebike_sensor_simulator
+PythonSensorsSimulator/src/simulator/ebike_sensor_simulator.py:26:0: C0301: Line too long (117/100) (line-too-long)
+PythonSensorsSimulator/src/simulator/ebike_sensor_simulator.py:52:0: C0301: Line too long (136/100) (line-too-long)
+PythonSensorsSimulator/src/simulator/ebike_sensor_simulator.py:54:0: C0301: Line too long (115/100) (line-too-long)
+PythonSensorsSimulator/src/simulator/ebike_sensor_simulator.py:75:0: C0301: Line too long (122/100) (line-too-long)
+PythonSensorsSimulator/src/simulator/ebike_sensor_simulator.py:77:0: C0301: Line too long (116/100) (line-too-long)
+PythonSensorsSimulator/src/simulator/ebike_sensor_simulator.py:147:0: C0301: Line too long (102/100) (line-too-long)
+PythonSensorsSimulator/src/simulator/ebike_sensor_simulator.py:113:4: R1260: '_measure_battery_level' is too complex. The McCabe rating is 4 (too-complex)
+PythonSensorsSimulator/src/simulator/ebike_sensor_simulator.py:15:0: R0902: Too many instance attributes (8/6) (too-many-instance-attributes)
+PythonSensorsSimulator/src/simulator/ebike_sensor_simulator.py:55:19: W3101: Missing timeout argument for method 'requests.get' can cause your program to hang indefinitely (missing-timeout)
+PythonSensorsSimulator/src/simulator/ebike_sensor_simulator.py:78:15: W3101: Missing timeout argument for method 'requests.get' can cause your program to hang indefinitely (missing-timeout)
+PythonSensorsSimulator/src/simulator/ebike_sensor_simulator.py:117:45: C0121: Comparison 'self.__is_charging == True' should be 'self.__is_charging is True' if checking for the singleton value True, or 'bool(self.__is_charging)' if testing for truthiness (singleton-comparison)
+PythonSensorsSimulator/src/simulator/ebike_sensor_simulator.py:99:8: W0201: Attribute '_coordinates' defined outside __init__ (attribute-defined-outside-init)
+************* Module simulator.temperature_sensor_simulator
+PythonSensorsSimulator/src/simulator/temperature_sensor_simulator.py:16:0: C0301: Line too long (117/100) (line-too-long)
+PythonSensorsSimulator/src/simulator/temperature_sensor_simulator.py:38:0: C0301: Line too long (117/100) (line-too-long)
+************* Module simulator.rain_sensor_simulator
+PythonSensorsSimulator/src/simulator/rain_sensor_simulator.py:21:0: C0301: Line too long (117/100) (line-too-long)
+PythonSensorsSimulator/src/simulator/rain_sensor_simulator.py:16:5: W0511: TODO (fixme)
+PythonSensorsSimulator/src/simulator/rain_sensor_simulator.py:28:8: R1705: Unnecessary "else" after "return", remove the "else" and de-indent the code inside it (no-else-return)
+************* Module simulator.parking_sensor_simulator
+PythonSensorsSimulator/src/simulator/parking_sensor_simulator.py:36:0: C0301: Line too long (102/100) (line-too-long)
+PythonSensorsSimulator/src/simulator/parking_sensor_simulator.py:38:0: C0301: Line too long (102/100) (line-too-long)
+PythonSensorsSimulator/src/simulator/parking_sensor_simulator.py:80:0: C0301: Line too long (105/100) (line-too-long)
+PythonSensorsSimulator/src/simulator/parking_sensor_simulator.py:8:0: R0902: Too many instance attributes (10/6) (too-many-instance-attributes)
+************* Module simulator.reservoir_sensor_simulator
+PythonSensorsSimulator/src/simulator/reservoir_sensor_simulator.py:15:0: C0301: Line too long (117/100) (line-too-long)
+PythonSensorsSimulator/src/simulator/reservoir_sensor_simulator.py:60:0: C0301: Line too long (102/100) (line-too-long)
+PythonSensorsSimulator/src/simulator/reservoir_sensor_simulator.py:18:4: R1260: '_calculate_evaporation_rate' is too complex. The McCabe rating is 4 (too-complex)
+PythonSensorsSimulator/src/simulator/reservoir_sensor_simulator.py:15:4: W0246: Useless parent or super() delegation in method '__init__' (useless-parent-delegation)
+PythonSensorsSimulator/src/simulator/reservoir_sensor_simulator.py:40:8: W0612: Unused variable 'hour' (unused-variable)
+PythonSensorsSimulator/src/simulator/reservoir_sensor_simulator.py:41:8: W0612: Unused variable 'month' (unused-variable)
+************* Module simulator.charging_station_simulator
+PythonSensorsSimulator/src/simulator/charging_station_simulator.py:14:0: C0301: Line too long (117/100) (line-too-long)
+PythonSensorsSimulator/src/simulator/charging_station_simulator.py:33:0: C0301: Line too long (150/100) (line-too-long)
+PythonSensorsSimulator/src/simulator/charging_station_simulator.py:60:0: C0301: Line too long (117/100) (line-too-long)
+PythonSensorsSimulator/src/simulator/charging_station_simulator.py:79:0: C0325: Unnecessary parens after 'if' keyword (superfluous-parens)
+PythonSensorsSimulator/src/simulator/charging_station_simulator.py:27:8: W0201: Attribute '__mean_erogation_power' defined outside __init__ (attribute-defined-outside-init)
+************* Module simulator.sensor_simulator_strategy
+PythonSensorsSimulator/src/simulator/sensor_simulator_strategy.py:15:0: C0301: Line too long (117/100) (line-too-long)
+************* Module simulator_utils.kafka_simulator_executor_factory
+PythonSensorsSimulator/src/simulator_utils/kafka_simulator_executor_factory.py:26:0: C0301: Line too long (111/100) (line-too-long)
+PythonSensorsSimulator/src/simulator_utils/kafka_simulator_executor_factory.py:33:0: C0301: Line too long (116/100) (line-too-long)
+************* Module simulator_utils.simulator_thread
+PythonSensorsSimulator/src/simulator_utils/simulator_thread.py:14:0: C0301: Line too long (110/100) (line-too-long)
+************* Module simulator_utils.simulator_executor_factory_template
+PythonSensorsSimulator/src/simulator_utils/simulator_executor_factory_template.py:23:0: C0301: Line too long (111/100) (line-too-long)
+************* Module simulator_utils.stdout_simulator_executor_factory
+PythonSensorsSimulator/src/simulator_utils/stdout_simulator_executor_factory.py:23:0: C0301: Line too long (111/100) (line-too-long)
+PythonSensorsSimulator/src/simulator_utils/stdout_simulator_executor_factory.py:24:0: C0301: Line too long (116/100) (line-too-long)
+PythonSensorsSimulator/src/simulator_utils/stdout_simulator_executor_factory.py:20:4: W0246: Useless parent or super() delegation in method '__init__' (useless-parent-delegation)
+PythonSensorsSimulator/src/simulator_utils/stdout_simulator_executor_factory.py:16:0: R0903: Too few public methods (0/1) (too-few-public-methods)
+************* Module utils.sensor_types
+PythonSensorsSimulator/src/utils/sensor_types.py:17:0: C0305: Trailing newlines (trailing-newlines)
+************* Module utils.json_message_maker
+PythonSensorsSimulator/src/utils/json_message_maker.py:8:0: C0301: Line too long (121/100) (line-too-long)
+
+------------------------------------------------------------------
+Your code has been rated at 9.04/10 (previous run: 9.04/10, +0.00)
+
