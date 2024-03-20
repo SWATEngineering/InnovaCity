@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   kafka:
@@ -9,7 +9,8 @@ services:
       - "9093:9093"
     environment:
       KAFKA_CFG_NODE_ID: 1
-      KAFKA_CFG_LISTENERS: CONTROLLER://kafka:19092,INTERNAL://kafka:9092,EXTERNAL://localhost:9093
+      KAFKA_CFG_LISTENERS: CONTROLLER://:19092,INTERNAL://:9092,EXTERNAL://:9093
+      ALLOW_PLAINTEXT_LISTENER: yes
       KAFKA_CFG_ADVERTISED_LISTENERS: INTERNAL://kafka:9092,EXTERNAL://localhost:9093
       KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
       KAFKA_CFG_CONTROLLER_QUORUM_VOTERS: 1@kafka:19092
@@ -17,8 +18,10 @@ services:
       KAFKA_CFG_INTER_BROKER_LISTENER_NAME: INTERNAL
       KAFKA_CFG_PROCESS_ROLES: broker,controller
       KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE: true
+      KAFKA_CFG_MESSAGE_MAX_BYTES: 1048588
     healthcheck:
-      test: [ "CMD", "kafka-topics.sh", "--bootstrap-server", "kafka:9092", "--list"]
+      test:
+        ["CMD", "kafka-topics.sh", "--bootstrap-server", "kafka:9092", "--list"]
       interval: 5s
       timeout: 30s
       retries: 10
@@ -39,6 +42,7 @@ services:
       # crea un utente che ha il controllo degli accessi e la gestione degli accounts
       CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT: 1
     volumes:
+      - ./clickhouse/timezone.xml:/etc/clickhouse-server/config.d/timezone.xml
       - ./InitDB:/docker-entrypoint-initdb.d
     depends_on:
       kafka:
@@ -49,17 +53,20 @@ services:
     image: grafana/grafana-oss:10.3.0
     container_name: grafana
     ports:
-     - "3000:3000"
+      - "3000:3000"
     volumes:
       - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+      - ./grafana/provisioning/alerting:/etc/grafana/provisioning/alerting
       - ./grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
       - ./grafana/dashboards_config:/etc/grafana/dashboards_config
+      - ./grafana/icons:/usr/share/grafana/public/img/icons/marker
+      - ./grafana/grafana.ini:/etc/grafana/grafana.ini
     environment:
-        GF_INSTALL_PLUGINS: grafana-clickhouse-datasource
-        GF_SECURITY_ADMIN_USER: ic_admin
-        GF_SECURITY_ADMIN_PASSWORD: ic_admin
-        # Commentato per rendere semplice lo sviluppo
-        # GF_AUTH_ORG_ROLE: viewer
+      GF_INSTALL_PLUGINS: grafana-clickhouse-datasource
+      GF_SECURITY_ADMIN_USER: ic_admin
+      GF_SECURITY_ADMIN_PASSWORD: ic_admin
+      # Commentato per rendere semplice lo sviluppo
+      # GF_AUTH_ORG_ROLE: viewer
     profiles: ["dev", "prod"]
 
   simulators:
@@ -68,6 +75,7 @@ services:
     hostname: simulators
     container_name: simulators
     environment:
+      TZ: "Europe/Rome"
       KAFKA_HOST: "kafka"
       KAFKA_PORT: "9092"
     depends_on:

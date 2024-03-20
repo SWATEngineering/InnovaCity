@@ -1,0 +1,5 @@
+annotated-types==0.6.0
+confluent-kafka==2.3.0
+typing_extensions==4.10.0
+numpy==1.26.4
+requests==2.31.0
