@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   kafka:
-    image: "bitnami/kafka:latest"
+    image: "bitnami/kafka:3.7.0"
     container_name: kafka
     hostname: kafka
     ports:
@@ -25,7 +25,7 @@ services:
     profiles: ["dev", "prod"]
 
   clickhouse:
-    image: clickhouse/clickhouse-server
+    image: clickhouse/clickhouse-server:24-alpine
     hostname: clickhouse
     container_name: clickhouse
     ports:
@@ -46,7 +46,7 @@ services:
     profiles: ["dev", "prod"]
 
   grafana:
-    image: grafana/grafana-oss
+    image: grafana/grafana-oss:10.3.0
     container_name: grafana
     ports:
      - "3000:3000"
