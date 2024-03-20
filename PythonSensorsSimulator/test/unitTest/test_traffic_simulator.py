@@ -76,34 +76,32 @@ def test_traffic_sensor_simulation_level():
             # Assert that the traffic level in the possible cases
             assert Level in traffic_levels
 
-def test_traffic_sensor_simulation_level():
+def test_traffic_sensor_update_traffic_level():
     # Creating an instance of Coordinates
     coordinates = Coordinates(45.398214, 11.851271)
 
     # Mocking random object
     random_obj = Random()
 
-    # Defining possible traffic levels
-    traffic_levels = ["LOW", "MEDIUM", "HIGH", "BLOCKED"]
+    # Creating an instance of the TrafficSensorSimulator with coordinates
+    sensor_simulator = TrafficSensorSimulator("traffic1", random_obj, datetime, coordinates)
 
-    # Running the simulation 1000 times with different timestamps
-    for i in range(24*60):
-        # Creating a timestamp for the simulation
-        simulated_datetime = datetime(2024, 3, 18, 0, 0, 0) + timedelta(minutes=i)
-        with patch('datetime.datetime') as mocked_datetime:
-            mocked_datetime.now.return_value = simulated_datetime
+    # Testing when __num_cars <= LOW_THRESHOLD
+    sensor_simulator._TrafficSensorSimulator__num_cars = TrafficSensorSimulator._TrafficSensorSimulator__LOW_THRESHOLD - 1
+    sensor_simulator._update_traffic_level()
+    assert sensor_simulator._TrafficSensorSimulator__traffic_level == "LOW"
 
-            # Creating an instance of the TrafficSensorSimulator with coordinates
-            sensor_simulator = TrafficSensorSimulator("traffic1", random_obj, mocked_datetime, coordinates)
+    # Testing when LOW_THRESHOLD < __num_cars <= MEDIUM_THRESHOLD
+    sensor_simulator._TrafficSensorSimulator__num_cars = TrafficSensorSimulator._TrafficSensorSimulator__MEDIUM_THRESHOLD
+    sensor_simulator._update_traffic_level()
+    assert sensor_simulator._TrafficSensorSimulator__traffic_level == "MEDIUM"
 
-            # Running the simulate method to get the JSON data
-            json_data = sensor_simulator.simulate()
+    # Testing when MEDIUM_THRESHOLD < __num_cars <= HIGH_THRESHOLD
+    sensor_simulator._TrafficSensorSimulator__num_cars = TrafficSensorSimulator._TrafficSensorSimulator__HIGH_THRESHOLD
+    sensor_simulator._update_traffic_level()
+    assert sensor_simulator._TrafficSensorSimulator__traffic_level == "HIGH"
 
-            # Parsing the JSON data
-            parsed_json = json.loads(json_data)
-
-            # Extracting the Traffic value
-            Level = parsed_json['readings'][1]['value']
-
-            # Assert that the traffic level in the possible cases
-            assert Level in traffic_levels
+    # Testing when __num_cars > HIGH_THRESHOLD
+    sensor_simulator._TrafficSensorSimulator__num_cars = TrafficSensorSimulator._TrafficSensorSimulator__HIGH_THRESHOLD + 1
+    sensor_simulator._update_traffic_level()
+    assert sensor_simulator._TrafficSensorSimulator__traffic_level == "BLOCKED"
