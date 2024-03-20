@@ -28,7 +28,7 @@ class TestEbike:
         sensor_name = "Test"
         random_obj = Random()
         datetime_obj = datetime
-        coordinates = Coordinates(0.0, 0.0)
+        coordinates = Coordinates(45.398214, 11.851271)
         return EBikeSensorSimulator(sensor_name, random_obj, datetime_obj, coordinates)
 
     def setup_before_test(self, setup_adapter_producer, setup_simulator):
