@@ -1,16 +1,14 @@
 import json
 from datetime import datetime, timedelta
-from unittest.mock import patch
+from unittest.mock import patch, MagicMock
 from src.simulator.ebike_sensor_simulator import EBikeSensorSimulator
 from src.utils.coordinates import Coordinates
 from random import Random
 
 def test_pick_destination():
-    # Creating an instance of Coordinates
-    coordinates = Coordinates(45.398214, 11.851271)
-
     # Mocking datetime object
     with patch('datetime.datetime') as mocked_datetime:
+        # Set a specific datetime for consistency
         spring_datetime = datetime(2024, 3, 18, 17, 0, 0, 447663)
         mocked_datetime.now.return_value = spring_datetime
 
@@ -21,18 +19,33 @@ def test_pick_destination():
             # Mocking the environment variable
             with patch.dict('os.environ', {'ORS_API_KEY': 'placeholder_api_key'}):
                 
-                # Mocking _pick_destination to return predetermined destination coordinates
-                with patch.object(EBikeSensorSimulator, '_pick_destination') as mock_pick_destination:
-                    mock_pick_destination.return_value = (45.4, 11.86)
+                # Mocking _get_route_coordinates to return predetermined route coordinates
+                with patch.object(EBikeSensorSimulator, '_get_route_coordinates') as mock_get_route_coordinates:
+                    mock_get_route_coordinates.return_value = [(45.398214, 11.851271), (45.399742, 11.874538), (45.4, 11.86)]
 
-                    # Creating the sensor simulator object
-                    sensor_simulator = EBikeSensorSimulator("electric_bicycle1", random_obj, mocked_datetime, coordinates)
+                    # Mocking the API response text
+                    mock_response_text = '{"features": [{"type": "Feature", "geometry": {"type": "Point", "coordinates": [11.940297, 45.384984]}}]}'
 
-                    # Call the _pick_destination method
-                    destination = sensor_simulator._pick_destination()
+                    # Mocking the API response object
+                    mock_response = MagicMock()
+                    mock_response.text = mock_response_text
+                    
+                    # Mocking the response.json() method to return the expected data
+                    mock_response.json.return_value = {"features": [{"type": "Feature", "geometry": {"type": "Point", "coordinates": [11.940297, 45.384984]}}]}
 
-                    # Assert that the destination is as expected
-                    assert destination == (45.4, 11.86)
+                    with patch('requests.get') as mock_get:
+                        # Configure the mock to return the mock response object
+                        mock_get.return_value = mock_response
+
+                        # Creating the sensor simulator object
+                        coordinates = Coordinates(45.398214, 11.851271)
+                        sensor_simulator = EBikeSensorSimulator("electric_bicycle1", random_obj, mocked_datetime, coordinates)
+
+                        # Call the _pick_destination method
+                        destination = sensor_simulator._pick_destination()
+
+                        # Assert that the destination is as expected
+                        assert destination == (45.384984, 11.940297) 
 
 def test_get_route_coordinates():
     # Creating an instance of Coordinates
@@ -47,23 +60,36 @@ def test_get_route_coordinates():
         with patch.object(Random, 'random', return_value=0):
             random_obj = Random()
 
-            # Mocking _pick_destination to return predetermined destination coordinates
-            with patch.object(EBikeSensorSimulator, '_pick_destination') as mock_pick_destination:
-                mock_pick_destination.return_value = (45.4, 11.86)
+            # Mocking the environment variable
+            with patch.dict('os.environ', {'ORS_API_KEY': 'placeholder_api_key'}):
 
-                # Mocking _get_route_coordinates to return predetermined route coordinates
-                with patch.object(EBikeSensorSimulator, '_get_route_coordinates') as mock_get_route_coordinates:
-                    mock_get_route_coordinates.return_value = [(45.398214, 11.851271), (45.399742, 11.874538), (45.4, 11.86)]
+                # Mocking _pick_destination to return predetermined destination coordinates
+                with patch.object(EBikeSensorSimulator, '_pick_destination') as mock_pick_destination:
+                    mock_pick_destination.return_value = (45.4, 11.86)
 
-                    # Creating the sensor simulator object
-                    sensor_simulator = EBikeSensorSimulator("electric_bicycle1", random_obj, mocked_datetime, coordinates)
+                    # Mocking the API response text
+                    mock_response_text = '{"features": [{"geometry": {"coordinates": [[11.851271, 45.398214], [11.853, 45.399], [11.855, 45.4]]}}]}'
 
-                    # Call the _get_route_coordinates method
-                    route_coordinates = sensor_simulator._get_route_coordinates()
+                    # Mocking the API response object
+                    mock_response = MagicMock()
+                    mock_response.text = mock_response_text
+                    
+                    # Mocking the response.json() method to return the expected data
+                    mock_response.json.return_value = {"features": [{"geometry": {"coordinates": [[11.851271, 45.398214], [11.853, 45.399], [11.855, 45.4]]}}]}
 
-                    # Assert that the route coordinates are as expected
-                    assert route_coordinates == [(45.398214, 11.851271), (45.399742, 11.874538), (45.4, 11.86)]
+                    with patch('requests.get') as mock_get:
+                        # Configure the mock to return the mock response object
+                        mock_get.return_value = mock_response
 
+                        # Creating the sensor simulator object
+                        coordinates = Coordinates(45.398214, 11.851271)
+                        sensor_simulator = EBikeSensorSimulator("electric_bicycle1", random_obj, mocked_datetime, coordinates)
+
+                        # Call the _pick_destination method
+                        coordinates = sensor_simulator._get_route_coordinates()
+
+                        # Assert that the destination is as expected
+                        assert coordinates == [(11.851271, 45.398214), (11.853, 45.399), (11.855, 45.4)]
 
 def test_ebike_sensor_simulation():
     # Creating an instance of Coordinates
@@ -112,7 +138,6 @@ def test_ebike_sensor_simulation():
                                 "location": {"type": "Point", "coordinates": expected_coordinates}
                             }
                             assert parsed_json == expected_json
-
 
 def test_ebike_sensor_simulation_range():
     # Creating an instance of Coordinates

@@ -57,13 +57,11 @@ class EBikeSensorSimulator(SensorSimulatorStrategy):
         headers = {'Accept': 'application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8'}
         response = requests.get(url, headers=headers)
         #print("Calling API ...:", response.status_code, response.reason)
-
+        
         data = response.json()
         coordinates = []
-        for feature in data.get('features', []):
-            geometry = feature.get('geometry', {})
-            if 'coordinates' in geometry:
-                coordinates.append(geometry['coordinates'])
+        for feature in data['features']:
+            coordinates.append(feature['geometry']['coordinates'])
 
         new_destination = choice(coordinates)
         dest_longitude, dest_latitude = new_destination
@@ -89,10 +87,9 @@ class EBikeSensorSimulator(SensorSimulatorStrategy):
 
         routejson = json.loads(response_text)
         coordinates = []
-        for feature in routejson.get('features', []):
-            geometry = feature.get('geometry', {})
-            for coordinate in geometry.get('coordinates', []):
-                coordinates.append((coordinate[0], coordinate[1]))
+
+        for coordinate in routejson['features'][0]['geometry']['coordinates']:
+            coordinates.append((coordinate[0], coordinate[1]))
 
         return coordinates
 
