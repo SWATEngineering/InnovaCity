@@ -28,18 +28,16 @@ def test_reservoir_sensor_simulation():
         80, 0, 0.1, 0.1,
         75, 0, 0.1, 0.1,
         85, 0, 0.1, 0.1,
-        90, 0, 0.1, 0.1,]):
-        
+        90, 0, 0.1, 0.1, ]):
         with patch.object(Random, 'randint', return_value=0):
             random_obj = Random(123)
 
             # Mocking datetime object to return the specific datetime
             with patch('datetime.datetime') as mocked_datetime:
-                
                 # Spring simulation
                 mocked_datetime.now.return_value = spring_datetime
                 sensor_simulator = ReservoirSensorSimulator("reservoir1", random_obj, mocked_datetime,
-                                                                    coordinates)
+                                                            coordinates)
                 # Running the simulate method to get the JSON data
                 json_data = sensor_simulator.simulate()
                 parsed_json = json.loads(json_data)
@@ -53,12 +51,12 @@ def test_reservoir_sensor_simulation():
                 }
                 # Assert that the parsed JSON matches the expected JSON
                 assert parsed_json == expected_json
-                
+
                 # Summer simulation
                 mocked_datetime.now.return_value = summer_datetime
                 sensor_simulator = ReservoirSensorSimulator("reservoir1", random_obj, mocked_datetime,
-                                                                    coordinates)
-                
+                                                            coordinates)
+
                 json_data = sensor_simulator.simulate()
                 parsed_json = json.loads(json_data)
 
@@ -71,11 +69,11 @@ def test_reservoir_sensor_simulation():
                 }
 
                 assert parsed_json == expected_json
-                
+
                 # Fall simulation
                 mocked_datetime.now.return_value = autumn_datetime
                 sensor_simulator = ReservoirSensorSimulator("reservoir1", random_obj, mocked_datetime,
-                                                                    coordinates)
+                                                            coordinates)
 
                 json_data = sensor_simulator.simulate()
                 parsed_json = json.loads(json_data)
@@ -89,11 +87,11 @@ def test_reservoir_sensor_simulation():
                 }
 
                 assert parsed_json == expected_json
-                
+
                 # Winter simulation
                 mocked_datetime.now.return_value = winter_datetime
                 sensor_simulator = ReservoirSensorSimulator("reservoir1", random_obj, mocked_datetime,
-                                                                    coordinates)
+                                                            coordinates)
 
                 json_data = sensor_simulator.simulate()
                 parsed_json = json.loads(json_data)
@@ -119,7 +117,7 @@ def test_reservoir_sensor_simulation_range():
     # Defining the range for reservoir level
     min_level = 0
     max_level = 100
-    
+
     # Defining specific datetimes for each season
     # Spring: March 18, 2024
     spring_datetime = datetime(2024, 3, 18)
@@ -132,7 +130,7 @@ def test_reservoir_sensor_simulation_range():
 
     # Winter: December 18, 2024
     winter_datetime = datetime(2024, 12, 18)
-    
+
     # List of seasonal datetimes
     seasonal_datetimes = [spring_datetime, summer_datetime, autumn_datetime, winter_datetime]
 
@@ -145,7 +143,7 @@ def test_reservoir_sensor_simulation_range():
                 mocked_datetime.now.return_value = season_datetime + timedelta(minutes=minute)
 
                 sensor_simulator = ReservoirSensorSimulator("reservoir1", random_obj, mocked_datetime,
-                                                                    coordinates)
+                                                            coordinates)
 
                 # Running the simulate method to get the JSON data
                 json_data = sensor_simulator.simulate()
