@@ -42,6 +42,9 @@ class EBikeSensorSimulator(SensorSimulatorStrategy):
     def _pick_destination(self) -> tuple:
         lat, lon = json.loads(self._coordinates.get_geo_json())['coordinates']
         API_KEY = os.environ.get("ORS_API_KEY")
+        
+        if API_KEY is None:
+            raise ValueError("API key not set")
 
         lat_range = 0.1
         lon_range = 0.1
@@ -57,8 +60,10 @@ class EBikeSensorSimulator(SensorSimulatorStrategy):
 
         data = response.json()
         coordinates = []
-        for feature in data['features']:
-            coordinates.append(feature['geometry']['coordinates'])
+        for feature in data.get('features', []):
+            geometry = feature.get('geometry', {})
+            if 'coordinates' in geometry:
+                coordinates.append(geometry['coordinates'])
 
         new_destination = choice(coordinates)
         dest_longitude, dest_latitude = new_destination
@@ -71,6 +76,9 @@ class EBikeSensorSimulator(SensorSimulatorStrategy):
         start = "{},{}".format(source[1], source[0])
         end = "{},{}".format(dest[1], dest[0])
         API_KEY = os.environ.get("ORS_API_KEY")
+        
+        if API_KEY is None:
+            raise ValueError("API key not set")
 
         url = f"https://api.openrouteservice.org/v2/directions/cycling-electric?api_key={API_KEY}&start={start}&end={end}"
 
@@ -81,9 +89,10 @@ class EBikeSensorSimulator(SensorSimulatorStrategy):
 
         routejson = json.loads(response_text)
         coordinates = []
-
-        for coordinate in routejson['features'][0]['geometry']['coordinates']:
-            coordinates.append((coordinate[0], coordinate[1]))
+        for feature in routejson.get('features', []):
+            geometry = feature.get('geometry', {})
+            for coordinate in geometry.get('coordinates', []):
+                coordinates.append((coordinate[0], coordinate[1]))
 
         return coordinates
 

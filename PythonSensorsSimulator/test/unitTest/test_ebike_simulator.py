@@ -18,18 +18,21 @@ def test_pick_destination():
         with patch.object(Random, 'random', return_value=0):
             random_obj = Random()
 
-            # Mocking _pick_destination to return predetermined destination coordinates
-            with patch.object(EBikeSensorSimulator, '_pick_destination') as mock_pick_destination:
-                mock_pick_destination.return_value = (45.4, 11.86)
+            # Mocking the environment variable
+            with patch.dict('os.environ', {'ORS_API_KEY': 'placeholder_api_key'}):
+                
+                # Mocking _pick_destination to return predetermined destination coordinates
+                with patch.object(EBikeSensorSimulator, '_pick_destination') as mock_pick_destination:
+                    mock_pick_destination.return_value = (45.4, 11.86)
 
-                # Creating the sensor simulator object
-                sensor_simulator = EBikeSensorSimulator("electric_bicycle1", random_obj, mocked_datetime, coordinates)
+                    # Creating the sensor simulator object
+                    sensor_simulator = EBikeSensorSimulator("electric_bicycle1", random_obj, mocked_datetime, coordinates)
 
-                # Call the _pick_destination method
-                destination = sensor_simulator._pick_destination()
+                    # Call the _pick_destination method
+                    destination = sensor_simulator._pick_destination()
 
-                # Assert that the destination is as expected
-                assert destination == (45.4, 11.86)
+                    # Assert that the destination is as expected
+                    assert destination == (45.4, 11.86)
 
 def test_get_route_coordinates():
     # Creating an instance of Coordinates
