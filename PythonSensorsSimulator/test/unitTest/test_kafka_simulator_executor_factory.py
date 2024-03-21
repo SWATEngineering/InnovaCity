@@ -100,6 +100,14 @@ class TestStdoutSimulatorExecutorFactory(unittest.TestCase):
       "type": "Point",
       "coordinates": [45.398214, 11.851271]
     }
+  },
+  {
+    "type": "traffic",
+    "wait_time_in_seconds": 2,
+    "location": {
+      "type": "Point",
+      "coordinates": [45.398214, 11.851271]
+    }
   }
 ]
         '''
