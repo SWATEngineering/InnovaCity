@@ -410,7 +410,7 @@
           },
           "pluginVersion": "4.0.3",
           "queryType": "table",
-          "rawSql": "SELECT\n    name,\n    timestamp,\n    value\nFROM\n    innovacity.eco_zone\nWHERE\n    (timestamp >= $__fromTime AND timestamp <= $__toTime) \n    AND value > 40\nORDER BY value DESC;",
+          "rawSql": "SELECT\n    name,\n    timestamp,\n    value\nFROM\n    innovacity.temperatures\nWHERE\n    (timestamp >= $__fromTime AND timestamp <= $__toTime) \n    AND value > 40 \nORDER BY value DESC;",
           "refId": "A"
         }
       ],
