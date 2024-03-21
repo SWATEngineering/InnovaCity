@@ -64,8 +64,6 @@ class ChargingStationSimulator(SensorSimulatorStrategy):
                 self._random_obj.uniform(-0.05, 0.05) - \
                 (self.__mean_erogation_power * 0.1) * \
                 time_difference_seconds / (2*3600)
-            print(self.__mean_erogation_power)
-            print(time_difference_seconds)
             # cosi ad intuito dovrebbe funzionare come si deve
         else:
             erogation = 0.1 + self._random_obj.uniform(-0.05, 0.05)
