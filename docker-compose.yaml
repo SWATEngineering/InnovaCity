@@ -65,6 +65,7 @@ services:
       GF_INSTALL_PLUGINS: grafana-clickhouse-datasource
       GF_SECURITY_ADMIN_USER: ic_admin
       GF_SECURITY_ADMIN_PASSWORD: ic_admin
+      DISCORD_WEBHOOK_URL: ${DISCORD_WEBHOOK_URL}
       # Commentato per rendere semplice lo sviluppo
       # GF_AUTH_ORG_ROLE: viewer
     profiles: ["dev", "prod"]

@@ -9,10 +9,10 @@
                     "uid": "ab3c0ead-6c04-4c33-8207-11dbc352e5a6",
                     "type": "discord",
                     "settings": {
-                        "url": "https://discord.com/api/webhooks/1215941525112885288/CKXfegh5c6lKkfgAvosuxuaxGLkbv0GQMoGo6ZKIxXmuujRPlsflJoue4KeYX81rsKb8",
+                        "url": "${DISCORD_WEBHOOK_URL}",
                         "use_discord_username": false
                     },
-                    "disableResolveMessage": false
+                    "disableResolveMessage": true
                 }
             ]
         }

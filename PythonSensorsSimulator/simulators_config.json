@@ -4,7 +4,10 @@
     "wait_time_in_seconds": 1.5,
     "location": {
       "type": "Point",
-      "coordinates": [45.398214, 11.851271]
+      "coordinates": [
+        45.398214,
+        11.851271
+      ]
     }
   },
   {
@@ -12,7 +15,10 @@
     "wait_time_in_seconds": 1.0,
     "location": {
       "type": "Point",
-      "coordinates": [45.398214, 11.851271]
+      "coordinates": [
+        45.398214,
+        11.851271
+      ]
     }
   },
   {
@@ -20,7 +26,10 @@
     "wait_time_in_seconds": 1.5,
     "location": {
       "type": "Point",
-      "coordinates": [45.398214, 11.851271]
+      "coordinates": [
+        45.398214,
+        11.851271
+      ]
     }
   },
   {
@@ -28,7 +37,10 @@
     "wait_time_in_seconds": 1.0,
     "location": {
       "type": "Point",
-      "coordinates": [45.398214, 11.851271]
+      "coordinates": [
+        45.398214,
+        11.851271
+      ]
     }
   },
   {
@@ -36,7 +48,32 @@
     "wait_time_in_seconds": 1.0,
     "location": {
       "type": "Point",
-      "coordinates": [45.398214, 11.851271]
+      "coordinates": [
+        45.398214,
+        11.851271
+      ]
+    }
+  },
+  {
+    "type": "temperature",
+    "wait_time_in_seconds": 1.0,
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        45.398214,
+        11.851271
+      ]
+    }
+  },
+  {
+    "type": "temperature",
+    "wait_time_in_seconds": 1.0,
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        45.398214,
+        11.851271
+      ]
     }
   },
   {
@@ -44,7 +81,10 @@
     "wait_time_in_seconds": 0.5,
     "location": {
       "type": "Point",
-      "coordinates": [45.398256, 11.851272]
+      "coordinates": [
+        45.398256,
+        11.851272
+      ]
     }
   },
   {
@@ -63,15 +103,21 @@
     "wait_time_in_seconds": 60.0,
     "location": {
       "type": "Point",
-      "coordinates": [45.409471, 11.875172]
+      "coordinates": [
+        45.409471,
+        11.875172
+      ]
     }
-  }, 
+  },
   {
     "type": "charging_station",
     "wait_time_in_seconds": 2,
     "location": {
       "type": "Point",
-      "coordinates": [45.398214, 11.851271]
+      "coordinates": [
+        45.398214,
+        11.851271
+      ]
     }
   },
   {
@@ -79,7 +125,10 @@
     "wait_time_in_seconds": 2,
     "location": {
       "type": "Point",
-      "coordinates": [45.398214, 11.851271]
+      "coordinates": [
+        45.398214,
+        11.851271
+      ]
     }
   },
   {
@@ -87,7 +136,10 @@
     "wait_time_in_seconds": 1,
     "location": {
       "type": "Point",
-      "coordinates": [45.398214, 11.851271]
+      "coordinates": [
+        45.398214,
+        11.851271
+      ]
     }
   }
 ]
