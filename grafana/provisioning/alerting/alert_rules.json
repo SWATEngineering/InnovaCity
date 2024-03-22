@@ -4,133 +4,57 @@
         {
             "orgId": 1,
             "name": "Air Pollution",
-            "folder": "Allerte IC",
-            "interval": "10s",
+            "folder": "Allerte InnovaCity",
+            "interval": "5m",
             "rules": [
                 {
-                    "uid": "e882c645-f79d-4c51-9cb2-ed98b2301363",
-                    "title": "Air Pollution Over 80𝜇𝑔/𝑚3",
+                    "uid": "e6e7a38c-4853-45a2-8b43-28973534dc99",
+                    "title": "Air Pollution Over 80 𝜇𝑔/𝑚3",
                     "condition": "B",
                     "data": [
                         {
                             "refId": "A",
-                            "queryType": "table",
+                            "queryType": "timeseries",
                             "relativeTimeRange": {
-                                "from": 600,
+                                "from": 300,
                                 "to": 0
                             },
                             "datasourceUid": "PDEE91DDB90597936",
                             "model": {
                                 "builderOptions": {
-                                    "aggregates": [
-                                        {
-                                            "aggregateType": "any",
-                                            "alias": "",
-                                            "column": "value"
-                                        },
-                                        {
-                                            "aggregateType": "max",
-                                            "alias": "",
-                                            "column": "timestamp"
-                                        }
-                                    ],
-                                    "columns": [
-                                        {
-                                            "custom": false,
-                                            "name": "value",
-                                            "type": "Float64"
-                                        },
-                                        {
-                                            "custom": false,
-                                            "name": "name",
-                                            "type": "String"
-                                        },
-                                        {
-                                            "custom": false,
-                                            "name": "timestamp",
-                                            "type": "DateTime64(3)"
-                                        }
-                                    ],
-                                    "database": "innovacity",
-                                    "filters": [],
-                                    "groupBy": [
-                                        "name"
-                                    ],
+                                    "columns": [],
+                                    "database": "default",
                                     "limit": 1000,
                                     "meta": {},
-                                    "mode": "aggregate",
-                                    "orderBy": [
-                                        {
-                                            "dir": "ASC",
-                                            "name": "timestamp"
-                                        }
-                                    ],
+                                    "mode": "list",
                                     "queryType": "table",
-                                    "table": "temperatures"
+                                    "table": ""
                                 },
                                 "editorType": "sql",
-                                "format": 1,
+                                "format": 0,
                                 "intervalMs": 1000,
                                 "maxDataPoints": 43200,
                                 "meta": {
                                     "builderOptions": {
-                                        "aggregates": [
-                                            {
-                                                "aggregateType": "any",
-                                                "alias": "",
-                                                "column": "value"
-                                            },
-                                            {
-                                                "aggregateType": "max",
-                                                "alias": "",
-                                                "column": "timestamp"
-                                            }
-                                        ],
-                                        "columns": [
-                                            {
-                                                "custom": false,
-                                                "name": "value",
-                                                "type": "Float64"
-                                            },
-                                            {
-                                                "custom": false,
-                                                "name": "name",
-                                                "type": "String"
-                                            },
-                                            {
-                                                "custom": false,
-                                                "name": "timestamp",
-                                                "type": "DateTime64(3)"
-                                            }
-                                        ],
-                                        "database": "innovacity",
-                                        "filters": [],
-                                        "groupBy": [
-                                            "name"
-                                        ],
+                                        "columns": [],
+                                        "database": "default",
                                         "limit": 1000,
                                         "meta": {},
-                                        "mode": "aggregate",
-                                        "orderBy": [
-                                            {
-                                                "dir": "ASC",
-                                                "name": "timestamp"
-                                            }
-                                        ],
+                                        "mode": "list",
                                         "queryType": "table",
-                                        "table": "temperatures"
+                                        "table": ""
                                     }
                                 },
                                 "pluginVersion": "4.0.3",
-                                "queryType": "table",
-                                "rawSql": "SELECT \n    latest_values.name,\n    latest_values.value\nFROM \n    (\n        SELECT \n            name,\n            value,\n            timestamp\n        FROM \n            innovacity.air_pollution\n        ORDER BY \n            timestamp DESC\n        LIMIT 1 BY name\n    ) AS latest_values\nLIMIT 1000\n",
+                                "queryType": "timeseries",
+                                "rawSql": "SELECT\r\n    name AS sensor_name,\r\n    MAX(value) AS \"air pollution\"\r\nFROM\r\n    innovacity.air_pollution\r\nWHERE $__timeFilter(timestamp)\r\nGROUP BY\r\n    name\r\n\r\n",
                                 "refId": "A"
                             }
                         },
                         {
                             "refId": "B",
                             "relativeTimeRange": {
-                                "from": 600,
+                                "from": 300,
                                 "to": 0
                             },
                             "datasourceUid": "__expr__",
@@ -170,11 +94,11 @@
                             }
                         }
                     ],
-                    "noDataState": "NoData",
-                    "execErrState": "Error",
-                    "for": "20s",
+                    "noDataState": "OK",
+                    "execErrState": "OK",
+                    "for": "0s",
                     "annotations": {
-                        "summary": "amount of air pollution for sensor: {{ index $labels \"name\" }} has exceeded  80 𝜇𝑔/𝑚3 for the last 30 seconds: {{ index $values \"A\" }} 𝜇𝑔/𝑚3"
+                        "summary": "Amount of air pollution for sensor {{ index $labels \"name\" }} has exceeded 80 𝜇𝑔/𝑚3: {{ index $values \"A\" }}  𝜇𝑔/𝑚3"
                     },
                     "labels": {},
                     "isPaused": false
@@ -184,133 +108,57 @@
         {
             "orgId": 1,
             "name": "Eco Zone",
-            "folder": "Allerte IC",
-            "interval": "10s",
+            "folder": "Allerte InnovaCity",
+            "interval": "5m",
             "rules": [
                 {
-                    "uid": "a86ed13c-868c-441b-a1a8-b121499e5c43",
-                    "title": "Eco Zone Filling Percentage over 80",
+                    "uid": "f36e7d5c-8da1-45dc-b775-48f150724106",
+                    "title": "Eco Zone Filling Percentage over 80%",
                     "condition": "B",
                     "data": [
                         {
                             "refId": "A",
-                            "queryType": "table",
+                            "queryType": "timeseries",
                             "relativeTimeRange": {
-                                "from": 600,
+                                "from": 300,
                                 "to": 0
                             },
                             "datasourceUid": "PDEE91DDB90597936",
                             "model": {
                                 "builderOptions": {
-                                    "aggregates": [
-                                        {
-                                            "aggregateType": "any",
-                                            "alias": "",
-                                            "column": "value"
-                                        },
-                                        {
-                                            "aggregateType": "max",
-                                            "alias": "",
-                                            "column": "timestamp"
-                                        }
-                                    ],
-                                    "columns": [
-                                        {
-                                            "custom": false,
-                                            "name": "value",
-                                            "type": "Float64"
-                                        },
-                                        {
-                                            "custom": false,
-                                            "name": "name",
-                                            "type": "String"
-                                        },
-                                        {
-                                            "custom": false,
-                                            "name": "timestamp",
-                                            "type": "DateTime64(3)"
-                                        }
-                                    ],
-                                    "database": "innovacity",
-                                    "filters": [],
-                                    "groupBy": [
-                                        "name"
-                                    ],
+                                    "columns": [],
+                                    "database": "default",
                                     "limit": 1000,
                                     "meta": {},
-                                    "mode": "aggregate",
-                                    "orderBy": [
-                                        {
-                                            "dir": "ASC",
-                                            "name": "timestamp"
-                                        }
-                                    ],
+                                    "mode": "list",
                                     "queryType": "table",
-                                    "table": "temperatures"
+                                    "table": ""
                                 },
                                 "editorType": "sql",
-                                "format": 1,
+                                "format": 0,
                                 "intervalMs": 1000,
                                 "maxDataPoints": 43200,
                                 "meta": {
                                     "builderOptions": {
-                                        "aggregates": [
-                                            {
-                                                "aggregateType": "any",
-                                                "alias": "",
-                                                "column": "value"
-                                            },
-                                            {
-                                                "aggregateType": "max",
-                                                "alias": "",
-                                                "column": "timestamp"
-                                            }
-                                        ],
-                                        "columns": [
-                                            {
-                                                "custom": false,
-                                                "name": "value",
-                                                "type": "Float64"
-                                            },
-                                            {
-                                                "custom": false,
-                                                "name": "name",
-                                                "type": "String"
-                                            },
-                                            {
-                                                "custom": false,
-                                                "name": "timestamp",
-                                                "type": "DateTime64(3)"
-                                            }
-                                        ],
-                                        "database": "innovacity",
-                                        "filters": [],
-                                        "groupBy": [
-                                            "name"
-                                        ],
+                                        "columns": [],
+                                        "database": "default",
                                         "limit": 1000,
                                         "meta": {},
-                                        "mode": "aggregate",
-                                        "orderBy": [
-                                            {
-                                                "dir": "ASC",
-                                                "name": "timestamp"
-                                            }
-                                        ],
+                                        "mode": "list",
                                         "queryType": "table",
-                                        "table": "temperatures"
+                                        "table": ""
                                     }
                                 },
                                 "pluginVersion": "4.0.3",
-                                "queryType": "table",
-                                "rawSql": "SELECT \n    latest_values.name,\n    latest_values.value\nFROM \n    (\n        SELECT \n            name,\n            value,\n            timestamp\n        FROM \n            innovacity.eco_zone\n        ORDER BY \n            timestamp DESC\n        LIMIT 1 BY name\n    ) AS latest_values\nLIMIT 1000\n",
+                                "queryType": "timeseries",
+                                "rawSql": "SELECT\r\n    name AS sensor_name,\r\n    MAX(value) AS max_percentage\r\nFROM\r\n    innovacity.eco_zone\r\nWHERE $__timeFilter(timestamp)\r\nGROUP BY\r\n    name\r\n\r\n",
                                 "refId": "A"
                             }
                         },
                         {
                             "refId": "B",
                             "relativeTimeRange": {
-                                "from": 600,
+                                "from": 300,
                                 "to": 0
                             },
                             "datasourceUid": "__expr__",
@@ -319,7 +167,7 @@
                                     {
                                         "evaluator": {
                                             "params": [
-                                                70
+                                                80
                                             ],
                                             "type": "gt"
                                         },
@@ -350,11 +198,11 @@
                             }
                         }
                     ],
-                    "noDataState": "NoData",
-                    "execErrState": "Error",
-                    "for": "20s",
+                    "noDataState": "OK",
+                    "execErrState": "OK",
+                    "for": "0s",
                     "annotations": {
-                        "summary": "filling percentage for sensor: {{ index $labels \"name\" }} has exceeded  70% for the last 30 seconds: {{ index $values \"A\" }} %"
+                        "summary": "Percentage of reservoir capacity for sensor: {{ index $labels \"name\" }} has exceeded 80% in the last five minute:{{ index $values \"A\" }} %"
                     },
                     "labels": {},
                     "isPaused": false
@@ -364,133 +212,57 @@
         {
             "orgId": 1,
             "name": "Rain",
-            "folder": "Allerte IC",
-            "interval": "10s",
+            "folder": "Allerte InnovaCity",
+            "interval": "5m",
             "rules": [
                 {
-                    "uid": "dee8ed9b-de7a-4dc5-a1b6-54d15257ce6b",
+                    "uid": "c334538b-457a-416b-ab4b-61a414d21a8c",
                     "title": "Rain over 50 mm/m2",
                     "condition": "B",
                     "data": [
                         {
                             "refId": "A",
-                            "queryType": "table",
+                            "queryType": "timeseries",
                             "relativeTimeRange": {
-                                "from": 600,
+                                "from": 300,
                                 "to": 0
                             },
                             "datasourceUid": "PDEE91DDB90597936",
                             "model": {
                                 "builderOptions": {
-                                    "aggregates": [
-                                        {
-                                            "aggregateType": "any",
-                                            "alias": "",
-                                            "column": "value"
-                                        },
-                                        {
-                                            "aggregateType": "max",
-                                            "alias": "",
-                                            "column": "timestamp"
-                                        }
-                                    ],
-                                    "columns": [
-                                        {
-                                            "custom": false,
-                                            "name": "value",
-                                            "type": "Float64"
-                                        },
-                                        {
-                                            "custom": false,
-                                            "name": "name",
-                                            "type": "String"
-                                        },
-                                        {
-                                            "custom": false,
-                                            "name": "timestamp",
-                                            "type": "DateTime64(3)"
-                                        }
-                                    ],
-                                    "database": "innovacity",
-                                    "filters": [],
-                                    "groupBy": [
-                                        "name"
-                                    ],
+                                    "columns": [],
+                                    "database": "default",
                                     "limit": 1000,
                                     "meta": {},
-                                    "mode": "aggregate",
-                                    "orderBy": [
-                                        {
-                                            "dir": "ASC",
-                                            "name": "timestamp"
-                                        }
-                                    ],
+                                    "mode": "list",
                                     "queryType": "table",
-                                    "table": "temperatures"
+                                    "table": ""
                                 },
                                 "editorType": "sql",
-                                "format": 1,
+                                "format": 0,
                                 "intervalMs": 1000,
                                 "maxDataPoints": 43200,
                                 "meta": {
                                     "builderOptions": {
-                                        "aggregates": [
-                                            {
-                                                "aggregateType": "any",
-                                                "alias": "",
-                                                "column": "value"
-                                            },
-                                            {
-                                                "aggregateType": "max",
-                                                "alias": "",
-                                                "column": "timestamp"
-                                            }
-                                        ],
-                                        "columns": [
-                                            {
-                                                "custom": false,
-                                                "name": "value",
-                                                "type": "Float64"
-                                            },
-                                            {
-                                                "custom": false,
-                                                "name": "name",
-                                                "type": "String"
-                                            },
-                                            {
-                                                "custom": false,
-                                                "name": "timestamp",
-                                                "type": "DateTime64(3)"
-                                            }
-                                        ],
-                                        "database": "innovacity",
-                                        "filters": [],
-                                        "groupBy": [
-                                            "name"
-                                        ],
+                                        "columns": [],
+                                        "database": "default",
                                         "limit": 1000,
                                         "meta": {},
-                                        "mode": "aggregate",
-                                        "orderBy": [
-                                            {
-                                                "dir": "ASC",
-                                                "name": "timestamp"
-                                            }
-                                        ],
+                                        "mode": "list",
                                         "queryType": "table",
-                                        "table": "temperatures"
+                                        "table": ""
                                     }
                                 },
                                 "pluginVersion": "4.0.3",
-                                "queryType": "table",
-                                "rawSql": "SELECT \n    latest_values.name,\n    latest_values.value\nFROM \n    (\n        SELECT \n            name,\n            value,\n            timestamp\n        FROM \n            innovacity.rain\n        ORDER BY \n            timestamp DESC\n        LIMIT 1 BY name\n    ) AS latest_values\nLIMIT 1000\n",
+                                "queryType": "timeseries",
+                                "rawSql": "SELECT\r\n    name AS sensor_name,\r\n    MAX(value) AS max_percentage\r\nFROM\r\n    innovacity.rain\r\nWHERE $__timeFilter(timestamp)\r\nGROUP BY\r\n    name\r\n\r\n",
                                 "refId": "A"
                             }
                         },
                         {
                             "refId": "B",
                             "relativeTimeRange": {
-                                "from": 600,
+                                "from": 300,
                                 "to": 0
                             },
                             "datasourceUid": "__expr__",
@@ -499,7 +271,7 @@
                                     {
                                         "evaluator": {
                                             "params": [
-                                                50
+                                                40
                                             ],
                                             "type": "gt"
                                         },
@@ -530,11 +302,11 @@
                             }
                         }
                     ],
-                    "noDataState": "Alerting",
-                    "execErrState": "Error",
-                    "for": "20s",
+                    "noDataState": "OK",
+                    "execErrState": "OK",
+                    "for": "0s",
                     "annotations": {
-                        "summary": "amount of rainfall for sensor: {{ index $labels \"name\" }} has exceeded  50 millimeters per square meter for the last 30 seconds: {{ index $values \"A\" }} mm/m2"
+                        "summary": "Amount of rainfall for sensor {{ index $labels \"name\" }} has exceeded  50 millimeters per square meter : {{ index $values \"A\" }}"
                     },
                     "labels": {},
                     "isPaused": false
@@ -544,133 +316,57 @@
         {
             "orgId": 1,
             "name": "Reservoirs",
-            "folder": "Allerte IC",
-            "interval": "10s",
+            "folder": "Allerte InnovaCity",
+            "interval": "5m",
             "rules": [
                 {
-                    "uid": "bfd5e442-15e5-4fb6-9729-34a5dd8af25c",
+                    "uid": "fe69c082-d88b-4c57-820b-5a33425daa88",
                     "title": "Reservoir Capacity Percentage over 70%",
                     "condition": "B",
                     "data": [
                         {
                             "refId": "A",
-                            "queryType": "table",
+                            "queryType": "timeseries",
                             "relativeTimeRange": {
-                                "from": 600,
+                                "from": 300,
                                 "to": 0
                             },
                             "datasourceUid": "PDEE91DDB90597936",
                             "model": {
                                 "builderOptions": {
-                                    "aggregates": [
-                                        {
-                                            "aggregateType": "any",
-                                            "alias": "",
-                                            "column": "value"
-                                        },
-                                        {
-                                            "aggregateType": "max",
-                                            "alias": "",
-                                            "column": "timestamp"
-                                        }
-                                    ],
-                                    "columns": [
-                                        {
-                                            "custom": false,
-                                            "name": "value",
-                                            "type": "Float64"
-                                        },
-                                        {
-                                            "custom": false,
-                                            "name": "name",
-                                            "type": "String"
-                                        },
-                                        {
-                                            "custom": false,
-                                            "name": "timestamp",
-                                            "type": "DateTime64(3)"
-                                        }
-                                    ],
-                                    "database": "innovacity",
-                                    "filters": [],
-                                    "groupBy": [
-                                        "name"
-                                    ],
+                                    "columns": [],
+                                    "database": "default",
                                     "limit": 1000,
                                     "meta": {},
-                                    "mode": "aggregate",
-                                    "orderBy": [
-                                        {
-                                            "dir": "ASC",
-                                            "name": "timestamp"
-                                        }
-                                    ],
+                                    "mode": "list",
                                     "queryType": "table",
-                                    "table": "temperatures"
+                                    "table": ""
                                 },
                                 "editorType": "sql",
-                                "format": 1,
+                                "format": 0,
                                 "intervalMs": 1000,
                                 "maxDataPoints": 43200,
                                 "meta": {
                                     "builderOptions": {
-                                        "aggregates": [
-                                            {
-                                                "aggregateType": "any",
-                                                "alias": "",
-                                                "column": "value"
-                                            },
-                                            {
-                                                "aggregateType": "max",
-                                                "alias": "",
-                                                "column": "timestamp"
-                                            }
-                                        ],
-                                        "columns": [
-                                            {
-                                                "custom": false,
-                                                "name": "value",
-                                                "type": "Float64"
-                                            },
-                                            {
-                                                "custom": false,
-                                                "name": "name",
-                                                "type": "String"
-                                            },
-                                            {
-                                                "custom": false,
-                                                "name": "timestamp",
-                                                "type": "DateTime64(3)"
-                                            }
-                                        ],
-                                        "database": "innovacity",
-                                        "filters": [],
-                                        "groupBy": [
-                                            "name"
-                                        ],
+                                        "columns": [],
+                                        "database": "default",
                                         "limit": 1000,
                                         "meta": {},
-                                        "mode": "aggregate",
-                                        "orderBy": [
-                                            {
-                                                "dir": "ASC",
-                                                "name": "timestamp"
-                                            }
-                                        ],
+                                        "mode": "list",
                                         "queryType": "table",
-                                        "table": "temperatures"
+                                        "table": ""
                                     }
                                 },
                                 "pluginVersion": "4.0.3",
-                                "queryType": "table",
-                                "rawSql": "SELECT \n    latest_values.name,\n    latest_values.value\nFROM \n    (\n        SELECT \n            name,\n            value,\n            timestamp\n        FROM \n            innovacity.reservoirs\n        ORDER BY \n            timestamp DESC\n        LIMIT 1 BY name\n    ) AS latest_values\nLIMIT 1000\n",
+                                "queryType": "timeseries",
+                                "rawSql": "SELECT\r\n    name AS sensor_name,\r\n    MAX(value) AS max_percentage\r\nFROM\r\n    innovacity.reservoirs\r\nWHERE $__timeFilter(timestamp)\r\nGROUP BY\r\n    name\r\n\r\n",
                                 "refId": "A"
                             }
                         },
                         {
                             "refId": "B",
                             "relativeTimeRange": {
-                                "from": 600,
+                                "from": 300,
                                 "to": 0
                             },
                             "datasourceUid": "__expr__",
@@ -679,7 +375,7 @@
                                     {
                                         "evaluator": {
                                             "params": [
-                                                18
+                                                40
                                             ],
                                             "type": "gt"
                                         },
@@ -710,11 +406,11 @@
                             }
                         }
                     ],
-                    "noDataState": "NoData",
-                    "execErrState": "Error",
-                    "for": "20s",
+                    "noDataState": "OK",
+                    "execErrState": "OK",
+                    "for": "0s",
                     "annotations": {
-                        "summary": "percentage of reservoir capacity for sensor: {{ index $labels \"name\" }} has exceeded 70% for the last 30 seconds: {{ index $values \"A\" }} %"
+                        "summary": "Percentage of reservoir capacity for sensor: {{ index $labels \"name\" }} has exceeded 70% in the last five minute:{{ index $values \"A\" }} %"
                     },
                     "labels": {},
                     "isPaused": false
@@ -724,133 +420,57 @@
         {
             "orgId": 1,
             "name": "Temperature",
-            "folder": "Allerte IC",
-            "interval": "10s",
+            "folder": "Allerte InnovaCity",
+            "interval": "5m",
             "rules": [
                 {
-                    "uid": "f960fbd0-77fd-410b-949f-3158afa7ef55",
+                    "uid": "f8b76094-bf26-4a51-ba0a-ef49ee7a1d62",
                     "title": "Temp over 40 degrees",
                     "condition": "B",
                     "data": [
                         {
                             "refId": "A",
-                            "queryType": "table",
+                            "queryType": "timeseries",
                             "relativeTimeRange": {
-                                "from": 600,
+                                "from": 300,
                                 "to": 0
                             },
                             "datasourceUid": "PDEE91DDB90597936",
                             "model": {
                                 "builderOptions": {
-                                    "aggregates": [
-                                        {
-                                            "aggregateType": "any",
-                                            "alias": "",
-                                            "column": "value"
-                                        },
-                                        {
-                                            "aggregateType": "max",
-                                            "alias": "",
-                                            "column": "timestamp"
-                                        }
-                                    ],
-                                    "columns": [
-                                        {
-                                            "custom": false,
-                                            "name": "value",
-                                            "type": "Float64"
-                                        },
-                                        {
-                                            "custom": false,
-                                            "name": "name",
-                                            "type": "String"
-                                        },
-                                        {
-                                            "custom": false,
-                                            "name": "timestamp",
-                                            "type": "DateTime64(3)"
-                                        }
-                                    ],
-                                    "database": "innovacity",
-                                    "filters": [],
-                                    "groupBy": [
-                                        "name"
-                                    ],
+                                    "columns": [],
+                                    "database": "default",
                                     "limit": 1000,
                                     "meta": {},
-                                    "mode": "aggregate",
-                                    "orderBy": [
-                                        {
-                                            "dir": "ASC",
-                                            "name": "timestamp"
-                                        }
-                                    ],
+                                    "mode": "list",
                                     "queryType": "table",
-                                    "table": "temperatures"
+                                    "table": ""
                                 },
                                 "editorType": "sql",
-                                "format": 1,
+                                "format": 0,
                                 "intervalMs": 1000,
                                 "maxDataPoints": 43200,
                                 "meta": {
                                     "builderOptions": {
-                                        "aggregates": [
-                                            {
-                                                "aggregateType": "any",
-                                                "alias": "",
-                                                "column": "value"
-                                            },
-                                            {
-                                                "aggregateType": "max",
-                                                "alias": "",
-                                                "column": "timestamp"
-                                            }
-                                        ],
-                                        "columns": [
-                                            {
-                                                "custom": false,
-                                                "name": "value",
-                                                "type": "Float64"
-                                            },
-                                            {
-                                                "custom": false,
-                                                "name": "name",
-                                                "type": "String"
-                                            },
-                                            {
-                                                "custom": false,
-                                                "name": "timestamp",
-                                                "type": "DateTime64(3)"
-                                            }
-                                        ],
-                                        "database": "innovacity",
-                                        "filters": [],
-                                        "groupBy": [
-                                            "name"
-                                        ],
+                                        "columns": [],
+                                        "database": "default",
                                         "limit": 1000,
                                         "meta": {},
-                                        "mode": "aggregate",
-                                        "orderBy": [
-                                            {
-                                                "dir": "ASC",
-                                                "name": "timestamp"
-                                            }
-                                        ],
+                                        "mode": "list",
                                         "queryType": "table",
-                                        "table": "temperatures"
+                                        "table": ""
                                     }
                                 },
                                 "pluginVersion": "4.0.3",
-                                "queryType": "table",
-                                "rawSql": "SELECT \n    latest_values.name,\n    latest_values.value\nFROM \n    (\n        SELECT \n            name,\n            value,\n            timestamp\n        FROM \n            innovacity.temperatures\n        ORDER BY \n            timestamp DESC\n        LIMIT 1 BY name\n    ) AS latest_values\nLIMIT 1000\n",
+                                "queryType": "timeseries",
+                                "rawSql": "SELECT\r\n    name AS sensor_name,\r\n    MAX(value) AS max_temperature\r\nFROM\r\n    innovacity.temperatures\r\nWHERE $__timeFilter(timestamp)\r\nGROUP BY\r\n    name\r\n\r\n",
                                 "refId": "A"
                             }
                         },
                         {
                             "refId": "B",
                             "relativeTimeRange": {
-                                "from": 600,
+                                "from": 300,
                                 "to": 0
                             },
                             "datasourceUid": "__expr__",
@@ -859,7 +479,7 @@
                                     {
                                         "evaluator": {
                                             "params": [
-                                                18
+                                                40
                                             ],
                                             "type": "gt"
                                         },
@@ -892,11 +512,11 @@
                     ],
                     "dasboardUid": "",
                     "panelId": 0,
-                    "noDataState": "NoData",
-                    "execErrState": "Error",
-                    "for": "20s",
+                    "noDataState": "OK",
+                    "execErrState": "OK",
+                    "for": "0s",
                     "annotations": {
-                        "summary": "Temperature for sensor: {{ index $labels \"name\" }} has exceeded 40 degrees for the last 30 seconds: {{ index $values \"A\" }}"
+                        "summary": "Temperature for sensor: {{ index $labels \"name\" }} has exceeded 40 degrees: {{ index $values \"A\" }}"
                     },
                     "labels": {},
                     "isPaused": false
