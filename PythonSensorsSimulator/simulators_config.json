@@ -20,6 +20,10 @@
         45.398214,
         11.851271
       ]
+      "coordinates": [
+        45.398214,
+        11.851271
+      ]
     }
   },
   {
@@ -31,6 +35,10 @@
         45.398214,
         11.851271
       ]
+      "coordinates": [
+        45.398214,
+        11.851271
+      ]
     }
   },
   {
@@ -38,6 +46,10 @@
     "wait_time_in_seconds": 1.5,
     "location": {
       "type": "Point",
+      "coordinates": [
+        45.398214,
+        11.851271
+      ]
       "coordinates": [
         45.398214,
         11.851271
@@ -97,6 +109,10 @@
         45.398256,
         11.851272
       ]
+      "coordinates": [
+        45.398256,
+        11.851272
+      ]
     }
   },
   {
@@ -119,39 +135,56 @@
         45.409471,
         11.875172
       ]
-    }
-  },
-  {
-    "type": "charging_station",
-    "wait_time_in_seconds": 2,
-    "location": {
-      "type": "Point",
       "coordinates": [
-        45.398214,
-        11.851271
+        45.409471,
+        11.875172
       ]
     }
   },
-  {
-    "type": "traffic",
-    "wait_time_in_seconds": 2,
-    "location": {
-      "type": "Point",
+},
+{
+  "type": "charging_station",
+  "wait_time_in_seconds": 2,
+  "location": {
+    "type": "Point",
+    "coordinates": [
+      45.398214,
+      11.851271
+    ]
       "coordinates": [
-        45.398214,
-        11.851271
-      ]
-    }
-  },
-  {
-    "type": "electric_bicycle",
-    "wait_time_in_seconds": 1,
-    "location": {
-      "type": "Point",
-      "coordinates": [
-        45.398214,
-        11.851271
-      ]
-    }
+      45.398214,
+      11.851271
+    ]
   }
+},
+{
+  "type": "traffic",
+  "wait_time_in_seconds": 2,
+  "location": {
+    "type": "Point",
+    "coordinates": [
+      45.398214,
+      11.851271
+    ]
+      "coordinates": [
+      45.398214,
+      11.851271
+    ]
+  }
+},
+{
+  "type": "electric_bicycle",
+  "wait_time_in_seconds": 1,
+  "location": {
+    "type": "Point",
+    "coordinates": [
+      45.398214,
+      11.851271
+    ]
+      "coordinates": [
+      45.398214,
+      11.851271
+    ]
+  }
+}
 ]
