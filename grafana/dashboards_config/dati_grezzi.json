@@ -1,302 +1,316 @@
 {
     "annotations": {
-        "list": [
-            {
-                "builtIn": 1,
-                "datasource": {
-                    "type": "grafana",
-                    "uid": "-- Grafana --"
-                },
-                "enable": true,
-                "hide": true,
-                "iconColor": "rgba(0, 211, 255, 1)",
-                "name": "Annotations & Alerts",
-                "target": {
-                    "limit": 100,
-                    "matchAny": false,
-                    "tags": [],
-                    "type": "dashboard"
-                },
-                "type": "dashboard"
-            }
-        ]
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": {
+            "type": "grafana",
+            "uid": "-- Grafana --"
+          },
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "target": {
+            "limit": 100,
+            "matchAny": false,
+            "tags": [],
+            "type": "dashboard"
+          },
+          "type": "dashboard"
+        }
+      ]
     },
     "editable": true,
     "fiscalYearStartMonth": 0,
     "graphTooltip": 0,
-    "id": 2,
+    "id": 3,
     "links": [],
     "liveNow": true,
     "panels": [
-        {
-            "datasource": {
-                "type": "grafana-clickhouse-datasource",
-                "uid": "PDEE91DDB90597936"
+      {
+        "datasource": {
+          "type": "grafana-clickhouse-datasource",
+          "uid": "PDEE91DDB90597936"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
             },
-            "fieldConfig": {
-                "defaults": {
-                    "color": {
-                        "mode": "thresholds"
-                    },
-                    "custom": {
-                        "align": "auto",
-                        "cellOptions": {
-                            "type": "auto"
-                        },
-                        "inspect": false
-                    },
-                    "mappings": [],
-                    "noValue": "NULL",
-                    "thresholds": {
-                        "mode": "absolute",
-                        "steps": [
-                            {
-                                "color": "green",
-                                "value": null
-                            },
-                            {
-                                "color": "red",
-                                "value": 80
-                            }
-                        ]
-                    }
-                },
-                "overrides": [
-                    {
-                        "matcher": {
-                            "id": "byValue",
-                            "options": {
-                                "op": "eq",
-                                "reducer": "allIsNull",
-                                "value": 0
-                            }
-                        },
-                        "properties": [
-                            {
-                                "id": "custom.hidden",
-                                "value": true
-                            }
-                        ]
-                    }
-                ]
+            "custom": {
+              "align": "auto",
+              "cellOptions": {
+                "type": "auto"
+              },
+              "inspect": false
             },
-            "gridPos": {
-                "h": 17,
-                "w": 24,
-                "x": 0,
-                "y": 0
-            },
-            "id": 1,
-            "options": {
-                "cellHeight": "sm",
-                "footer": {
-                    "countRows": false,
-                    "fields": "",
-                    "reducer": ["sum"],
-                    "show": false
-                },
-                "frameIndex": 0,
-                "showHeader": true
-            },
-            "pluginVersion": "10.2.2",
-            "targets": [
+            "mappings": [],
+            "noValue": "NULL",
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
                 {
-                    "builderOptions": {
-                        "aggregates": [],
-                        "columns": [
-                            {
-                                "custom": false,
-                                "name": "*",
-                                "type": "String"
-                            }
-                        ],
-                        "database": "innovacity",
-                        "filters": [
-                            {
-                                "condition": "AND",
-                                "filterType": "custom",
-                                "key": "nome_sensore",
-                                "operator": "=",
-                                "type": "String",
-                                "value": "$nome_sensore"
-                            }
-                        ],
-                        "groupBy": [],
-                        "limit": 100,
-                        "meta": {},
-                        "mode": "list",
-                        "orderBy": [
-                            {
-                                "dir": "DESC",
-                                "name": "timestamp"
-                            }
-                        ],
-                        "queryType": "table",
-                        "table": "temperatures"
-                    },
-                    "datasource": {
-                        "type": "grafana-clickhouse-datasource",
-                        "uid": "PDEE91DDB90597936"
-                    },
-                    "editorType": "sql",
-                    "format": 1,
-                    "meta": {
-                        "builderOptions": {
-                            "aggregates": [],
-                            "columns": [
-                                {
-                                    "custom": false,
-                                    "name": "*",
-                                    "type": "String"
-                                }
-                            ],
-                            "database": "innovacity",
-                            "filters": [
-                                {
-                                    "condition": "AND",
-                                    "filterType": "custom",
-                                    "key": "nome_sensore",
-                                    "operator": "=",
-                                    "type": "String",
-                                    "value": "$nome_sensore"
-                                }
-                            ],
-                            "groupBy": [],
-                            "limit": 100,
-                            "meta": {},
-                            "mode": "list",
-                            "orderBy": [
-                                {
-                                    "dir": "DESC",
-                                    "name": "timestamp"
-                                }
-                            ],
-                            "queryType": "table",
-                            "table": "temperatures"
-                        }
-                    },
-                    "pluginVersion": "4.0.3",
-                    "queryType": "table",
-                    "rawSql": "SELECT \n    name, \n    type,\n    timestamp, \n    value AS current, \n    NULL AS max_slots, \n    NULL AS erogation_power, \n    NULL AS availability, \n    NULL AS num_cars, \n    NULL AS traffic_level, \n    NULL AS avg_time, \n    NULL AS direction,\n    latitude,\n    longitude\nFROM innovacity.temperatures \nWHERE type IN (${tipo_sensore}) \n  OR name IN (${nome_sensore}) \nUNION ALL\nSELECT \n    name, \n    type,\n    timestamp, \n    value AS current, \n    NULL AS max_slots, \n    NULL AS erogation_power, \n    NULL AS availability, \n    NULL AS num_cars, \n    NULL AS traffic_level, \n    NULL AS avg_time, \n    NULL AS direction,\n    latitude,\n    longitude\nFROM innovacity.rain\nWHERE type IN (${tipo_sensore}) \n  OR name IN (${nome_sensore})\nUNION ALL\nSELECT \n    name, \n    type,\n    timestamp, \n    value AS current, \n    NULL AS max_slots, \n    NULL AS erogation_power, \n    NULL AS availability, \n    NULL AS num_cars, \n    NULL AS traffic_level, \n    NULL AS avg_time, \n    NULL AS direction,\n    latitude,\n    longitude\nFROM innovacity.reservoirs\nWHERE type IN (${tipo_sensore}) \n  OR name IN (${nome_sensore})\nUNION ALL\nSELECT \n    name, \n    type,\n    timestamp, \n    value AS current, \n    NULL AS max_slots, \n    NULL AS erogation_power, \n    NULL AS availability, \n    NULL AS num_cars, \n    NULL AS traffic_level, \n    NULL AS avg_time, \n    NULL AS direction,\n    latitude,\n    longitude\nFROM innovacity.air_pollution\nWHERE type IN (${tipo_sensore}) \n  OR name IN (${nome_sensore})\nUNION ALL\nSELECT \n    name, \n    type,\n    timestamp, \n    NULL AS current, \n    NULL AS max_slots, \n    erogation_power,\n    availability,\n    NULL AS num_cars, \n    NULL AS traffic_level, \n    NULL AS avg_time, \n    NULL AS direction,\n    latitude,\n    longitude\nFROM innovacity.charging_station\nWHERE type IN (${tipo_sensore}) \n  OR name IN (${nome_sensore})\nUNION ALL\nSELECT \n    name, \n    type,\n    timestamp, \n    NULL AS current, \n    NULL AS max_slots, \n    NULL AS erogation_power, \n    NULL AS availability, \n    num_cars,\n    traffic_level,\n    avg_time,\n    NULL AS direction,\n    latitude,\n    longitude\nFROM innovacity.traffic\nWHERE type IN (${tipo_sensore}) \n  OR name IN (${nome_sensore})\nUNION ALL\nSELECT \n    name, \n    type,\n    timestamp, \n    value AS current, \n    NULL AS max_slots, \n    NULL AS erogation_power, \n    NULL AS availability, \n    NULL AS num_cars, \n    NULL AS traffic_level, \n    NULL AS avg_time, \n    direction,\n    latitude,\n    longitude\nFROM innovacity.wind\nWHERE type IN (${tipo_sensore}) \n  OR name IN (${nome_sensore})\n\nUNION ALL\nSELECT \n    name, \n    type,\n    timestamp, \n    value AS current, \n    NULL AS max_slots, \n    NULL AS erogation_power, \n    NULL AS availability, \n    NULL AS num_cars, \n    NULL AS traffic_level, \n    NULL AS avg_time, \n    NULL AS direction,\n    latitude,\n    longitude\nFROM innovacity.humidity\nWHERE type IN (${tipo_sensore}) \n  OR name IN (${nome_sensore})\n\nUNION ALL\nSELECT \n    name, \n    type,\n    timestamp, \n    value AS current, \n    NULL AS max_slots, \n    NULL AS erogation_power, \n    NULL AS availability, \n    NULL AS num_cars, \n    NULL AS traffic_level, \n    NULL AS avg_time, \n    NULL AS direction,\n    latitude,\n    longitude\nFROM innovacity.ebikes\nWHERE type IN (${tipo_sensore}) \n  OR name IN (${nome_sensore})\n\nUNION ALL\nSELECT \n    name, \n    type,\n    timestamp, \n    value AS current, \n    NULL AS max_slots, \n    NULL AS erogation_power, \n    NULL AS availability, \n    NULL AS num_cars, \n    NULL AS traffic_level, \n    NULL AS avg_time, \n    NULL AS direction,\n    latitude,\n    longitude\nFROM innovacity.eco_zone\nWHERE type IN (${tipo_sensore}) \n  OR name IN (${nome_sensore})\nORDER BY timestamp DESC \nLIMIT ${limit}\n",
-                    "refId": "A"
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
                 }
+              ]
+            },
+            "unitScale": true
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byValue",
+                "options": {
+                  "op": "eq",
+                  "reducer": "allIsNull",
+                  "value": 0
+                }
+              },
+              "properties": [
+                {
+                  "id": "custom.hidden",
+                  "value": false
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 17,
+          "w": 24,
+          "x": 0,
+          "y": 0
+        },
+        "id": 1,
+        "options": {
+          "cellHeight": "sm",
+          "footer": {
+            "countRows": false,
+            "fields": "",
+            "reducer": [
+              "sum"
             ],
-            "title": "Dati Grezzi",
-            "transformations": [],
-            "transparent": true,
-            "type": "table"
-        }
+            "show": false
+          },
+          "frameIndex": 0,
+          "showHeader": true
+        },
+        "pluginVersion": "10.3.0",
+        "targets": [
+          {
+            "builderOptions": {
+              "aggregates": [],
+              "columns": [
+                {
+                  "custom": false,
+                  "name": "*",
+                  "type": "String"
+                }
+              ],
+              "database": "innovacity",
+              "filters": [
+                {
+                  "condition": "AND",
+                  "filterType": "custom",
+                  "key": "nome_sensore",
+                  "operator": "=",
+                  "type": "String",
+                  "value": "$nome_sensore"
+                }
+              ],
+              "groupBy": [],
+              "limit": 100,
+              "meta": {},
+              "mode": "list",
+              "orderBy": [
+                {
+                  "dir": "DESC",
+                  "name": "timestamp"
+                }
+              ],
+              "queryType": "table",
+              "table": "temperatures"
+            },
+            "datasource": {
+              "type": "grafana-clickhouse-datasource",
+              "uid": "PDEE91DDB90597936"
+            },
+            "editorType": "sql",
+            "format": 1,
+            "meta": {
+              "builderOptions": {
+                "aggregates": [],
+                "columns": [
+                  {
+                    "custom": false,
+                    "name": "*",
+                    "type": "String"
+                  }
+                ],
+                "database": "innovacity",
+                "filters": [
+                  {
+                    "condition": "AND",
+                    "filterType": "custom",
+                    "key": "nome_sensore",
+                    "operator": "=",
+                    "type": "String",
+                    "value": "$nome_sensore"
+                  }
+                ],
+                "groupBy": [],
+                "limit": 100,
+                "meta": {},
+                "mode": "list",
+                "orderBy": [
+                  {
+                    "dir": "DESC",
+                    "name": "timestamp"
+                  }
+                ],
+                "queryType": "table",
+                "table": "temperatures"
+              }
+            },
+            "pluginVersion": "4.0.3",
+            "queryType": "table",
+            "rawSql": "SELECT \n    name,\n    type,\n    timestamp, \n    rilevazione, \n    latitude,\n    longitude\nFROM (\n\nSELECT \n    name, \n    type,\n    timestamp, \n    CONCAT('gradi:', CAST(value AS String)) AS rilevazione, \n    latitude,\n    longitude\nFROM innovacity.temperatures \nWHERE type IN (${tipo_sensore}) \n  AND name IN (${nome_sensore}) \nUNION ALL\nSELECT \n    name, \n    type,\n    timestamp, \n    CONCAT('millimetri:', CAST(value AS String)) AS rilevazione, \n    latitude,\n    longitude\nFROM innovacity.rain\nWHERE type IN (${tipo_sensore}) \n  AND name IN (${nome_sensore})\nUNION ALL\nSELECT \n    name, \n    type,\n    timestamp, \n    CONCAT('velocità:', CAST(value AS String), ' direzione:', CAST(direction AS String)) AS rilevazione, \n    latitude,\n    longitude\nFROM innovacity.wind\nWHERE type IN (${tipo_sensore}) \n  AND name IN (${nome_sensore})\n\nUNION ALL\nSELECT \n    name, \n    type,\n    timestamp, \n    CONCAT('percentuale:', CAST(value AS String)) AS rilevazione, \n    latitude,\n    longitude\nFROM innovacity.humidity\nWHERE type IN (${tipo_sensore}) \n  AND name IN (${nome_sensore})\n\nUNION ALL\n\nSELECT \n    name, \n    type,\n    timestamp, \n    CONCAT('percentuale:', CAST(value AS String)) AS rilevazione, \n    latitude,\n    longitude\nFROM innovacity.reservoirs\nWHERE type IN (${tipo_sensore}) \n  AND name IN (${nome_sensore})\n\nUNION ALL\nSELECT \n    name, \n    type,\n    timestamp, \n    CONCAT('ug/m^3:', CAST(value AS String)) AS rilevazione, \n    latitude,\n    longitude\nFROM innovacity.air_pollution\nWHERE type IN (${tipo_sensore}) \n  AND name IN (${nome_sensore})\nUNION ALL\nSELECT \n    name, \n    type,\n    timestamp, \n    CONCAT('batteria:', CAST(value AS String)) AS rilevazione, \n    latitude,\n    longitude\nFROM innovacity.ebikes\nWHERE type IN (${tipo_sensore}) \n  AND name IN (${nome_sensore})\nUNION ALL\nSELECT \n    name, \n    type,\n    timestamp, \n    CONCAT('percentuale:', CAST(value AS String)) AS rilevazione, \n    latitude,\n    longitude\nFROM innovacity.eco_zone\nWHERE type IN (${tipo_sensore}) \n  AND name IN (${nome_sensore})\nUNION ALL\nSELECT \n    name, \n    type,\n    timestamp, \n    CONCAT('current:', CAST(current AS String), 'slot massimi:', CAST(max_slots AS String)) AS rilevazione, \n    latitude,\n    longitude\nFROM innovacity.parking\nWHERE type IN (${tipo_sensore}) \n  AND name IN (${nome_sensore})\nUNION ALL\nSELECT \n    name, \n    type,\n    timestamp, \n    CONCAT('erogazione:', CAST(erogation_power AS String), 'disponibilità:', CAST(availability AS String)) AS rilevazione, \n    latitude,\n    longitude\nFROM innovacity.charging_station\nWHERE type IN (${tipo_sensore}) \n  AND name IN (${nome_sensore})\nUNION ALL\nSELECT \n    name, \n    type,\n    timestamp, \n    CONCAT('livello congestione:', CAST(traffic_level AS String)) AS rilevazione, \n    latitude,\n    longitude\nFROM innovacity.traffic\nWHERE type IN (${tipo_sensore}) \n  AND name IN (${nome_sensore})\n\n\n) as combined_data\nORDER BY timestamp DESC \nLIMIT ${limit}",
+            "refId": "A"
+          }
+        ],
+        "title": "Dati Grezzi",
+        "transformations": [],
+        "transparent": true,
+        "type": "table"
+      }
     ],
     "refresh": "10s",
-    "schemaVersion": 38,
+    "schemaVersion": 39,
     "tags": [],
     "templating": {
-        "list": [
+      "list": [
+        {
+          "allValue": "*",
+          "current": {
+            "selected": true,
+            "text": [
+              "traffic1"
+            ],
+            "value": [
+              "traffic1"
+            ]
+          },
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "PDEE91DDB90597936"
+          },
+          "definition": "(SELECT name AS __text, name AS __value FROM innovacity.temperatures) UNION ALL (SELECT name AS __text, name AS __value FROM innovacity.rain) UNION ALL (SELECT name AS __text, name AS __value FROM innovacity.reservoirs)  UNION ALL (SELECT name AS __text, name AS __value FROM innovacity.air_pollution) UNION ALL (SELECT name AS __text, name AS __value FROM innovacity.ebikes) UNION ALL (SELECT name AS __text, name AS __value FROM innovacity.eco_zone) UNION ALL (SELECT name AS __text, name AS __value FROM innovacity.humidity) UNION ALL (SELECT name AS __text, name AS __value FROM innovacity.parking) UNION ALL (SELECT name AS __text, name AS __value FROM innovacity.charging_station) UNION ALL (SELECT name AS __text, name AS __value FROM innovacity.traffic) UNION ALL (SELECT name AS __text, name AS __value FROM innovacity.wind)  ",
+          "hide": 0,
+          "includeAll": false,
+          "label": "Nome Sensore",
+          "multi": true,
+          "name": "nome_sensore",
+          "options": [],
+          "query": "(SELECT name AS __text, name AS __value FROM innovacity.temperatures) UNION ALL (SELECT name AS __text, name AS __value FROM innovacity.rain) UNION ALL (SELECT name AS __text, name AS __value FROM innovacity.reservoirs)  UNION ALL (SELECT name AS __text, name AS __value FROM innovacity.air_pollution) UNION ALL (SELECT name AS __text, name AS __value FROM innovacity.ebikes) UNION ALL (SELECT name AS __text, name AS __value FROM innovacity.eco_zone) UNION ALL (SELECT name AS __text, name AS __value FROM innovacity.humidity) UNION ALL (SELECT name AS __text, name AS __value FROM innovacity.parking) UNION ALL (SELECT name AS __text, name AS __value FROM innovacity.charging_station) UNION ALL (SELECT name AS __text, name AS __value FROM innovacity.traffic) UNION ALL (SELECT name AS __text, name AS __value FROM innovacity.wind)  ",
+          "refresh": 1,
+          "regex": "",
+          "skipUrlSync": false,
+          "sort": 1,
+          "type": "query"
+        },
+        {
+          "current": {
+            "selected": true,
+            "text": "100",
+            "value": "100"
+          },
+          "hide": 0,
+          "includeAll": false,
+          "label": "Limite",
+          "multi": false,
+          "name": "limit",
+          "options": [
             {
-                "allValue": "*",
-                "current": {
-                    "selected": true,
-                    "text": ["wind1"],
-                    "value": ["wind1"]
-                },
-                "datasource": {
-                    "type": "grafana-clickhouse-datasource",
-                    "uid": "PDEE91DDB90597936"
-                },
-                "definition": "(SELECT name AS __text, name AS __value FROM innovacity.temperatures) UNION ALL (SELECT name AS __text, name AS __value FROM innovacity.rain) UNION ALL (SELECT name AS __text, name AS __value FROM innovacity.reservoirs)  UNION ALL (SELECT name AS __text, name AS __value FROM innovacity.air_pollution) UNION ALL (SELECT name AS __text, name AS __value FROM innovacity.ebikes) UNION ALL (SELECT name AS __text, name AS __value FROM innovacity.eco_zone) UNION ALL (SELECT name AS __text, name AS __value FROM innovacity.humidity) UNION ALL (SELECT name AS __text, name AS __value FROM innovacity.parking) UNION ALL (SELECT name AS __text, name AS __value FROM innovacity.charging_station) UNION ALL (SELECT name AS __text, name AS __value FROM innovacity.traffic) UNION ALL (SELECT name AS __text, name AS __value FROM innovacity.wind)  ",
-                "hide": 0,
-                "includeAll": false,
-                "label": "Nome Sensore",
-                "multi": true,
-                "name": "nome_sensore",
-                "options": [],
-                "query": "(SELECT name AS __text, name AS __value FROM innovacity.temperatures) UNION ALL (SELECT name AS __text, name AS __value FROM innovacity.rain) UNION ALL (SELECT name AS __text, name AS __value FROM innovacity.reservoirs)  UNION ALL (SELECT name AS __text, name AS __value FROM innovacity.air_pollution) UNION ALL (SELECT name AS __text, name AS __value FROM innovacity.ebikes) UNION ALL (SELECT name AS __text, name AS __value FROM innovacity.eco_zone) UNION ALL (SELECT name AS __text, name AS __value FROM innovacity.humidity) UNION ALL (SELECT name AS __text, name AS __value FROM innovacity.parking) UNION ALL (SELECT name AS __text, name AS __value FROM innovacity.charging_station) UNION ALL (SELECT name AS __text, name AS __value FROM innovacity.traffic) UNION ALL (SELECT name AS __text, name AS __value FROM innovacity.wind)  ",
-                "refresh": 1,
-                "regex": "",
-                "skipUrlSync": false,
-                "sort": 1,
-                "type": "query"
+              "selected": true,
+              "text": "100",
+              "value": "100"
             },
             {
-                "current": {
-                    "selected": true,
-                    "text": "100",
-                    "value": "100"
-                },
-                "hide": 0,
-                "includeAll": false,
-                "label": "Limite",
-                "multi": false,
-                "name": "limit",
-                "options": [
-                    {
-                        "selected": true,
-                        "text": "100",
-                        "value": "100"
-                    },
-                    {
-                        "selected": false,
-                        "text": "1000",
-                        "value": "1000"
-                    },
-                    {
-                        "selected": false,
-                        "text": "2000",
-                        "value": "2000"
-                    },
-                    {
-                        "selected": false,
-                        "text": "5000",
-                        "value": "5000"
-                    },
-                    {
-                        "selected": false,
-                        "text": "10000",
-                        "value": "10000"
-                    }
-                ],
-                "query": "100,1000,2000,5000,10000",
-                "queryValue": "",
-                "skipUrlSync": false,
-                "type": "custom"
+              "selected": false,
+              "text": "1000",
+              "value": "1000"
             },
             {
-                "current": {
-                    "selected": true,
-                    "text": ["temperature"],
-                    "value": ["temperature"]
-                },
-                "datasource": {
-                    "type": "grafana-clickhouse-datasource",
-                    "uid": "PDEE91DDB90597936"
-                },
-                "definition": "(SELECT type AS __text, type AS __value FROM innovacity.temperatures) UNION ALL (SELECT type AS __text, type AS __value FROM innovacity.rain) UNION ALL (SELECT type AS __text, type AS __value FROM innovacity.reservoirs)  UNION ALL \n(SELECT type AS __text, type AS __value FROM innovacity.air_pollution) \nUNION ALL \n(SELECT type AS __text, type AS __value FROM innovacity.ebikes) \nUNION ALL \n(SELECT type AS __text, type AS __value FROM innovacity.eco_zone) \nUNION ALL \n(SELECT type AS __text, type AS __value FROM innovacity.humidity) \nUNION ALL \n(SELECT type AS __text, type AS __value FROM innovacity.parking) \nUNION ALL \n(SELECT type AS __text, type AS __value FROM innovacity.charging_station) \nUNION ALL \n(SELECT type AS __text, type AS __value FROM innovacity.traffic) \nUNION ALL \n(SELECT type AS __text, type AS __value FROM innovacity.wind)",
-                "hide": 0,
-                "includeAll": false,
-                "label": "Tipo Sensore",
-                "multi": true,
-                "name": "tipo_sensore",
-                "options": [],
-                "query": "(SELECT type AS __text, type AS __value FROM innovacity.temperatures) UNION ALL (SELECT type AS __text, type AS __value FROM innovacity.rain) UNION ALL (SELECT type AS __text, type AS __value FROM innovacity.reservoirs)  UNION ALL \n(SELECT type AS __text, type AS __value FROM innovacity.air_pollution) \nUNION ALL \n(SELECT type AS __text, type AS __value FROM innovacity.ebikes) \nUNION ALL \n(SELECT type AS __text, type AS __value FROM innovacity.eco_zone) \nUNION ALL \n(SELECT type AS __text, type AS __value FROM innovacity.humidity) \nUNION ALL \n(SELECT type AS __text, type AS __value FROM innovacity.parking) \nUNION ALL \n(SELECT type AS __text, type AS __value FROM innovacity.charging_station) \nUNION ALL \n(SELECT type AS __text, type AS __value FROM innovacity.traffic) \nUNION ALL \n(SELECT type AS __text, type AS __value FROM innovacity.wind)",
-                "refresh": 1,
-                "regex": "",
-                "skipUrlSync": false,
-                "sort": 1,
-                "type": "query"
+              "selected": false,
+              "text": "2000",
+              "value": "2000"
+            },
+            {
+              "selected": false,
+              "text": "5000",
+              "value": "5000"
+            },
+            {
+              "selected": false,
+              "text": "10000",
+              "value": "10000"
             }
-        ]
+          ],
+          "query": "100,1000,2000,5000,10000",
+          "queryValue": "",
+          "skipUrlSync": false,
+          "type": "custom"
+        },
+        {
+          "current": {
+            "selected": true,
+            "text": [
+              "traffic"
+            ],
+            "value": [
+              "traffic"
+            ]
+          },
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "PDEE91DDB90597936"
+          },
+          "definition": "(SELECT type AS __text, type AS __value FROM innovacity.temperatures) UNION ALL (SELECT type AS __text, type AS __value FROM innovacity.rain) UNION ALL (SELECT type AS __text, type AS __value FROM innovacity.reservoirs)  UNION ALL \n(SELECT type AS __text, type AS __value FROM innovacity.air_pollution) \nUNION ALL \n(SELECT type AS __text, type AS __value FROM innovacity.ebikes) \nUNION ALL \n(SELECT type AS __text, type AS __value FROM innovacity.eco_zone) \nUNION ALL \n(SELECT type AS __text, type AS __value FROM innovacity.humidity) \nUNION ALL \n(SELECT type AS __text, type AS __value FROM innovacity.parking) \nUNION ALL \n(SELECT type AS __text, type AS __value FROM innovacity.charging_station) \nUNION ALL \n(SELECT type AS __text, type AS __value FROM innovacity.traffic) \nUNION ALL \n(SELECT type AS __text, type AS __value FROM innovacity.wind)",
+          "hide": 0,
+          "includeAll": false,
+          "label": "Tipo Sensore",
+          "multi": true,
+          "name": "tipo_sensore",
+          "options": [],
+          "query": "(SELECT type AS __text, type AS __value FROM innovacity.temperatures) UNION ALL (SELECT type AS __text, type AS __value FROM innovacity.rain) UNION ALL (SELECT type AS __text, type AS __value FROM innovacity.reservoirs)  UNION ALL \n(SELECT type AS __text, type AS __value FROM innovacity.air_pollution) \nUNION ALL \n(SELECT type AS __text, type AS __value FROM innovacity.ebikes) \nUNION ALL \n(SELECT type AS __text, type AS __value FROM innovacity.eco_zone) \nUNION ALL \n(SELECT type AS __text, type AS __value FROM innovacity.humidity) \nUNION ALL \n(SELECT type AS __text, type AS __value FROM innovacity.parking) \nUNION ALL \n(SELECT type AS __text, type AS __value FROM innovacity.charging_station) \nUNION ALL \n(SELECT type AS __text, type AS __value FROM innovacity.traffic) \nUNION ALL \n(SELECT type AS __text, type AS __value FROM innovacity.wind)",
+          "refresh": 1,
+          "regex": "",
+          "skipUrlSync": false,
+          "sort": 1,
+          "type": "query"
+        }
+      ]
     },
     "time": {
-        "from": "now-5m",
-        "to": "now"
+      "from": "now-5m",
+      "to": "now"
     },
     "timepicker": {
-        "hidden": true,
-        "refresh_intervals": ["10s", "1m"]
+      "hidden": true,
+      "refresh_intervals": [
+        "10s",
+        "1m"
+      ]
     },
     "timezone": "",
     "title": "Dati Grezzi",
     "uid": "f134d917-32f5-40b7-bcab-0c8ba22db22a",
     "version": 1,
     "weekStart": ""
-}
+  }
