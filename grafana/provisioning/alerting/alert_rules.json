@@ -9,7 +9,7 @@
             "rules": [
                 {
                     "uid": "e6e7a38c-4853-45a2-8b43-28973534dc99",
-                    "title": "Air Pollution Over 80 𝜇𝑔/𝑚3",
+                    "title": "Air Pollution",
                     "condition": "B",
                     "data": [
                         {
@@ -98,7 +98,7 @@
                     "execErrState": "OK",
                     "for": "0s",
                     "annotations": {
-                        "summary": "Amount of air pollution for sensor {{ index $labels \"name\" }} has exceeded 80 𝜇𝑔/𝑚3: {{ index $values \"A\" }}  𝜇𝑔/𝑚3"
+                        "summary": "Amount of air pollution for sensor {{ index $labels \"name\" }} has exceeded 80 𝜇𝑔/𝑚3 in the last five minute:  {{ index $values \"A\" }}  𝜇𝑔/𝑚3."
                     },
                     "labels": {},
                     "isPaused": false
@@ -113,7 +113,7 @@
             "rules": [
                 {
                     "uid": "f36e7d5c-8da1-45dc-b775-48f150724106",
-                    "title": "Eco Zone Filling Percentage over 80%",
+                    "title": "Eco Zone",
                     "condition": "B",
                     "data": [
                         {
@@ -202,7 +202,7 @@
                     "execErrState": "OK",
                     "for": "0s",
                     "annotations": {
-                        "summary": "Percentage of reservoir capacity for sensor: {{ index $labels \"name\" }} has exceeded 80% in the last five minute:{{ index $values \"A\" }} %"
+                        "summary": "Filing percentage of eco zone {{ index $labels \"name\" }} has exceeded 80% in the last five minute:{{ index $values \"A\" }} %."
                     },
                     "labels": {},
                     "isPaused": false
@@ -217,7 +217,7 @@
             "rules": [
                 {
                     "uid": "c334538b-457a-416b-ab4b-61a414d21a8c",
-                    "title": "Rain over 50 mm/m2",
+                    "title": "Rain",
                     "condition": "B",
                     "data": [
                         {
@@ -271,7 +271,7 @@
                                     {
                                         "evaluator": {
                                             "params": [
-                                                40
+                                                50
                                             ],
                                             "type": "gt"
                                         },
@@ -306,7 +306,7 @@
                     "execErrState": "OK",
                     "for": "0s",
                     "annotations": {
-                        "summary": "Amount of rainfall for sensor {{ index $labels \"name\" }} has exceeded  50 millimeters per square meter : {{ index $values \"A\" }}"
+                        "summary": "Amount of rainfall for sensor {{ index $labels \"name\" }} has exceeded 50𝑚𝑚/𝑚2 in the last five minute: {{ index $values \"A\" }} 𝑚𝑚/𝑚2."
                     },
                     "labels": {},
                     "isPaused": false
@@ -321,7 +321,7 @@
             "rules": [
                 {
                     "uid": "fe69c082-d88b-4c57-820b-5a33425daa88",
-                    "title": "Reservoir Capacity Percentage over 70%",
+                    "title": "Reservoirs",
                     "condition": "B",
                     "data": [
                         {
@@ -375,7 +375,7 @@
                                     {
                                         "evaluator": {
                                             "params": [
-                                                40
+                                                70
                                             ],
                                             "type": "gt"
                                         },
@@ -410,7 +410,7 @@
                     "execErrState": "OK",
                     "for": "0s",
                     "annotations": {
-                        "summary": "Percentage of reservoir capacity for sensor: {{ index $labels \"name\" }} has exceeded 70% in the last five minute:{{ index $values \"A\" }} %"
+                        "summary": "Filing percentage of reservoir capacity for sensor {{ index $labels \"name\" }} has exceeded 70% in the last five minute:{{ index $values \"A\" }} %."
                     },
                     "labels": {},
                     "isPaused": false
@@ -425,7 +425,7 @@
             "rules": [
                 {
                     "uid": "f8b76094-bf26-4a51-ba0a-ef49ee7a1d62",
-                    "title": "Temp over 40 degrees",
+                    "title": "Temperature",
                     "condition": "B",
                     "data": [
                         {
@@ -516,7 +516,7 @@
                     "execErrState": "OK",
                     "for": "0s",
                     "annotations": {
-                        "summary": "Temperature for sensor: {{ index $labels \"name\" }} has exceeded 40 degrees: {{ index $values \"A\" }}"
+                        "summary": "Temperature for sensor {{ index $labels \"name\" }} has exceeded 40 degrees in the last five minutes: {{ index $values \"A\" }}°"
                     },
                     "labels": {},
                     "isPaused": false
