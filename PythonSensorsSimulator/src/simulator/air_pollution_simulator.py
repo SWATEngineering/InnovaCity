@@ -46,7 +46,7 @@ class AirPollutionSensorSimulator(SensorSimulatorStrategy):
         self.__value = self.__generate_air_pollution()
 
         reading = {
-            "type": "micro-g/m3",
+            "type": "micro-g/mc",
             "value": round(self.__value, 2)
         }
 
