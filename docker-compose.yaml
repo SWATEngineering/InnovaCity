@@ -78,6 +78,7 @@ services:
       TZ: "Europe/Rome"
       KAFKA_HOST: "kafka"
       KAFKA_PORT: "9092"
+      ORS_API_KEY: ${ORS_API_KEY}
     depends_on:
       kafka:
         condition: service_healthy
