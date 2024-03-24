@@ -19,7 +19,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 1,
+  "id": 2,
   "links": [],
   "liveNow": true,
   "panels": [
@@ -80,7 +80,8 @@
               }
             ]
           },
-          "unit": "celsius"
+          "unit": "celsius",
+          "unitScale": true
         },
         "overrides": [
           {
@@ -219,7 +220,8 @@
               }
             ]
           },
-          "unit": "celsius"
+          "unit": "celsius",
+          "unitScale": true
         },
         "overrides": []
       },
@@ -242,10 +244,11 @@
           "fields": "/^avgTemperature$/",
           "values": false
         },
+        "showPercentChange": false,
         "textMode": "value",
         "wideLayout": true
       },
-      "pluginVersion": "10.2.3",
+      "pluginVersion": "10.3.0",
       "targets": [
         {
           "datasource": {
@@ -328,7 +331,8 @@
               }
             ]
           },
-          "unit": "lengthmm"
+          "unit": "lengthmm",
+          "unitScale": true
         },
         "overrides": []
       },
@@ -427,7 +431,8 @@
               }
             ]
           },
-          "unit": "lengthmm"
+          "unit": "lengthmm",
+          "unitScale": true
         },
         "overrides": []
       },
@@ -453,7 +458,7 @@
         "showThresholdMarkers": true,
         "sizing": "auto"
       },
-      "pluginVersion": "10.2.3",
+      "pluginVersion": "10.3.0",
       "targets": [
         {
           "datasource": {
@@ -535,7 +540,8 @@
               }
             ]
           },
-          "unit": "%"
+          "unit": "%",
+          "unitScale": true
         },
         "overrides": []
       },
@@ -671,7 +677,8 @@
               }
             ]
           },
-          "unit": "conμgm3"
+          "unit": "conμgm3",
+          "unitScale": true
         },
         "overrides": []
       },
@@ -803,7 +810,8 @@
               }
             ]
           },
-          "unit": "%"
+          "unit": "%",
+          "unitScale": true
         },
         "overrides": []
       },
@@ -939,7 +947,8 @@
                 "value": 90
               }
             ]
-          }
+          },
+          "unitScale": true
         },
         "overrides": []
       },
@@ -994,7 +1003,7 @@
                   "vertical": "center"
                 },
                 "text": {
-                  "field": "Tipo",
+                  "field": "name",
                   "fixed": "",
                   "mode": "field"
                 },
@@ -1031,55 +1040,36 @@
           "zoom": 15
         }
       },
-      "pluginVersion": "10.2.3",
+      "pluginVersion": "10.3.0",
       "targets": [
         {
-          "builderOptions": {
-            "database": "innovacity",
-            "fields": [
-              "name",
-              "type",
-              "latitude",
-              "longitude",
-              "value"
-            ],
-            "filters": [
-              {
-                "condition": "AND",
-                "filterType": "custom",
-                "key": "timestamp",
-                "operator": "WITH IN DASHBOARD TIME RANGE",
-                "restrictToFields": [
-                  {
-                    "label": "timestamp",
-                    "name": "timestamp",
-                    "picklistValues": [],
-                    "type": "DateTime64(3)"
-                  }
-                ],
-                "type": "datetime"
-              }
-            ],
-            "mode": "list",
-            "orderBy": [],
-            "table": "temperatures"
-          },
           "datasource": {
             "type": "grafana-clickhouse-datasource",
             "uid": "PDEE91DDB90597936"
           },
+          "editorType": "sql",
           "format": 1,
           "hide": false,
           "meta": {
             "builderOptions": {
-              "database": "innovacity",
-              "fields": [
-                "name",
-                "type",
-                "latitude",
-                "longitude",
-                "value"
+              "columns": [
+                {
+                  "name": "name"
+                },
+                {
+                  "name": "type"
+                },
+                {
+                  "name": "latitude"
+                },
+                {
+                  "name": "longitude"
+                },
+                {
+                  "name": "value"
+                }
               ],
+              "database": "innovacity",
               "filters": [
                 {
                   "condition": "AND",
@@ -1099,51 +1089,60 @@
               ],
               "mode": "list",
               "orderBy": [],
+              "queryType": "table",
               "table": "temperatures"
             }
           },
-          "queryType": "sql",
-          "rawSql": "SELECT\n    'temperature' as Tipo,\n    name,\n    toStartOfMinute(timestamp1m) AS timestamp1m,\n    avgMerge(avgTemperature) as avgTemperature,\n    latitude,\n    longitude\nFROM innovacity.temperatures1m\nGROUP BY (name, timestamp1m, latitude, longitude)\nHAVING ( timestamp1m >= $__fromTime AND timestamp1m <= $__toTime );",
-          "refId": "A",
-          "selectedFormat": 4
+          "pluginVersion": "4.0.3",
+          "queryType": "table",
+          "rawSql": "SELECT name,\n       'temperature' as Tipo,\n       argMax(latitude,timestamp) as latitude,\n       argMax(longitude,timestamp) as longitude\nFROM innovacity.temperatures\nGROUP BY name\nHAVING ( timestamp  >= $__fromTime AND timestamp <= $__toTime );",
+          "refId": "A"
         },
         {
           "datasource": {
             "type": "grafana-clickhouse-datasource",
             "uid": "PDEE91DDB90597936"
           },
+          "editorType": "sql",
           "format": 1,
           "hide": false,
           "meta": {
             "builderOptions": {
-              "fields": [],
+              "columns": [],
+              "database": "",
               "limit": 100,
-              "mode": "list"
+              "mode": "list",
+              "queryType": "table",
+              "table": ""
             }
           },
-          "queryType": "sql",
-          "rawSql": " SELECT\n    'rain' as Tipo,\n    name,\n    toStartOfMinute(timestamp1m) AS timestamp1m,\n    avgMerge(avgRain) as avgRain,\n    latitude,\n    longitude\nFROM innovacity.rain1m\nGROUP BY (name, timestamp1m, latitude, longitude)\nHAVING ( timestamp1m >= $__fromTime AND timestamp1m <= $__toTime );",
-          "refId": "B",
-          "selectedFormat": 4
+          "pluginVersion": "4.0.3",
+          "queryType": "table",
+          "rawSql": "SELECT name,\n       'rain' as Tipo,\n       argMax(latitude,timestamp) as latitude,\n       argMax(longitude,timestamp) as longitude\nFROM innovacity.rain\nGROUP BY name\nHAVING ( timestamp  >= $__fromTime AND timestamp <= $__toTime );",
+          "refId": "B"
         },
         {
           "datasource": {
             "type": "grafana-clickhouse-datasource",
             "uid": "PDEE91DDB90597936"
           },
+          "editorType": "sql",
           "format": 1,
           "hide": false,
           "meta": {
             "builderOptions": {
-              "fields": [],
+              "columns": [],
+              "database": "",
               "limit": 100,
-              "mode": "list"
+              "mode": "list",
+              "queryType": "table",
+              "table": ""
             }
           },
-          "queryType": "sql",
-          "rawSql": " SELECT\n    'reservoir' as Tipo,\n    name,\n    toStartOfMinute(timestamp1m) AS timestamp1m,\n    avgMerge(avgReservoir) as avgReservoir,\n    latitude,\n    longitude\nFROM innovacity.reservoirs1m\nGROUP BY (name, timestamp1m, latitude, longitude)\nHAVING ( timestamp1m >= $__fromTime AND timestamp1m <= $__toTime );",
-          "refId": "C",
-          "selectedFormat": 4
+          "pluginVersion": "4.0.3",
+          "queryType": "table",
+          "rawSql": "SELECT name,\n       'reservoir' as Tipo,\n       argMax(latitude,timestamp) as latitude,\n       argMax(longitude,timestamp) as longitude\nFROM innovacity.reservoirs\nGROUP BY name\nHAVING ( timestamp  >= $__fromTime AND timestamp <= $__toTime );",
+          "refId": "C"
         },
         {
           "datasource": {
@@ -1165,8 +1164,31 @@
           },
           "pluginVersion": "4.0.3",
           "queryType": "table",
-          "rawSql": "SELECT name,\n       'wind' as Tipo,\n       argMax(value, timestamp) AS value,\n       argMax(latitude,timestamp) as latitude,\n       argMax(longitude,timestamp) as longitude\nFROM innovacity.wind\nGROUP BY name;",
+          "rawSql": "SELECT name,\n       'wind' as Tipo,\n       argMax(latitude,timestamp) as latitude,\n       argMax(longitude,timestamp) as longitude\nFROM innovacity.wind\nGROUP BY name\nHAVING ( timestamp  >= $__fromTime AND timestamp <= $__toTime );",
           "refId": "D"
+        },
+        {
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "PDEE91DDB90597936"
+          },
+          "editorType": "sql",
+          "format": 1,
+          "hide": false,
+          "meta": {
+            "builderOptions": {
+              "columns": [],
+              "database": "",
+              "limit": 1000,
+              "mode": "list",
+              "queryType": "table",
+              "table": ""
+            }
+          },
+          "pluginVersion": "4.0.3",
+          "queryType": "table",
+          "rawSql": "SELECT name,\n       'humidity' as Tipo,\n       argMax(latitude,timestamp) as latitude,\n       argMax(longitude,timestamp) as longitude\nFROM innovacity.humidity\nGROUP BY name\nHAVING ( timestamp  >= $__fromTime AND timestamp <= $__toTime );",
+          "refId": "E"
         }
       ],
       "title": "Mappa Sensori",
@@ -1294,7 +1316,8 @@
               }
             ]
           },
-          "unit": "velocitykmh"
+          "unit": "velocitykmh",
+          "unitScale": true
         },
         "overrides": [
           {
@@ -1420,7 +1443,7 @@
           "zoom": 15
         }
       },
-      "pluginVersion": "10.2.3",
+      "pluginVersion": "10.3.0",
       "targets": [
         {
           "datasource": {
@@ -1479,7 +1502,8 @@
                 "value": 80
               }
             ]
-          }
+          },
+          "unitScale": true
         },
         "overrides": [
           {
@@ -1515,7 +1539,7 @@
         },
         "showHeader": true
       },
-      "pluginVersion": "10.2.3",
+      "pluginVersion": "10.3.0",
       "targets": [
         {
           "datasource": {
@@ -1530,7 +1554,7 @@
       "type": "table"
     }
   ],
-  "refresh": "auto",
+  "refresh": "1s",
   "schemaVersion": 39,
   "tags": [],
   "templating": {
