@@ -36,8 +36,8 @@ services:
     healthcheck:
       test: ["CMD", "nc", "-z", "localhost", "8123"]
       interval: 5s
-      timeout: 2s
-      retries: 3
+      timeout: 30s
+      retries: 5
     environment:
       # creazione database iniziale
       CLICKHOUSE_DB: innovacity
