@@ -2,13 +2,13 @@ import os
 from src.simulator_utils.kafka_simulator_executor_factory import (
     KafkaSimulatorExecutorFactory,
 )
-from src.simulator_utils.stdout_simulator_executor_factory import (
-    StdoutSimulatorExecutorFactory,
-)
+# from src.simulator_utils.stdout_simulator_executor_factory import (
+#     StdoutSimulatorExecutorFactory,
+# )
 
 # env var reading
 KAFKA_HOST = os.environ.get("KAFKA_HOST", "kafka")
-KAFKA_PORT = os.environ.get("KAFKA_PORT", "9092")
+KAFKA_PORT = os.environ.get("KAFKA_PORT", 9092)
 
 # JSON config file reading
 config_file = open("simulators_config.json", "r")

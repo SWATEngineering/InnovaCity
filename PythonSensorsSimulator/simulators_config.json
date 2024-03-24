@@ -1,5 +1,17 @@
 [
   {
+    "name": "prova sensore umidità",
+    "type": "humidity",
+    "wait_time_in_seconds": 1.5,
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        45.398214,
+        11.851271
+      ]
+    }
+  },
+  {
     "type": "humidity",
     "wait_time_in_seconds": 1.5,
     "location": {
