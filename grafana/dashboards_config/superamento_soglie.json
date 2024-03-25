@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 4,
+  "id": 5,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -41,16 +41,31 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
                 "value": 80
               }
             ]
-          }
+          },
+          "unitScale": true
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "name"
+            },
+            "properties": [
+              {
+                "id": "custom.filterable",
+                "value": true
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 7,
@@ -71,7 +86,7 @@
         },
         "showHeader": true
       },
-      "pluginVersion": "10.2.3",
+      "pluginVersion": "10.3.0",
       "targets": [
         {
           "datasource": {
@@ -92,11 +107,12 @@
           },
           "pluginVersion": "4.0.3",
           "queryType": "table",
-          "rawSql": "SELECT\n    name,\n    toStartOfMinute(timestamp1m) AS timestamp1m,\n    avgMerge(avgRain) as value\nFROM\n    innovacity.rain1m\nGROUP BY (name, timestamp1m)\nHAVING \n    (timestamp1m >= $__fromTime AND timestamp1m <= $__toTime) \n    AND (value > 50)\nORDER BY value DESC;",
+          "rawSql": "SELECT\n    name,\n    timestamp, \n    value\nFROM\n    innovacity.rain\nHAVING \n    (timestamp >= $__fromTime AND timestamp <= $__toTime) \n    AND (value > 50)\nORDER BY value DESC;",
           "refId": "A"
         }
       ],
       "title": "Superamento soglia precipitazioni (50mm/m^2)",
+      "transparent": true,
       "type": "table"
     },
     {
@@ -118,16 +134,31 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
                 "value": 80
               }
             ]
-          }
+          },
+          "unitScale": true
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "name"
+            },
+            "properties": [
+              {
+                "id": "custom.filterable",
+                "value": true
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 6,
@@ -148,7 +179,7 @@
         },
         "showHeader": true
       },
-      "pluginVersion": "10.2.3",
+      "pluginVersion": "10.3.0",
       "targets": [
         {
           "datasource": {
@@ -169,11 +200,12 @@
           },
           "pluginVersion": "4.0.3",
           "queryType": "table",
-          "rawSql": "SELECT\n    name,\n    timestamp,\n    value\nFROM\n    innovacity.eco_zone\nWHERE\n    value > 80\nORDER BY value DESC;",
+          "rawSql": "SELECT\n    name,\n    timestamp,\n    value\nFROM\n    innovacity.eco_zone\nWHERE\n    (timestamp >= $__fromTime AND timestamp <= $__toTime) \n    AND value > 80\nORDER BY value DESC;",
           "refId": "A"
         }
       ],
       "title": "Superamento soglia riempimento zone ecologiche (80%)",
+      "transparent": true,
       "type": "table"
     },
     {
@@ -195,16 +227,31 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
                 "value": 80
               }
             ]
-          }
+          },
+          "unitScale": true
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "name"
+            },
+            "properties": [
+              {
+                "id": "custom.filterable",
+                "value": true
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 6,
@@ -225,7 +272,7 @@
         },
         "showHeader": true
       },
-      "pluginVersion": "10.2.3",
+      "pluginVersion": "10.3.0",
       "targets": [
         {
           "datasource": {
@@ -246,11 +293,12 @@
           },
           "pluginVersion": "4.0.3",
           "queryType": "table",
-          "rawSql": "SELECT\n    name,\n    toStartOfMinute(timestamp1m) AS timestamp1m,\n    avgMerge(avgReservoir) as value\nFROM innovacity.reservoirs1m\nGROUP BY (name, timestamp1m)\nHAVING \n    (timestamp1m >= $__fromTime AND timestamp1m <= $__toTime) \n    AND (value > 70)\nORDER BY value DESC;",
+          "rawSql": "SELECT\n    name,\n    timestamp,\n    value\nFROM\n    innovacity.reservoirs\nWHERE\n    (timestamp >= $__fromTime AND timestamp <= $__toTime) \n    AND value > 70\nORDER BY value DESC;",
           "refId": "A"
         }
       ],
       "title": "Superamento soglie livello bacini idrici (70%)",
+      "transparent": true,
       "type": "table"
     },
     {
@@ -272,16 +320,31 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
                 "value": 80
               }
             ]
-          }
+          },
+          "unitScale": true
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "name"
+            },
+            "properties": [
+              {
+                "id": "custom.filterable",
+                "value": true
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 7,
@@ -302,7 +365,7 @@
         },
         "showHeader": true
       },
-      "pluginVersion": "10.2.3",
+      "pluginVersion": "10.3.0",
       "targets": [
         {
           "datasource": {
@@ -323,11 +386,12 @@
           },
           "pluginVersion": "4.0.3",
           "queryType": "table",
-          "rawSql": "SELECT\n    name,\n    toStartOfMinute(timestamp1m) AS timestamp1m,\n    avgMerge(avg_air_pollution) as value\nFROM innovacity.air_pollution1m\nGROUP BY (name, timestamp1m)\nHAVING \n    (timestamp1m >= $__fromTime AND timestamp1m <= $__toTime) \n    AND (value > 80)\nORDER BY value DESC;",
+          "rawSql": "SELECT\n    name,\n    timestamp,\n    value\nFROM\n    innovacity.air_pollution\nWHERE\n    (timestamp >= $__fromTime AND timestamp <= $__toTime) \n    AND value > 80\nORDER BY value DESC;",
           "refId": "A"
         }
       ],
       "title": "Superamento soglia inquinamento dell'aria (80μg/m^3)",
+      "transparent": true,
       "type": "table"
     },
     {
@@ -356,9 +420,23 @@
                 "value": 80
               }
             ]
-          }
+          },
+          "unitScale": true
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "name"
+            },
+            "properties": [
+              {
+                "id": "custom.filterable",
+                "value": true
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 7,
@@ -379,7 +457,7 @@
         },
         "showHeader": true
       },
-      "pluginVersion": "10.2.3",
+      "pluginVersion": "10.3.0",
       "targets": [
         {
           "datasource": {
@@ -400,11 +478,12 @@
           },
           "pluginVersion": "4.0.3",
           "queryType": "table",
-          "rawSql": "SELECT\n    name,\n    toStartOfMinute(timestamp1m) AS timestamp1m,\n    avgMerge(avgTemperature) as value\nFROM innovacity.temperatures1m\nGROUP BY (name, timestamp1m)\nHAVING \n    (timestamp1m >= $__fromTime AND timestamp1m <= $__toTime) \n    AND (value > 40)\nORDER BY value DESC;",
+          "rawSql": "SELECT\n    name,\n    timestamp,\n    value\nFROM\n    innovacity.temperatures\nWHERE\n    (timestamp >= $__fromTime AND timestamp <= $__toTime) \n    AND value > 40 \nORDER BY value DESC;",
           "refId": "A"
         }
       ],
       "title": "Superamento soglia temperatura (40°)",
+      "transparent": true,
       "type": "table"
     }
   ],
@@ -415,13 +494,13 @@
     "list": []
   },
   "time": {
-    "from": "now-6h",
+    "from": "now-5m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Superamento soglie",
   "uid": "fd93cd64-32ba-4ea6-99b5-dbb13179d1eb",
-  "version": 7,
+  "version": 2,
   "weekStart": ""
 }
