@@ -59,7 +59,6 @@ class RainSensorSensorSimulator(SensorSimulatorStrategy):
             "type": "mm/mc",
             "value": round(self.__generate_value(), 2)
         }
-        print(self.__rain_intensity)
 
         data = json_message_maker(
             SensorTypes.RAIN,

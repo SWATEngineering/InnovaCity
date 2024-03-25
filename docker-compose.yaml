@@ -33,6 +33,11 @@ services:
     container_name: clickhouse
     ports:
       - "8123:8123"
+    healthcheck:
+      test: ["CMD", "clickhouse-client", "--query", "SELECT 1"]
+      interval: 5s
+      timeout: 30s
+      retries: 5
     environment:
       # creazione database iniziale
       CLICKHOUSE_DB: innovacity
@@ -65,8 +70,12 @@ services:
       GF_INSTALL_PLUGINS: grafana-clickhouse-datasource
       GF_SECURITY_ADMIN_USER: ic_admin
       GF_SECURITY_ADMIN_PASSWORD: ic_admin
+      DISCORD_WEBHOOK_URL: ${DISCORD_WEBHOOK_URL}
       # Commentato per rendere semplice lo sviluppo
       # GF_AUTH_ORG_ROLE: viewer
+    depends_on:
+      clickhouse:  # per le allerte
+        condition: service_healthy 
     profiles: ["dev", "prod"]
 
   simulators:
@@ -78,6 +87,8 @@ services:
       TZ: "Europe/Rome"
       KAFKA_HOST: "kafka"
       KAFKA_PORT: "9092"
+      ORS_API_KEY: ${ORS_API_KEY} 
+      # per far funzionare il simulatore di biciclette
     depends_on:
       kafka:
         condition: service_healthy

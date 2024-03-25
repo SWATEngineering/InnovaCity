@@ -1,1 +1,527 @@
-{"apiVersion":1,"groups":[{"orgId":1,"name":"5m","folder":"ciao","interval":"5m","rules":[{"uid":"bc3d4c40-de67-46d6-9eae-b1c220ef0093","title":"test","condition":"C","data":[{"refId":"A","queryType":"timeseries","relativeTimeRange":{"from":600,"to":0},"datasourceUid":"PDEE91DDB90597936","model":{"editorType":"sql","format":0,"intervalMs":1000,"maxDataPoints":43200,"meta":{"builderOptions":{"columns":[],"database":"","limit":1000,"mode":"list","queryType":"table","table":""}},"pluginVersion":"4.0.3","queryType":"timeseries","rawSql":"SELECT\n    nome_sensore,\n    toStartOfMinute(timestamp1m) AS timestamp1m,\n    avgMerge(avgTemperature) as value\nFROM innovacity.temperatures1m\nGROUP BY (nome_sensore, timestamp1m)\nHAVING \n  (timestamp1m \u003e= $__fromTime AND timestamp1m \u003c= $__toTime) AND (value \u003e 15)\nORDER BY \n  timestamp1m ASC;","refId":"A"}},{"refId":"B","relativeTimeRange":{"from":600,"to":0},"datasourceUid":"__expr__","model":{"conditions":[{"evaluator":{"params":[],"type":"gt"},"operator":{"type":"and"},"query":{"params":["B"]},"reducer":{"params":[],"type":"last"},"type":"query"}],"datasource":{"type":"__expr__","uid":"__expr__"},"expression":"A","intervalMs":1000,"maxDataPoints":43200,"reducer":"max","refId":"B","type":"reduce"}},{"refId":"C","relativeTimeRange":{"from":600,"to":0},"datasourceUid":"__expr__","model":{"conditions":[{"evaluator":{"params":[0],"type":"gt"},"operator":{"type":"and"},"query":{"params":["C"]},"reducer":{"params":[],"type":"last"},"type":"query"}],"datasource":{"type":"__expr__","uid":"__expr__"},"expression":"B","intervalMs":1000,"maxDataPoints":43200,"refId":"C","type":"threshold"}}],"noDataState":"NoData","execErrState":"Error","for":"5m","annotations":{"summary":"Trovato valore {{$value}} in {{$nome_sensore}}"},"labels":{},"isPaused":false}]}]}
+{
+    "apiVersion": 1,
+    "groups": [
+        {
+            "orgId": 1,
+            "name": "Air Pollution",
+            "folder": "Allerte InnovaCity",
+            "interval": "5m",
+            "rules": [
+                {
+                    "uid": "e6e7a38c-4853-45a2-8b43-28973534dc99",
+                    "title": "Air Pollution",
+                    "condition": "B",
+                    "data": [
+                        {
+                            "refId": "A",
+                            "queryType": "timeseries",
+                            "relativeTimeRange": {
+                                "from": 300,
+                                "to": 0
+                            },
+                            "datasourceUid": "PDEE91DDB90597936",
+                            "model": {
+                                "builderOptions": {
+                                    "columns": [],
+                                    "database": "default",
+                                    "limit": 1000,
+                                    "meta": {},
+                                    "mode": "list",
+                                    "queryType": "table",
+                                    "table": ""
+                                },
+                                "editorType": "sql",
+                                "format": 0,
+                                "intervalMs": 1000,
+                                "maxDataPoints": 43200,
+                                "meta": {
+                                    "builderOptions": {
+                                        "columns": [],
+                                        "database": "default",
+                                        "limit": 1000,
+                                        "meta": {},
+                                        "mode": "list",
+                                        "queryType": "table",
+                                        "table": ""
+                                    }
+                                },
+                                "pluginVersion": "4.0.3",
+                                "queryType": "timeseries",
+                                "rawSql": "SELECT\r\n    name AS sensor_name,\r\n    MAX(value) AS \"air pollution\"\r\nFROM\r\n    innovacity.air_pollution\r\nWHERE $__timeFilter(timestamp)\r\nGROUP BY\r\n    name\r\n\r\n",
+                                "refId": "A"
+                            }
+                        },
+                        {
+                            "refId": "B",
+                            "relativeTimeRange": {
+                                "from": 300,
+                                "to": 0
+                            },
+                            "datasourceUid": "__expr__",
+                            "model": {
+                                "conditions": [
+                                    {
+                                        "evaluator": {
+                                            "params": [
+                                                80
+                                            ],
+                                            "type": "gt"
+                                        },
+                                        "operator": {
+                                            "type": "and"
+                                        },
+                                        "query": {
+                                            "params": [
+                                                "C"
+                                            ]
+                                        },
+                                        "reducer": {
+                                            "params": [],
+                                            "type": "last"
+                                        },
+                                        "type": "query"
+                                    }
+                                ],
+                                "datasource": {
+                                    "type": "__expr__",
+                                    "uid": "__expr__"
+                                },
+                                "expression": "A",
+                                "intervalMs": 1000,
+                                "maxDataPoints": 43200,
+                                "refId": "B",
+                                "type": "threshold"
+                            }
+                        }
+                    ],
+                    "noDataState": "OK",
+                    "execErrState": "OK",
+                    "for": "0s",
+                    "annotations": {
+                        "summary": "Amount of air pollution for sensor {{ index $labels \"name\" }} has exceeded 80 𝜇𝑔/𝑚3 in the last five minute:  {{ index $values \"A\" }}  𝜇𝑔/𝑚3."
+                    },
+                    "labels": {},
+                    "isPaused": false
+                }
+            ]
+        },
+        {
+            "orgId": 1,
+            "name": "Eco Zone",
+            "folder": "Allerte InnovaCity",
+            "interval": "5m",
+            "rules": [
+                {
+                    "uid": "f36e7d5c-8da1-45dc-b775-48f150724106",
+                    "title": "Eco Zone",
+                    "condition": "B",
+                    "data": [
+                        {
+                            "refId": "A",
+                            "queryType": "timeseries",
+                            "relativeTimeRange": {
+                                "from": 300,
+                                "to": 0
+                            },
+                            "datasourceUid": "PDEE91DDB90597936",
+                            "model": {
+                                "builderOptions": {
+                                    "columns": [],
+                                    "database": "default",
+                                    "limit": 1000,
+                                    "meta": {},
+                                    "mode": "list",
+                                    "queryType": "table",
+                                    "table": ""
+                                },
+                                "editorType": "sql",
+                                "format": 0,
+                                "intervalMs": 1000,
+                                "maxDataPoints": 43200,
+                                "meta": {
+                                    "builderOptions": {
+                                        "columns": [],
+                                        "database": "default",
+                                        "limit": 1000,
+                                        "meta": {},
+                                        "mode": "list",
+                                        "queryType": "table",
+                                        "table": ""
+                                    }
+                                },
+                                "pluginVersion": "4.0.3",
+                                "queryType": "timeseries",
+                                "rawSql": "SELECT\r\n    name AS sensor_name,\r\n    MAX(value) AS max_percentage\r\nFROM\r\n    innovacity.eco_zone\r\nWHERE $__timeFilter(timestamp)\r\nGROUP BY\r\n    name\r\n\r\n",
+                                "refId": "A"
+                            }
+                        },
+                        {
+                            "refId": "B",
+                            "relativeTimeRange": {
+                                "from": 300,
+                                "to": 0
+                            },
+                            "datasourceUid": "__expr__",
+                            "model": {
+                                "conditions": [
+                                    {
+                                        "evaluator": {
+                                            "params": [
+                                                80
+                                            ],
+                                            "type": "gt"
+                                        },
+                                        "operator": {
+                                            "type": "and"
+                                        },
+                                        "query": {
+                                            "params": [
+                                                "C"
+                                            ]
+                                        },
+                                        "reducer": {
+                                            "params": [],
+                                            "type": "last"
+                                        },
+                                        "type": "query"
+                                    }
+                                ],
+                                "datasource": {
+                                    "type": "__expr__",
+                                    "uid": "__expr__"
+                                },
+                                "expression": "A",
+                                "intervalMs": 1000,
+                                "maxDataPoints": 43200,
+                                "refId": "B",
+                                "type": "threshold"
+                            }
+                        }
+                    ],
+                    "noDataState": "OK",
+                    "execErrState": "OK",
+                    "for": "0s",
+                    "annotations": {
+                        "summary": "Filing percentage of eco zone {{ index $labels \"name\" }} has exceeded 80% in the last five minute:{{ index $values \"A\" }} %."
+                    },
+                    "labels": {},
+                    "isPaused": false
+                }
+            ]
+        },
+        {
+            "orgId": 1,
+            "name": "Rain",
+            "folder": "Allerte InnovaCity",
+            "interval": "5m",
+            "rules": [
+                {
+                    "uid": "c334538b-457a-416b-ab4b-61a414d21a8c",
+                    "title": "Rain",
+                    "condition": "B",
+                    "data": [
+                        {
+                            "refId": "A",
+                            "queryType": "timeseries",
+                            "relativeTimeRange": {
+                                "from": 300,
+                                "to": 0
+                            },
+                            "datasourceUid": "PDEE91DDB90597936",
+                            "model": {
+                                "builderOptions": {
+                                    "columns": [],
+                                    "database": "default",
+                                    "limit": 1000,
+                                    "meta": {},
+                                    "mode": "list",
+                                    "queryType": "table",
+                                    "table": ""
+                                },
+                                "editorType": "sql",
+                                "format": 0,
+                                "intervalMs": 1000,
+                                "maxDataPoints": 43200,
+                                "meta": {
+                                    "builderOptions": {
+                                        "columns": [],
+                                        "database": "default",
+                                        "limit": 1000,
+                                        "meta": {},
+                                        "mode": "list",
+                                        "queryType": "table",
+                                        "table": ""
+                                    }
+                                },
+                                "pluginVersion": "4.0.3",
+                                "queryType": "timeseries",
+                                "rawSql": "SELECT\r\n    name AS sensor_name,\r\n    MAX(value) AS max_percentage\r\nFROM\r\n    innovacity.rain\r\nWHERE $__timeFilter(timestamp)\r\nGROUP BY\r\n    name\r\n\r\n",
+                                "refId": "A"
+                            }
+                        },
+                        {
+                            "refId": "B",
+                            "relativeTimeRange": {
+                                "from": 300,
+                                "to": 0
+                            },
+                            "datasourceUid": "__expr__",
+                            "model": {
+                                "conditions": [
+                                    {
+                                        "evaluator": {
+                                            "params": [
+                                                50
+                                            ],
+                                            "type": "gt"
+                                        },
+                                        "operator": {
+                                            "type": "and"
+                                        },
+                                        "query": {
+                                            "params": [
+                                                "C"
+                                            ]
+                                        },
+                                        "reducer": {
+                                            "params": [],
+                                            "type": "last"
+                                        },
+                                        "type": "query"
+                                    }
+                                ],
+                                "datasource": {
+                                    "type": "__expr__",
+                                    "uid": "__expr__"
+                                },
+                                "expression": "A",
+                                "intervalMs": 1000,
+                                "maxDataPoints": 43200,
+                                "refId": "B",
+                                "type": "threshold"
+                            }
+                        }
+                    ],
+                    "noDataState": "OK",
+                    "execErrState": "OK",
+                    "for": "0s",
+                    "annotations": {
+                        "summary": "Amount of rainfall for sensor {{ index $labels \"name\" }} has exceeded 50𝑚𝑚/𝑚2 in the last five minute: {{ index $values \"A\" }} 𝑚𝑚/𝑚2."
+                    },
+                    "labels": {},
+                    "isPaused": false
+                }
+            ]
+        },
+        {
+            "orgId": 1,
+            "name": "Reservoirs",
+            "folder": "Allerte InnovaCity",
+            "interval": "5m",
+            "rules": [
+                {
+                    "uid": "fe69c082-d88b-4c57-820b-5a33425daa88",
+                    "title": "Reservoirs",
+                    "condition": "B",
+                    "data": [
+                        {
+                            "refId": "A",
+                            "queryType": "timeseries",
+                            "relativeTimeRange": {
+                                "from": 300,
+                                "to": 0
+                            },
+                            "datasourceUid": "PDEE91DDB90597936",
+                            "model": {
+                                "builderOptions": {
+                                    "columns": [],
+                                    "database": "default",
+                                    "limit": 1000,
+                                    "meta": {},
+                                    "mode": "list",
+                                    "queryType": "table",
+                                    "table": ""
+                                },
+                                "editorType": "sql",
+                                "format": 0,
+                                "intervalMs": 1000,
+                                "maxDataPoints": 43200,
+                                "meta": {
+                                    "builderOptions": {
+                                        "columns": [],
+                                        "database": "default",
+                                        "limit": 1000,
+                                        "meta": {},
+                                        "mode": "list",
+                                        "queryType": "table",
+                                        "table": ""
+                                    }
+                                },
+                                "pluginVersion": "4.0.3",
+                                "queryType": "timeseries",
+                                "rawSql": "SELECT\r\n    name AS sensor_name,\r\n    MAX(value) AS max_percentage\r\nFROM\r\n    innovacity.reservoirs\r\nWHERE $__timeFilter(timestamp)\r\nGROUP BY\r\n    name\r\n\r\n",
+                                "refId": "A"
+                            }
+                        },
+                        {
+                            "refId": "B",
+                            "relativeTimeRange": {
+                                "from": 300,
+                                "to": 0
+                            },
+                            "datasourceUid": "__expr__",
+                            "model": {
+                                "conditions": [
+                                    {
+                                        "evaluator": {
+                                            "params": [
+                                                70
+                                            ],
+                                            "type": "gt"
+                                        },
+                                        "operator": {
+                                            "type": "and"
+                                        },
+                                        "query": {
+                                            "params": [
+                                                "C"
+                                            ]
+                                        },
+                                        "reducer": {
+                                            "params": [],
+                                            "type": "last"
+                                        },
+                                        "type": "query"
+                                    }
+                                ],
+                                "datasource": {
+                                    "type": "__expr__",
+                                    "uid": "__expr__"
+                                },
+                                "expression": "A",
+                                "intervalMs": 1000,
+                                "maxDataPoints": 43200,
+                                "refId": "B",
+                                "type": "threshold"
+                            }
+                        }
+                    ],
+                    "noDataState": "OK",
+                    "execErrState": "OK",
+                    "for": "0s",
+                    "annotations": {
+                        "summary": "Filing percentage of reservoir capacity for sensor {{ index $labels \"name\" }} has exceeded 70% in the last five minute:{{ index $values \"A\" }} %."
+                    },
+                    "labels": {},
+                    "isPaused": false
+                }
+            ]
+        },
+        {
+            "orgId": 1,
+            "name": "Temperature",
+            "folder": "Allerte InnovaCity",
+            "interval": "5m",
+            "rules": [
+                {
+                    "uid": "f8b76094-bf26-4a51-ba0a-ef49ee7a1d62",
+                    "title": "Temperature",
+                    "condition": "B",
+                    "data": [
+                        {
+                            "refId": "A",
+                            "queryType": "timeseries",
+                            "relativeTimeRange": {
+                                "from": 300,
+                                "to": 0
+                            },
+                            "datasourceUid": "PDEE91DDB90597936",
+                            "model": {
+                                "builderOptions": {
+                                    "columns": [],
+                                    "database": "default",
+                                    "limit": 1000,
+                                    "meta": {},
+                                    "mode": "list",
+                                    "queryType": "table",
+                                    "table": ""
+                                },
+                                "editorType": "sql",
+                                "format": 0,
+                                "intervalMs": 1000,
+                                "maxDataPoints": 43200,
+                                "meta": {
+                                    "builderOptions": {
+                                        "columns": [],
+                                        "database": "default",
+                                        "limit": 1000,
+                                        "meta": {},
+                                        "mode": "list",
+                                        "queryType": "table",
+                                        "table": ""
+                                    }
+                                },
+                                "pluginVersion": "4.0.3",
+                                "queryType": "timeseries",
+                                "rawSql": "SELECT\r\n    name AS sensor_name,\r\n    MAX(value) AS max_temperature\r\nFROM\r\n    innovacity.temperatures\r\nWHERE $__timeFilter(timestamp)\r\nGROUP BY\r\n    name\r\n\r\n",
+                                "refId": "A"
+                            }
+                        },
+                        {
+                            "refId": "B",
+                            "relativeTimeRange": {
+                                "from": 300,
+                                "to": 0
+                            },
+                            "datasourceUid": "__expr__",
+                            "model": {
+                                "conditions": [
+                                    {
+                                        "evaluator": {
+                                            "params": [
+                                                40
+                                            ],
+                                            "type": "gt"
+                                        },
+                                        "operator": {
+                                            "type": "and"
+                                        },
+                                        "query": {
+                                            "params": [
+                                                "C"
+                                            ]
+                                        },
+                                        "reducer": {
+                                            "params": [],
+                                            "type": "last"
+                                        },
+                                        "type": "query"
+                                    }
+                                ],
+                                "datasource": {
+                                    "type": "__expr__",
+                                    "uid": "__expr__"
+                                },
+                                "expression": "A",
+                                "intervalMs": 1000,
+                                "maxDataPoints": 43200,
+                                "refId": "B",
+                                "type": "threshold"
+                            }
+                        }
+                    ],
+                    "dasboardUid": "",
+                    "panelId": 0,
+                    "noDataState": "OK",
+                    "execErrState": "OK",
+                    "for": "0s",
+                    "annotations": {
+                        "summary": "Temperature for sensor {{ index $labels \"name\" }} has exceeded 40 degrees in the last five minutes: {{ index $values \"A\" }}°"
+                    },
+                    "labels": {},
+                    "isPaused": false
+                }
+            ]
+        }
+    ]
+}
