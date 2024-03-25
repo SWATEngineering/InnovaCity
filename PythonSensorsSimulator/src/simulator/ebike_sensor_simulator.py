@@ -16,8 +16,7 @@ class EBikeSensorSimulator(SensorSimulatorStrategy):
     __bike_percentage: float = 100
 
     __last_coordinate_index: int = 0
-    __source: tuple = ()
-    __destination: tuple = ()
+    __source_and_destination: tuple = ()
     __route_coordinates: list = []
 
     __last_timestamp: datetime = None
@@ -25,8 +24,7 @@ class EBikeSensorSimulator(SensorSimulatorStrategy):
 
     def __init__(self, sensor_name: str, random_obj: Random, datetime_obj: Type[datetime], coordinates: Coordinates):
         super().__init__(sensor_name, random_obj, datetime_obj, coordinates)
-        self.__source = json.loads(self._coordinates.get_geo_json())['coordinates']
-        self.__destination = self._pick_destination()
+        self.__source_and_destination = (json.loads(self._coordinates.get_geo_json())['coordinates'], self._pick_destination())
         self.__route_coordinates = self._get_route_coordinates()
 
     def _charge_battery(self) -> None:
@@ -42,7 +40,7 @@ class EBikeSensorSimulator(SensorSimulatorStrategy):
     def _pick_destination(self) -> tuple:
         lat, lon = json.loads(self._coordinates.get_geo_json())['coordinates']
         API_KEY = os.environ.get("ORS_API_KEY")
-        
+
         if API_KEY is None:
             raise ValueError("API key not set")
 
@@ -55,9 +53,9 @@ class EBikeSensorSimulator(SensorSimulatorStrategy):
         url = f"https://api.openrouteservice.org/geocode/reverse?api_key={API_KEY}&point.lon={dest_longitude}&point.lat={dest_latitude}"
 
         headers = {'Accept': 'application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8'}
-        response = requests.get(url, headers=headers)
+        response = requests.get(url, headers=headers, timeout=10)
         #print("Calling API ...:", response.status_code, response.reason)
-        
+
         data = response.json()
         coordinates = []
         for feature in data['features']:
@@ -69,19 +67,18 @@ class EBikeSensorSimulator(SensorSimulatorStrategy):
         return (dest_latitude, dest_longitude)
 
     def _get_route_coordinates(self) -> list:
-        source = self.__source
-        dest = self.__destination
+        source, dest = self.__source_and_destination
         start = "{},{}".format(source[1], source[0])
         end = "{},{}".format(dest[1], dest[0])
         API_KEY = os.environ.get("ORS_API_KEY")
-        
+
         if API_KEY is None:
             raise ValueError("API key not set")
 
         url = f"https://api.openrouteservice.org/v2/directions/cycling-electric?api_key={API_KEY}&start={start}&end={end}"
 
         headers = {'Accept': 'application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8',}
-        call = requests.get(url, headers=headers)
+        call = requests.get(url, headers=headers, timeout=10)
         #print("Calling API ...:", call.status_code, call.reason)
         response_text = call.text
 
@@ -95,14 +92,15 @@ class EBikeSensorSimulator(SensorSimulatorStrategy):
 
     def _calculate_movement(self) -> None:
         if self.__last_coordinate_index == len(self.__route_coordinates) - 1:
-            self.__source = self.__destination
-            self._pick_destination()
+            _, dest = self.__source_and_destination
+            self.__source_and_destination = (dest, self._pick_destination())
             self._get_route_coordinates()
             self.__last_coordinate_index = 0
         next_coordinate_index = self.__last_coordinate_index + 1
         next_coordinate = self.__route_coordinates[next_coordinate_index]
 
-        self._coordinates = Coordinates(latitude=next_coordinate[0], longitude=next_coordinate[1])
+        latitude, longitude = next_coordinate[0], next_coordinate[1]
+        self._coordinates.update_coordinates(longitude, latitude)
 
     def _calculate_distance(self) -> float:
         lat1, lon1 = json.loads(self._coordinates.get_geo_json())['coordinates']
@@ -117,14 +115,14 @@ class EBikeSensorSimulator(SensorSimulatorStrategy):
         return distance
 
     def _measure_battery_level(self) -> float:
-        if self.__last_timestamp is None:
-            return self.__bike_percentage
-
-        if self.__bike_percentage <= 0.01 or self.__is_charging == True:
+        if self.__bike_percentage <= 0.01 or self.__is_charging is True:
             self._charge_battery()
         if self.__is_charging:
             return self.__bike_percentage
 
+        return self._calculate_percentage()
+
+    def _calculate_percentage(self) -> float:
         self._calculate_movement()
 
         time_difference = (self._datetime_obj.now() - self.__last_timestamp).total_seconds()
@@ -139,14 +137,15 @@ class EBikeSensorSimulator(SensorSimulatorStrategy):
         return percentage
 
     def simulate(self) -> str:
-        self.__bike_percentage = self._measure_battery_level()
+        if self.__last_timestamp:
+            self.__bike_percentage = self._measure_battery_level()
 
         reading = {
             "type": "%",
             "value": round(self.__bike_percentage, 2)
         }
 
-        if not self.__last_timestamp is None and not self.__is_charging:
+        if self.__last_timestamp and not self.__is_charging:
             self.__last_coordinate_index += 1
         self.__last_timestamp = self._datetime_obj.now()
 
