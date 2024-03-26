@@ -82,10 +82,20 @@
     },
     {
         "type": "parking",
+        "name": "Park Piazza Insurrezione",
         "wait_time_in_seconds": 60.0,
         "location": {
             "type": "Point",
             "coordinates": [45.409471, 11.875172]
+        }
+    },
+    {
+        "type": "parking",
+        "name": "Park Padova Centro",
+        "wait_time_in_seconds": 60.0,
+        "location": {
+            "type": "Point",
+            "coordinates": [45.411921383875246, 11.88365473473307]
         }
     },
     {
