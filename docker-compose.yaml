@@ -36,8 +36,8 @@ services:
     healthcheck:
       test: ["CMD", "clickhouse-client", "--query", "SELECT 1"]
       interval: 5s
-      timeout: 30s
-      retries: 5
+      timeout: 1m
+      retries: 12
     environment:
       # creazione database iniziale
       CLICKHOUSE_DB: innovacity
