@@ -1,27 +1,123 @@
 [
     {
-        "name": "prova sensore umidità",
         "type": "humidity",
         "wait_time_in_seconds": 1.5,
         "location": {
             "type": "Point",
-            "coordinates": [45.398214, 11.851271]
+            "coordinates": [
+                45.398214,
+                11.851271
+            ]
         }
     },
     {
         "type": "humidity",
-        "wait_time_in_seconds": 1.5,
+        "wait_time_in_seconds": 1,
         "location": {
             "type": "Point",
-            "coordinates": [45.398214, 11.851271]
+            "coordinates": [
+                45.402908,
+                11.874001
+            ]
+        }
+    },
+    {
+        "type": "humidity",
+        "wait_time_in_seconds": 2,
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                45.406942,
+                11.875286
+            ]
+        }
+    },
+    {
+        "type": "humidity",
+        "wait_time_in_seconds": 0.5,
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                45.394112,
+                11.891943
+            ]
         }
     },
     {
         "type": "reservoir",
-        "wait_time_in_seconds": 1.0,
+        "wait_time_in_seconds": 1.1,
         "location": {
             "type": "Point",
-            "coordinates": [45.398214, 11.851271]
+            "coordinates": [
+                45.401604,
+                11.867793
+            ]
+        }
+    },
+    {
+        "type": "reservoir",
+        "wait_time_in_seconds": 0.9,
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                45.386917,
+                11.866023
+            ]
+        }
+    },
+    {
+        "type": "reservoir",
+        "wait_time_in_seconds": 1.5,
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                45.409796,
+                11.893392
+            ]
+        }
+    },
+    {
+        "type": "reservoir",
+        "wait_time_in_seconds": 3,
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                45.413331,
+                11.878489
+            ]
+        }
+    },
+    {
+        "type": "air_pollution",
+        "wait_time_in_seconds": 3,
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                45.413952,
+                11.877042
+            ]
+        }
+    },
+    {
+        "type": "air_pollution",
+        "wait_time_in_seconds": 4,
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                45.413942,
+                11.877142
+            ]
+        }
+    },
+    {
+        "type": "air_pollution",
+        "wait_time_in_seconds": 1,
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                45.413052,
+                11.871042
+            ]
         }
     },
     {
@@ -29,39 +125,131 @@
         "wait_time_in_seconds": 1.5,
         "location": {
             "type": "Point",
-            "coordinates": [45.398214, 11.851271]
+            "coordinates": [
+                45.413962,
+                11.877062
+            ]
         }
     },
     {
         "type": "rain",
-        "wait_time_in_seconds": 1.0,
+        "wait_time_in_seconds": 5,
         "location": {
             "type": "Point",
-            "coordinates": [45.398214, 11.851271]
+            "coordinates": [
+                45.393291,
+                11.852115
+            ]
+        }
+    },
+    {
+        "type": "rain",
+        "wait_time_in_seconds": 3,
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                45.405214,
+                11.829224
+            ]
+        }
+    },
+    {
+        "type": "rain",
+        "wait_time_in_seconds": 1,
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                45.41934,
+                11.88434
+            ]
+        }
+    },
+    {
+        "type": "rain",
+        "wait_time_in_seconds": 0.5,
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                45.405854,
+                11.911114
+            ]
         }
     },
     {
         "type": "temperature",
-        "wait_time_in_seconds": 1.0,
+        "wait_time_in_seconds": 0.8,
         "location": {
             "type": "Point",
-            "coordinates": [45.398214, 11.851271]
+            "coordinates": [
+                45.402908,
+                11.913599
+            ]
         }
     },
     {
         "type": "temperature",
-        "wait_time_in_seconds": 1.0,
+        "wait_time_in_seconds": 1,
         "location": {
             "type": "Point",
-            "coordinates": [45.398214, 11.851271]
+            "coordinates": [
+                45.393291,
+                11.872115
+            ]
         }
     },
     {
         "type": "temperature",
-        "wait_time_in_seconds": 1.0,
+        "wait_time_in_seconds": 1.2,
         "location": {
             "type": "Point",
-            "coordinates": [45.398214, 11.851271]
+            "coordinates": [
+                45.407629,
+                11.873968
+            ]
+        }
+    },
+    {
+        "type": "temperature",
+        "wait_time_in_seconds": 2,
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                45.395831,
+                11.896103
+            ]
+        }
+    },
+    {
+        "type": "wind",
+        "wait_time_in_seconds": 2,
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                45.408584,
+                11.870478
+            ]
+        }
+    },
+    {
+        "type": "wind",
+        "wait_time_in_seconds": 1,
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                45.3568,
+                11.8768
+            ]
+        }
+    },
+    {
+        "type": "wind",
+        "wait_time_in_seconds": 2,
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                45.4168,
+                11.8868
+            ]
         }
     },
     {
@@ -69,23 +257,117 @@
         "wait_time_in_seconds": 0.5,
         "location": {
             "type": "Point",
-            "coordinates": [45.398256, 11.851272]
+            "coordinates": [
+                45.4068,
+                11.8868
+            ]
         }
     },
     {
+        "name": "Prato della Valle",
         "type": "eco_zone",
-        "wait_time_in_seconds": 5.0,
+        "wait_time_in_seconds": 45,
         "location": {
             "type": "Point",
-            "coordinates": [45.398214, 11.851271]
+            "coordinates": [
+                45.398557,
+                11.876460
+            ]
         }
     },
     {
-        "type": "parking",
-        "wait_time_in_seconds": 60.0,
+        "name": "Piazza de Gaspari",
+        "type": "eco_zone",
+        "wait_time_in_seconds": 60,
         "location": {
             "type": "Point",
-            "coordinates": [45.409471, 11.875172]
+            "coordinates": [
+                45.415843,
+                11.876939
+            ]
+        }
+    },
+    {
+        "name": "Via San Biaggio 4",
+        "type": "eco_zone",
+        "wait_time_in_seconds": 30,
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                45.407316,
+                11.879351
+            ]
+        }
+    },
+    {
+        "name": "Via Francesco Marzolo",
+        "type": "eco_zone",
+        "wait_time_in_seconds": 60,
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                45.409309,
+                11.886977
+            ]
+        }
+    },
+    {
+        "name": "Parcheggio Piazza Insurrezione",
+        "type": "parking",
+        "wait_time_in_seconds": 30,
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                45.409382,
+                11.875276
+            ]
+        }
+    },
+    {
+        "name": "Padova Prato Parking",
+        "type": "parking",
+        "wait_time_in_seconds": 60,
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                45.395985,
+                11.877147
+            ]
+        }
+    },
+    {
+        "name": "Pace Park",
+        "type": "parking",
+        "wait_time_in_seconds": 12,
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                45.416124,
+                11.886815
+            ]
+        }
+    },
+    {
+        "name": "Parcheggio San Massimo",
+        "type": "parking",
+        "wait_time_in_seconds": 10,
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                45.405399,
+                11.895542
+            ]
+        }
+    },
+    {
+        "type": "charging_station",
+        "wait_time_in_seconds": 1,
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                45.400398,
+                11.878819
+            ]
         }
     },
     {
@@ -93,15 +375,80 @@
         "wait_time_in_seconds": 2,
         "location": {
             "type": "Point",
-            "coordinates": [45.398214, 11.851271]
+            "coordinates": [
+                45.404082,
+                11.884033
+            ]
         }
     },
     {
+        "type": "charging_station",
+        "wait_time_in_seconds": 1,
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                45.406952,
+                11.872508
+            ]
+        }
+    },
+    {
+        "type": "charging_station",
+        "wait_time_in_seconds": 1,
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                45.411635,
+                11.877175
+            ]
+        }
+    },
+    {
+        "name": "Via Beato Pellegrino",
         "type": "traffic",
         "wait_time_in_seconds": 2,
         "location": {
             "type": "Point",
-            "coordinates": [45.398214, 11.851271]
+            "coordinates": [
+                45.414548,
+                11.870520
+            ]
+        }
+    },
+    {
+        "name": "Via Trieste",
+        "type": "traffic",
+        "wait_time_in_seconds": 2,
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                45.413790,
+                11.879108
+            ]
+        }
+    },
+    {
+        "name": "Via Gattamelata",
+        "type": "traffic",
+        "wait_time_in_seconds": 2,
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                45.402420,
+                11.891454
+            ]
+        }
+    },
+    {
+        "name": "Via Carlo Goldoni",
+        "type": "traffic",
+        "wait_time_in_seconds": 2,
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                45.416759,
+                11.890069
+            ]
         }
     },
     {
@@ -109,8 +456,43 @@
         "wait_time_in_seconds": 1,
         "location": {
             "type": "Point",
-            "coordinates": [45.398214, 11.851271]
+            "coordinates": [
+                45.415919,
+                11.899038
+            ]
+        }
+    },
+    {
+        "type": "electric_bicycle",
+        "wait_time_in_seconds": 1,
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                45.408931,
+                11.884100
+            ]
+        }
+    },
+    {
+        "type": "electric_bicycle",
+        "wait_time_in_seconds": 1,
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                45.411343,
+                11.866440
+            ]
+        }
+    },
+    {
+        "type": "electric_bicycle",
+        "wait_time_in_seconds": 1,
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                45.413143,
+                11.867041
+            ]
         }
     }
 ]
-
