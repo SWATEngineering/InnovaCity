@@ -61,19 +61,19 @@ GROUP BY (timestamp1m, name, latitude, longitude);
 -- +----------------------+
 -- | START MOVING AVERAGE |
 -- +----------------------+
-CREATE TABLE innovacity.temperatures_ma (
-    window Tuple(DateTime64, DateTime64),
-    avgTemperature Float64
-) ENGINE = MergeTree()
-ORDER BY (window);
+-- CREATE TABLE innovacity.temperatures_ma (
+    -- window Tuple(DateTime64, DateTime64),
+    --avgTemperature Float64
+-- ) ENGINE = MergeTree()
+--ORDER BY (window);
 
-CREATE MATERIALIZED VIEW innovacity.temperatures_mv
-TO innovacity.temperatures_ma
-AS
-SELECT
-    windowFunnel(timestamp, INTERVAL 5 MINUTE) AS window,
-    avg(value) AS avgTemperature
-FROM innovacity.temperatures;
+--CREATE MATERIALIZED VIEW innovacity.temperatures_mv
+--TO innovacity.temperatures_ma
+--AS
+--SELECT
+    --windowFunnel(timestamp, INTERVAL 5 MINUTE) AS window,
+    --avg(value) AS avgTemperature
+--FROM innovacity.temperatures;
 -- +--------------------+
 -- | END MOVING AVERAGE |
 -- +--------------------+
