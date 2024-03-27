@@ -19,7 +19,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 3,
+  "id": 2,
   "links": [],
   "liveNow": true,
   "panels": [
@@ -1355,6 +1355,22 @@
                 "value": "degree"
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "corrected_direction"
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": true,
+                  "tooltip": true,
+                  "viz": true
+                }
+              }
+            ]
           }
         ]
       },
@@ -1390,7 +1406,7 @@
                 },
                 "opacity": 0.7,
                 "rotation": {
-                  "field": "direction",
+                  "field": "corrected_direction",
                   "fixed": 0,
                   "max": 360,
                   "min": -360,
@@ -1402,12 +1418,12 @@
                   "min": 2
                 },
                 "symbol": {
-                  "fixed": "img/icons/unicons/arrow-down.svg",
+                  "fixed": "img/icons/unicons/arrow-right.svg",
                   "mode": "fixed"
                 },
                 "symbolAlign": {
                   "horizontal": "center",
-                  "vertical": "bottom"
+                  "vertical": "center"
                 },
                 "text": {
                   "field": "name",
@@ -1417,7 +1433,7 @@
                 "textConfig": {
                   "fontSize": 12,
                   "offsetX": 0,
-                  "offsetY": 0,
+                  "offsetY": 15,
                   "textAlign": "center",
                   "textBaseline": "middle"
                 }
@@ -1426,6 +1442,9 @@
             "filterData": {
               "id": "byRefId",
               "options": "A"
+            },
+            "location": {
+              "mode": "auto"
             },
             "name": "Layer 1",
             "tooltip": true,
@@ -1469,6 +1488,26 @@
         }
       ],
       "title": "Vento",
+      "transformations": [
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "corrected_direction",
+            "binary": {
+              "left": "direction",
+              "operator": "*",
+              "right": "-1"
+            },
+            "mode": "binary",
+            "reduce": {
+              "include": [
+                "direction"
+              ],
+              "reducer": "sum"
+            }
+          }
+        }
+      ],
       "type": "geomap"
     },
     {
@@ -1517,6 +1556,30 @@
                 "value": true
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "latitude"
+            },
+            "properties": [
+              {
+                "id": "custom.hidden",
+                "value": true
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "longitude"
+            },
+            "properties": [
+              {
+                "id": "custom.hidden",
+                "value": true
+              }
+            ]
           }
         ]
       },
@@ -1551,6 +1614,7 @@
         }
       ],
       "title": "Vento (dati)",
+      "transformations": [],
       "type": "table"
     }
   ],
