@@ -19,7 +19,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 3,
+  "id": 4,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -279,7 +279,7 @@
           },
           "pluginVersion": "4.0.3",
           "queryType": "timeseries",
-          "rawSql": "SELECT name, current, max_slots, latitude, longitude\nFROM innovacity.parking\nWHERE (name, timestamp) IN (\n  SELECT name, MAX(timestamp) AS latest_timestamp\n  FROM innovacity.parking\n  GROUP BY name\n);",
+          "rawSql": "SELECT name,\n       argMax(current,timestamp) as current,\n       argMax(max_slots,timestamp) as max_slots,\n       argMax(latitude,timestamp) as latitude,\n       argMax(longitude,timestamp) as longitude\nFROM innovacity.parking\nGROUP BY name\nHAVING ( timestamp  >= $__fromTime AND timestamp <= $__toTime );",
           "refId": "A"
         }
       ],
@@ -509,7 +509,7 @@
           },
           "pluginVersion": "4.0.3",
           "queryType": "table",
-          "rawSql": "SELECT name, value, latitude, longitude\r\nFROM innovacity.ebikes\r\nWHERE (name, timestamp) IN (\r\n  SELECT name, MAX(timestamp) AS latest_timestamp\r\n  FROM innovacity.ebikes\r\n  GROUP BY name\r\n);",
+          "rawSql": "SELECT name,\r\n       argMax(value,timestamp) as value,\r\n       argMax(latitude,timestamp) as latitude,\r\n       argMax(longitude,timestamp) as longitude\r\nFROM innovacity.ebikes\r\nGROUP BY name\r\nHAVING ( timestamp  >= $__fromTime AND timestamp <= $__toTime );",
           "refId": "A"
         }
       ],
@@ -785,7 +785,7 @@
           },
           "pluginVersion": "4.0.3",
           "queryType": "table",
-          "rawSql": "SELECT name, value, latitude, longitude\nFROM innovacity.eco_zone\nWHERE (name, timestamp) IN (\n  SELECT name, MAX(timestamp) AS latest_timestamp\n  FROM innovacity.eco_zone\n  GROUP BY name\n);",
+          "rawSql": "SELECT name,\n       argMax(value,timestamp) as value,\n       argMax(latitude,timestamp) as latitude,\n       argMax(longitude,timestamp) as longitude\nFROM innovacity.eco_zone\nGROUP BY name\nHAVING ( timestamp  >= $__fromTime AND timestamp <= $__toTime );",
           "refId": "A"
         }
       ],
@@ -853,7 +853,7 @@
       "gridPos": {
         "h": 8,
         "w": 12,
-        "x": 12,
+        "x": 6,
         "y": 16
       },
       "id": 6,
@@ -1316,6 +1316,6 @@
   "timezone": "",
   "title": "Urbanistica",
   "uid": "db599846-eaca-47c2-93ae-697ac9408b2a",
-  "version": 2,
+  "version": 1,
   "weekStart": ""
 }
