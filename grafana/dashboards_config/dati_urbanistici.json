@@ -40,6 +40,7 @@
               "viz": false
             }
           },
+          "fieldMinMax": false,
           "mappings": [],
           "min": 0,
           "thresholds": {
@@ -51,7 +52,8 @@
               }
             ]
           },
-          "unit": "none"
+          "unit": "none",
+          "unitScale": true
         },
         "overrides": []
       },
@@ -124,8 +126,8 @@
               "options": "A"
             },
             "location": {
-              "latitude": "argMax(latitude, timestamp) {argMax(name, timestamp)=\"parking1\", name=\"parking1\"}",
-              "longitude": "argMax(longitude, timestamp) {argMax(name, timestamp)=\"parking1\", name=\"parking1\"}",
+              "latitude": "latitude",
+              "longitude": "longitude",
               "mode": "coords"
             },
             "name": "Layer 1",
@@ -144,7 +146,7 @@
           "zoom": 15
         }
       },
-      "pluginVersion": "10.2.3",
+      "pluginVersion": "10.3.0",
       "targets": [
         {
           "builderOptions": {
@@ -277,7 +279,7 @@
           },
           "pluginVersion": "4.0.3",
           "queryType": "timeseries",
-          "rawSql": "SELECT \n  name, \n  argMax(name, timestamp),\n  argMax(timestamp, timestamp),\n  argMax(latitude, timestamp),\n  argMax(longitude, timestamp),\n  argMax(current, timestamp),\n  argMax(max_slots, timestamp),\nFROM innovacity.parking \nGROUP BY name",
+          "rawSql": "SELECT name, current, max_slots, latitude, longitude\nFROM innovacity.parking\nWHERE (name, timestamp) IN (\n  SELECT name, MAX(timestamp) AS latest_timestamp\n  FROM innovacity.parking\n  GROUP BY name\n);",
           "refId": "A"
         }
       ],
@@ -288,9 +290,9 @@
           "options": {
             "alias": "remaining",
             "binary": {
-              "left": "argMax(max_slots, timestamp) {argMax(name, timestamp)=\"parking1\", name=\"parking1\"}",
+              "left": "max_slots",
               "operator": "-",
-              "right": "argMax(current, timestamp) {argMax(name, timestamp)=\"parking1\", name=\"parking1\"}"
+              "right": "current"
             },
             "mode": "binary",
             "reduce": {
@@ -304,8 +306,9 @@
             "configRefId": "A",
             "mappings": [
               {
-                "fieldName": "argMax(max_slots, timestamp) {argMax(name, timestamp)=\"parking1\", name=\"parking1\"}",
-                "handlerKey": "max"
+                "fieldName": "max_slots",
+                "handlerKey": "max",
+                "reducerId": "lastNotNull"
               }
             ]
           }
@@ -355,7 +358,8 @@
               }
             ]
           },
-          "unit": "%"
+          "unit": "%",
+          "unitScale": true
         },
         "overrides": [
           {
@@ -484,7 +488,7 @@
           "zoom": 15
         }
       },
-      "pluginVersion": "10.2.3",
+      "pluginVersion": "10.3.0",
       "targets": [
         {
           "datasource": {
@@ -513,7 +517,283 @@
       "transparent": true,
       "type": "geomap"
     },
+    {
+      "datasource": {
+        "type": "grafana-clickhouse-datasource",
+        "uid": "PDEE91DDB90597936"
+      },
+      "description": "Visualizzazione riempimento isole ecologiche",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-GrYlRd"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": [],
+          "max": 80,
+          "min": 0,
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "dark-green",
+                "value": 20
+              },
+              {
+                "color": "super-light-yellow",
+                "value": 30
+              },
+              {
+                "color": "yellow",
+                "value": 50
+              },
+              {
+                "color": "dark-orange",
+                "value": 60
+              },
+              {
+                "color": "dark-red",
+                "value": 85
+              }
+            ]
+          },
+          "unit": "%",
+          "unitScale": true
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "value"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "%"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "latitude"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "degree"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "longitude"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "degree"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 8
+      },
+      "id": 1,
+      "options": {
+        "basemap": {
+          "config": {},
+          "name": "Layer 0",
+          "type": "default"
+        },
+        "controls": {
+          "mouseWheelZoom": true,
+          "showAttribution": true,
+          "showDebug": false,
+          "showMeasure": false,
+          "showScale": false,
+          "showZoom": true
+        },
+        "layers": [
+          {
+            "config": {
+              "showLegend": true,
+              "style": {
+                "color": {
+                  "field": "value",
+                  "fixed": "green"
+                },
+                "opacity": 0.4,
+                "rotation": {
+                  "fixed": 0,
+                  "max": 360,
+                  "min": -360,
+                  "mode": "mod"
+                },
+                "size": {
+                  "fixed": 8,
+                  "max": 15,
+                  "min": 2
+                },
+                "symbol": {
+                  "fixed": "img/icons/marker/dumpster.svg",
+                  "mode": "fixed"
+                },
+                "symbolAlign": {
+                  "horizontal": "center",
+                  "vertical": "center"
+                },
+                "text": {
+                  "field": "value",
+                  "fixed": "",
+                  "mode": "field"
+                },
+                "textConfig": {
+                  "fontSize": 8,
+                  "offsetX": 0,
+                  "offsetY": 8,
+                  "textAlign": "center",
+                  "textBaseline": "top"
+                }
+              }
+            },
+            "filterData": {
+              "id": "byRefId",
+              "options": "A"
+            },
+            "location": {
+              "mode": "auto"
+            },
+            "name": "Layer 1",
+            "tooltip": true,
+            "type": "markers"
+          }
+        ],
+        "tooltip": {
+          "mode": "details"
+        },
+        "view": {
+          "allLayers": true,
+          "id": "fit",
+          "lat": 0,
+          "lon": 0,
+          "zoom": 15
+        }
+      },
+      "pluginVersion": "10.3.0",
+      "targets": [
         {
+          "builderOptions": {
+            "aggregates": [],
+            "columns": [
+              {
+                "custom": false,
+                "name": "latitude",
+                "type": "Float64"
+              },
+              {
+                "custom": false,
+                "name": "longitude",
+                "type": "Float64"
+              },
+              {
+                "custom": false,
+                "name": "name",
+                "type": "String"
+              }
+            ],
+            "database": "innovacity",
+            "filters": [],
+            "groupBy": [
+              "name",
+              "latitude",
+              "longitude"
+            ],
+            "limit": 0,
+            "meta": {},
+            "mode": "aggregate",
+            "orderBy": [
+              {
+                "dir": "ASC",
+                "name": "name"
+              }
+            ],
+            "queryType": "table",
+            "table": "eco_zone_topic_mv"
+          },
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "PDEE91DDB90597936"
+          },
+          "editorType": "sql",
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "aggregates": [],
+              "columns": [
+                {
+                  "custom": false,
+                  "name": "latitude",
+                  "type": "Float64"
+                },
+                {
+                  "custom": false,
+                  "name": "longitude",
+                  "type": "Float64"
+                },
+                {
+                  "custom": false,
+                  "name": "name",
+                  "type": "String"
+                }
+              ],
+              "database": "innovacity",
+              "filters": [],
+              "groupBy": [
+                "name",
+                "latitude",
+                "longitude"
+              ],
+              "limit": 0,
+              "meta": {},
+              "mode": "aggregate",
+              "orderBy": [
+                {
+                  "dir": "ASC",
+                  "name": "name"
+                }
+              ],
+              "queryType": "table",
+              "table": "eco_zone_topic_mv"
+            }
+          },
+          "pluginVersion": "4.0.3",
+          "queryType": "table",
+          "rawSql": "SELECT name, value, latitude, longitude\nFROM innovacity.eco_zone\nWHERE (name, timestamp) IN (\n  SELECT name, MAX(timestamp) AS latest_timestamp\n  FROM innovacity.eco_zone\n  GROUP BY name\n);",
+          "refId": "A"
+        }
+      ],
+      "title": "Mappa: posizione isole ecologiche e riempimento",
+      "transparent": true,
+      "type": "geomap"
+    },
+    {
       "datasource": {
         "type": "grafana-clickhouse-datasource",
         "uid": "PDEE91DDB90597936"
@@ -565,7 +845,8 @@
               }
             ]
           },
-          "unit": "none"
+          "unit": "none",
+          "unitScale": true
         },
         "overrides": []
       },
@@ -573,7 +854,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 0
+        "y": 16
       },
       "id": 6,
       "options": {
@@ -658,7 +939,7 @@
           "zoom": 15
         }
       },
-      "pluginVersion": "10.2.2",
+      "pluginVersion": "10.3.0",
       "targets": [
         {
           "builderOptions": {
@@ -804,281 +1085,6 @@
         "type": "grafana-clickhouse-datasource",
         "uid": "PDEE91DDB90597936"
       },
-      "description": "Visualizzazione riempimento isole ecologiche",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "continuous-GrYlRd"
-          },
-          "custom": {
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            }
-          },
-          "mappings": [],
-          "max": 80,
-          "min": 0,
-          "thresholds": {
-            "mode": "percentage",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "dark-green",
-                "value": 20
-              },
-              {
-                "color": "super-light-yellow",
-                "value": 30
-              },
-              {
-                "color": "yellow",
-                "value": 50
-              },
-              {
-                "color": "dark-orange",
-                "value": 60
-              },
-              {
-                "color": "dark-red",
-                "value": 85
-              }
-            ]
-          },
-          "unit": "%"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "value"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "%"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "latitude"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "degree"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "longitude"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "degree"
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 8
-      },
-      "id": 1,
-      "options": {
-        "basemap": {
-          "config": {},
-          "name": "Layer 0",
-          "type": "default"
-        },
-        "controls": {
-          "mouseWheelZoom": true,
-          "showAttribution": true,
-          "showDebug": false,
-          "showMeasure": false,
-          "showScale": false,
-          "showZoom": true
-        },
-        "layers": [
-          {
-            "config": {
-              "showLegend": true,
-              "style": {
-                "color": {
-                  "field": "value",
-                  "fixed": "green"
-                },
-                "opacity": 0.4,
-                "rotation": {
-                  "fixed": 0,
-                  "max": 360,
-                  "min": -360,
-                  "mode": "mod"
-                },
-                "size": {
-                  "fixed": 8,
-                  "max": 15,
-                  "min": 2
-                },
-                "symbol": {
-                  "fixed": "img/icons/marker/dumpster.svg",
-                  "mode": "fixed"
-                },
-                "symbolAlign": {
-                  "horizontal": "center",
-                  "vertical": "center"
-                },
-                "text": {
-                  "field": "value",
-                  "fixed": "",
-                  "mode": "field"
-                },
-                "textConfig": {
-                  "fontSize": 8,
-                  "offsetX": 0,
-                  "offsetY": 8,
-                  "textAlign": "center",
-                  "textBaseline": "top"
-                }
-              }
-            },
-            "filterData": {
-              "id": "byRefId",
-              "options": "A"
-            },
-            "location": {
-              "mode": "auto"
-            },
-            "name": "Layer 1",
-            "tooltip": true,
-            "type": "markers"
-          }
-        ],
-        "tooltip": {
-          "mode": "details"
-        },
-        "view": {
-          "allLayers": true,
-          "id": "fit",
-          "lat": 0,
-          "lon": 0,
-          "zoom": 15
-        }
-      },
-      "pluginVersion": "10.2.3",
-      "targets": [
-        {
-          "builderOptions": {
-            "aggregates": [],
-            "columns": [
-              {
-                "custom": false,
-                "name": "latitude",
-                "type": "Float64"
-              },
-              {
-                "custom": false,
-                "name": "longitude",
-                "type": "Float64"
-              },
-              {
-                "custom": false,
-                "name": "name",
-                "type": "String"
-              }
-            ],
-            "database": "innovacity",
-            "filters": [],
-            "groupBy": [
-              "name",
-              "latitude",
-              "longitude"
-            ],
-            "limit": 0,
-            "meta": {},
-            "mode": "aggregate",
-            "orderBy": [
-              {
-                "dir": "ASC",
-                "name": "name"
-              }
-            ],
-            "queryType": "table",
-            "table": "eco_zone_topic_mv"
-          },
-          "datasource": {
-            "type": "grafana-clickhouse-datasource",
-            "uid": "PDEE91DDB90597936"
-          },
-          "editorType": "sql",
-          "format": 1,
-          "meta": {
-            "builderOptions": {
-              "aggregates": [],
-              "columns": [
-                {
-                  "custom": false,
-                  "name": "latitude",
-                  "type": "Float64"
-                },
-                {
-                  "custom": false,
-                  "name": "longitude",
-                  "type": "Float64"
-                },
-                {
-                  "custom": false,
-                  "name": "name",
-                  "type": "String"
-                }
-              ],
-              "database": "innovacity",
-              "filters": [],
-              "groupBy": [
-                "name",
-                "latitude",
-                "longitude"
-              ],
-              "limit": 0,
-              "meta": {},
-              "mode": "aggregate",
-              "orderBy": [
-                {
-                  "dir": "ASC",
-                  "name": "name"
-                }
-              ],
-              "queryType": "table",
-              "table": "eco_zone_topic_mv"
-            }
-          },
-          "pluginVersion": "4.0.3",
-          "queryType": "table",
-          "rawSql": "SELECT name, value, latitude, longitude\nFROM innovacity.eco_zone\nWHERE (name, timestamp) IN (\n  SELECT name, MAX(timestamp) AS latest_timestamp\n  FROM innovacity.eco_zone\n  GROUP BY name\n);",
-          "refId": "A"
-        }
-      ],
-      "title": "Mappa: posizione isole ecologiche e riempimento",
-      "transparent": true,
-      "type": "geomap"
-    },
-    {
-      "datasource": {
-        "type": "grafana-clickhouse-datasource",
-        "uid": "PDEE91DDB90597936"
-      },
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -1109,7 +1115,8 @@
                 "value": 1
               }
             ]
-          }
+          },
+          "unitScale": true
         },
         "overrides": []
       },
@@ -1117,7 +1124,7 @@
         "h": 10,
         "w": 16,
         "x": 0,
-        "y": 16
+        "y": 24
       },
       "id": 3,
       "options": {
@@ -1192,7 +1199,7 @@
           "zoom": 15
         }
       },
-      "pluginVersion": "10.2.3",
+      "pluginVersion": "10.3.0",
       "targets": [
         {
           "datasource": {
@@ -1243,7 +1250,8 @@
                 "value": null
               }
             ]
-          }
+          },
+          "unitScale": true
         },
         "overrides": []
       },
@@ -1251,7 +1259,7 @@
         "h": 10,
         "w": 8,
         "x": 16,
-        "y": 16
+        "y": 24
       },
       "id": 4,
       "options": {
@@ -1266,7 +1274,7 @@
         },
         "showHeader": true
       },
-      "pluginVersion": "10.2.3",
+      "pluginVersion": "10.3.0",
       "targets": [
         {
           "datasource": {
@@ -1308,6 +1316,6 @@
   "timezone": "",
   "title": "Urbanistica",
   "uid": "db599846-eaca-47c2-93ae-697ac9408b2a",
-  "version": 7,
+  "version": 2,
   "weekStart": ""
 }

@@ -382,6 +382,15 @@
         }
     },
     {
+        "type": "parking",
+        "name": "Park Padova Centro",
+        "wait_time_in_seconds": 60.0,
+        "location": {
+            "type": "Point",
+            "coordinates": [45.411921383875246, 11.88365473473307]
+        }
+    },
+    {
         "type": "charging_station",
         "wait_time_in_seconds": 1,
         "location": {
