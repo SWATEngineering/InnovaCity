@@ -34,11 +34,12 @@ FROM innovacity.humidity_topic_kafka;
 -- +--------------------------+
 CREATE TABLE innovacity.humidity1m
 (
-    name        String,
-    timestamp1m DATETIME64,
-    avgHumidity AggregateFunction(avgState, Float64),
-    latitude    Float64,
-    longitude   Float64
+    name                String,
+    timestamp1m         DATETIME64,
+    avgHumidity         Float64,
+    latitude            Float64,
+    longitude           Float64,
+    insertion_timestamp DATETIME DEFAULT now()
 )
     ENGINE = AggregatingMergeTree
         ORDER BY (timestamp1m, name, longitude, latitude);
@@ -48,9 +49,10 @@ CREATE MATERIALIZED VIEW innovacity.humidity1m_mv
 AS
 SELECT toStartOfMinute(timestamp) AS timestamp1m,
        name,
-       avgState(value)            as avgHumidity,
+       avg(value)                 as avgHumidity,
        latitude,
-       longitude
+       longitude,
+       now()                      AS insertion_timestamp
 FROM innovacity.humidity
 GROUP BY (timestamp1m, name, latitude, longitude);
 
@@ -63,8 +65,9 @@ GROUP BY (timestamp1m, name, latitude, longitude);
 -- +----------------------+
 CREATE TABLE innovacity.humidity5m_overall
 (
-    timestamp5m DATETIME64,
-    avgHumidity Float64
+    timestamp5m         DATETIME64,
+    avgHumidity         Float64,
+    insertion_timestamp DATETIME DEFAULT now()
 ) ENGINE = MergeTree()
       ORDER BY (timestamp5m);
 
@@ -72,7 +75,8 @@ CREATE MATERIALIZED VIEW innovacity.humidity_5m_overall_mv
     TO innovacity.humidity5m_overall
 AS
 SELECT toStartOfFiveMinute(timestamp) AS timestamp5m,
-       avg(value)                     AS avgHumidity
+       avg(value)                     AS avgHumidity,
+       now()                          AS insertion_timestamp
 FROM innovacity.humidity
 GROUP BY timestamp5m;
 -- +--------------------+

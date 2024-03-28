@@ -35,11 +35,12 @@ FROM innovacity.reservoir_topic_kafka;
 -- +--------------------------+
 CREATE TABLE innovacity.reservoirs1m
 (
-    name        String,
-    timestamp1m DATETIME64,
-    avgReservoir AggregateFunction(avgState, Float64),
-    latitude    Float64,
-    longitude   Float64
+    name                String,
+    timestamp1m         DATETIME64,
+    avgReservoir        Float64,
+    latitude            Float64,
+    longitude           Float64,
+    insertion_timestamp DATETIME DEFAULT now()
 )
     ENGINE = AggregatingMergeTree
         ORDER BY (timestamp1m, name, longitude, latitude);
@@ -49,9 +50,10 @@ CREATE MATERIALIZED VIEW innovacity.reservoirs1m_mv
 AS
 SELECT toStartOfMinute(timestamp) AS timestamp1m,
        name,
-       avgState(value)            as avgReservoir,
+       avg(value)                 as avgReservoir,
        latitude,
-       longitude
+       longitude,
+       now()                      AS insertion_timestamp
 FROM innovacity.reservoirs
 GROUP BY (timestamp1m, name, latitude, longitude);
 
@@ -65,8 +67,9 @@ GROUP BY (timestamp1m, name, latitude, longitude);
 -- +----------------------+
 CREATE TABLE innovacity.reservoirs5m_overall
 (
-    timestamp5m  DATETIME64,
-    avgReservoir Float64
+    timestamp5m         DATETIME64,
+    avgReservoir        Float64,
+    insertion_timestamp DATETIME DEFAULT now()
 ) ENGINE = MergeTree()
       ORDER BY (timestamp5m);
 
@@ -74,7 +77,8 @@ CREATE MATERIALIZED VIEW innovacity.reservoirs5m_overall_mv
     TO innovacity.reservoirs5m_overall
 AS
 SELECT toStartOfFiveMinute(timestamp) AS timestamp5m,
-       avg(value)                     AS avgReservoir
+       avg(value)                     AS avgReservoir,
+       now()                          AS insertion_timestamp
 FROM innovacity.reservoirs
 GROUP BY timestamp5m;
 -- +--------------------+

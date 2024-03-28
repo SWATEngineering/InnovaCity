@@ -34,11 +34,12 @@ FROM innovacity.temperatures_topic_kafka;
 -- +--------------------------+
 CREATE TABLE innovacity.temperatures1m
 (
-    name        String,
-    timestamp1m DATETIME64,
-    avgTemperature AggregateFunction(avgState, Float64),
-    latitude    Float64,
-    longitude   Float64
+    name                String,
+    timestamp1m         DATETIME64,
+    avgTemperature      Float64,
+    latitude            Float64,
+    longitude           Float64,
+    insertion_timestamp DATETIME DEFAULT now()
 )
     ENGINE = AggregatingMergeTree
         ORDER BY (timestamp1m, name, longitude, latitude);
@@ -48,9 +49,10 @@ CREATE MATERIALIZED VIEW innovacity.temperatures1m_mv
 AS
 SELECT toStartOfMinute(timestamp) AS timestamp1m,
        name,
-       avgState(value)            as avgTemperature,
+       avg(value)                 as avgTemperature,
        latitude,
-       longitude
+       longitude,
+       now()                      AS insertion_timestamp
 FROM innovacity.temperatures
 GROUP BY (timestamp1m, name, latitude, longitude);
 
@@ -63,8 +65,8 @@ GROUP BY (timestamp1m, name, latitude, longitude);
 -- +----------------------+
 CREATE TABLE innovacity.temperatures5m_overall
 (
-    timestamp5m    DATETIME64,
-    avgTemperature Float64,
+    timestamp5m         DATETIME64,
+    avgTemperature      Float64,
     insertion_timestamp DATETIME DEFAULT now()
 ) ENGINE = MergeTree()
       ORDER BY (timestamp5m);
@@ -74,7 +76,7 @@ CREATE MATERIALIZED VIEW innovacity.temperatures_5m_overall_mv
 AS
 SELECT toStartOfFiveMinute(timestamp) AS timestamp5m,
        avg(value)                     AS avgTemperature,
-       now() AS insertion_timestamp
+       now()                          AS insertion_timestamp
 FROM innovacity.temperatures
 GROUP BY timestamp5m;
 -- +--------------------+

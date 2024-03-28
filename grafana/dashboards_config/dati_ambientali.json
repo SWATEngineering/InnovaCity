@@ -472,7 +472,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "B avgTemperature"
+              "options": "B 5min_avg"
             },
             "properties": [
               {
@@ -520,18 +520,22 @@
             "type": "grafana-clickhouse-datasource",
             "uid": "PDEE91DDB90597936"
           },
+          "editorType": "sql",
           "format": 1,
           "meta": {
             "builderOptions": {
-              "fields": [],
+              "columns": [],
+              "database": "",
               "limit": 100,
-              "mode": "list"
+              "mode": "list",
+              "queryType": "table",
+              "table": ""
             }
           },
-          "queryType": "sql",
-          "rawSql": "SELECT\r\n    name,\r\n    toStartOfMinute(timestamp1m) AS timestamp1m,\r\n    avgMerge(avgTemperature) as \" \"\r\nFROM innovacity.temperatures1m\r\nGROUP BY (name, timestamp1m)\r\nHAVING ( timestamp1m  >= $__fromTime AND timestamp1m <= $__toTime ) ",
-          "refId": "A",
-          "selectedFormat": 4
+          "pluginVersion": "4.0.3",
+          "queryType": "table",
+          "rawSql": "SELECT\r\n    name,\r\n    timestamp1m,\r\n    avgTemperature as \" \"\r\nFROM innovacity.temperatures1m\r\nWHERE (name,timestamp1m, insertion_timestamp) IN (\r\n    SELECT\r\n        name,\r\n        timestamp1m,\r\n        max(insertion_timestamp) AS max_insertion_timestamp\r\n    FROM innovacity.temperatures1m\r\n    GROUP BY timestamp1m, name\r\n);",
+          "refId": "A"
         },
         {
           "datasource": {
@@ -553,7 +557,7 @@
           },
           "pluginVersion": "4.0.3",
           "queryType": "table",
-          "rawSql": "SELECT\n    timestamp5m,\n    avgTemperature\nFROM innovacity.temperatures5m_overall\nWHERE (timestamp5m, insertion_timestamp) IN (\n    SELECT\n        timestamp5m,\n        max(insertion_timestamp) AS max_insertion_timestamp\n    FROM innovacity.temperatures5m_overall\n    GROUP BY timestamp5m\n);\n",
+          "rawSql": "SELECT\n    timestamp5m,\n    avgTemperature as 5min_avg\nFROM innovacity.temperatures5m_overall\nWHERE (timestamp5m, insertion_timestamp) IN (\n    SELECT\n        timestamp5m,\n        max(insertion_timestamp) AS max_insertion_timestamp\n    FROM innovacity.temperatures5m_overall\n    GROUP BY timestamp5m\n);\n",
           "refId": "B"
         }
       ],
@@ -1611,14 +1615,14 @@
       "type": "table"
     }
   ],
-  "refresh": "1s",
+  "refresh": false,
   "schemaVersion": 39,
   "tags": [],
   "templating": {
     "list": []
   },
   "time": {
-    "from": "now-30m",
+    "from": "now-5m",
     "to": "now"
   },
   "timepicker": {

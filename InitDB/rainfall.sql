@@ -34,11 +34,12 @@ FROM innovacity.rain_topic_kafka;
 -- +--------------------------+
 CREATE TABLE innovacity.rain1m
 (
-    name        String,
-    timestamp1m DATETIME64,
-    avgRain AggregateFunction(avgState, Float64), -- Using sumState for stateful aggregation
-    latitude    Float64,
-    longitude   Float64
+    name                String,
+    timestamp1m         DATETIME64,
+    avgRain             Float64, -- Using sumState for stateful aggregation
+    latitude            Float64,
+    longitude           Float64,
+    insertion_timestamp DATETIME DEFAULT now()
 )
     ENGINE = AggregatingMergeTree
         ORDER BY (timestamp1m, name, longitude, latitude);
@@ -49,9 +50,10 @@ CREATE MATERIALIZED VIEW innovacity.rain1m_mv
 AS
 SELECT toStartOfMinute(timestamp) AS timestamp1m,
        name,
-       avgState(value)            as avgRain,
+       avg(value)                 as avgRain,
        latitude,
-       longitude
+       longitude,
+       now()                      AS insertion_timestamp
 FROM innovacity.rain
 GROUP BY (timestamp1m, name, latitude, longitude);
 -- +------------------------+
@@ -63,8 +65,9 @@ GROUP BY (timestamp1m, name, latitude, longitude);
 -- +----------------------+
 CREATE TABLE innovacity.rain5m_overall
 (
-    timestamp5m DATETIME64,
-    avgRain     Float64
+    timestamp5m         DATETIME64,
+    avgRain             Float64,
+    insertion_timestamp DATETIME DEFAULT now()
 ) ENGINE = MergeTree()
       ORDER BY (timestamp5m);
 
@@ -73,7 +76,8 @@ CREATE MATERIALIZED VIEW innovacity.rain_5m_overall_mv
     TO innovacity.rain5m_overall
 AS
 SELECT toStartOfFiveMinute(timestamp) AS timestamp5m,
-       avg(value)                     AS avgRain
+       avg(value)                     AS avgRain,
+       now()                          AS insertion_timestamp
 FROM innovacity.rain
 GROUP BY timestamp5m;
 -- +--------------------+

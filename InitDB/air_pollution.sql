@@ -34,11 +34,12 @@ FROM innovacity.air_pollution_topic_kafka;
 -- +--------------------------+
 CREATE TABLE innovacity.air_pollution1m
 (
-    name        String,
-    timestamp1m DATETIME64,
-    avg_air_pollution AggregateFunction(avgState, Float64),
-    latitude    Float64,
-    longitude   Float64
+    name                String,
+    timestamp1m         DATETIME64,
+    avg_air_pollution   Float64,
+    latitude            Float64,
+    longitude           Float64,
+    insertion_timestamp DATETIME DEFAULT now()
 ) ENGINE = AggregatingMergeTree
       ORDER BY (timestamp1m, name, longitude, latitude);
 
@@ -47,9 +48,10 @@ CREATE MATERIALIZED VIEW innovacity.air_pollution1m_mv
 AS
 SELECT toStartOfMinute(timestamp) AS timestamp1m,
        name,
-       avgState(value)            as avg_air_pollution,
+       avg(value)                 as avg_air_pollution,
        latitude,
-       longitude
+       longitude,
+       now()                      AS insertion_timestamp
 FROM innovacity.air_pollution
 GROUP BY (timestamp1m, name, latitude, longitude);
 
@@ -62,8 +64,9 @@ GROUP BY (timestamp1m, name, latitude, longitude);
 -- +----------------------+
 CREATE TABLE innovacity.air_pollution5m_overall
 (
-    timestamp5m       DATETIME64,
-    avg_air_pollution Float64
+    timestamp5m         DATETIME64,
+    avg_air_pollution   Float64,
+    insertion_timestamp DATETIME DEFAULT now()
 ) ENGINE = MergeTree()
       ORDER BY (timestamp5m);
 
@@ -71,7 +74,8 @@ CREATE MATERIALIZED VIEW innovacity.air_pollution_5m_overall_mv
     TO innovacity.air_pollution5m_overall
 AS
 SELECT toStartOfFiveMinute(timestamp) AS timestamp5m,
-       avg(value)                     AS avg_air_pollution
+       avg(value)                     AS avg_air_pollution,
+       now()                          AS insertion_timestamp
 FROM innovacity.air_pollution
 GROUP BY timestamp5m
 -- +--------------------+
