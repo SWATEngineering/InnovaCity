@@ -472,7 +472,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "B moving_average"
+              "options": "B avgTemperature"
             },
             "properties": [
               {
