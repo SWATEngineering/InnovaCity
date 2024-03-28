@@ -42,6 +42,8 @@ class TestTemperature:
         setup_client.query(query)
         query = "DELETE FROM innovacity.temperatures1m WHERE name = 'Test';"
         setup_client.query(query)
+        query = "DELETE FROM innovacity.temperatures_ma WHERE name = 'Test';"
+        setup_client.query(query)
 
     def test_persistence(self, setup_client, setup_adapter_producer, setup_simulator):
         self.setup_before_test(setup_adapter_producer, setup_simulator)
@@ -68,6 +70,25 @@ class TestTemperature:
         start_time = time.time()
         while True:
             query = "SELECT name FROM innovacity.temperatures1m  WHERE name = 'Test';"
+            result = setup_client.query(query)
+            if result.result_rows:
+                fetched_row = result.result_rows[0]
+                fetched_timestamp = fetched_row[0]
+                assert fetched_timestamp is not None, "No entry fetched from the database."
+                break
+            elif time.time() - start_time >= timeout:
+                pytest.fail(
+                    "Timeout reached. No entry fetched from the database within the specified timeout period.")
+            else:
+                time.sleep(1)
+        self.teardown_after_test(setup_client)
+
+    def test_persistence_ma(self,  setup_client, setup_adapter_producer, setup_simulator):
+        self.setup_before_test(setup_adapter_producer, setup_simulator)
+        timeout = 30
+        start_time = time.time()
+        while True:
+            query = "SELECT name FROM innovacity.temperatures_ma  WHERE name = 'Test';"
             result = setup_client.query(query)
             if result.result_rows:
                 fetched_row = result.result_rows[0]
