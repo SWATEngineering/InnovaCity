@@ -984,7 +984,24 @@
           "unit": "%",
           "unitScale": true
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "B 5min_avg"
+            },
+            "properties": [
+              {
+                "id": "custom.lineInterpolation",
+                "value": "smooth"
+              },
+              {
+                "id": "custom.lineWidth",
+                "value": 5
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 9,
@@ -1012,18 +1029,22 @@
             "type": "grafana-clickhouse-datasource",
             "uid": "PDEE91DDB90597936"
           },
+          "editorType": "sql",
           "format": 1,
           "meta": {
             "builderOptions": {
-              "fields": [],
+              "columns": [],
+              "database": "",
               "limit": 100,
-              "mode": "list"
+              "mode": "list",
+              "queryType": "table",
+              "table": ""
             }
           },
-          "queryType": "sql",
-          "rawSql": "SELECT\r\n    name,\r\n    toStartOfMinute(timestamp1m) AS timestamp1m,\r\n    avgMerge(avgReservoir) as avgReservoir\r\nFROM innovacity.reservoirs1m\r\nGROUP BY (name, timestamp1m)\r\nHAVING ( timestamp1m  >= $__fromTime AND timestamp1m <= $__toTime ) ",
-          "refId": "A",
-          "selectedFormat": 4
+          "pluginVersion": "4.0.3",
+          "queryType": "table",
+          "rawSql": "SELECT\r\n    name,\r\n    timestamp1m,\r\n    avgReservoir as \" \"\r\nFROM innovacity.reservoirs1m\r\nWHERE (name,timestamp1m, insertion_timestamp) IN (\r\n    SELECT\r\n        name,\r\n        timestamp1m,\r\n        max(insertion_timestamp) AS max_insertion_timestamp\r\n    FROM innovacity.reservoirs1m\r\n    GROUP BY timestamp1m, name\r\n);",
+          "refId": "A"
         },
         {
           "datasource": {
@@ -1043,9 +1064,9 @@
               "table": ""
             }
           },
-          "pluginVersion": "4.0.0-beta",
+          "pluginVersion": "4.0.3",
           "queryType": "table",
-          "rawSql": "SELECT\n  timestamp1m,\n  AVG(moving_average) AS moving_average\nFROM (\n  SELECT\n    avgMerge(avgReservoir) OVER (ORDER BY timestamp1m ROWS BETWEEN 2 PRECEDING AND CURRENT ROW) as moving_average,\n    timestamp1m\n  FROM innovacity.reservoirs1m\n) AS subquery\nGROUP BY timestamp1m\nORDER BY timestamp1m;",
+          "rawSql": "SELECT\n    timestamp5m,\n    avgReservoir as 5min_avg\nFROM innovacity.reservoirs5m_overall\nWHERE (timestamp5m, insertion_timestamp) IN (\n    SELECT\n        timestamp5m,\n        max(insertion_timestamp) AS max_insertion_timestamp\n    FROM innovacity.reservoirs5m_overall\n    GROUP BY timestamp5m\n);\n",
           "refId": "B"
         }
       ],
@@ -1089,6 +1110,9 @@
             },
             "insertNulls": false,
             "lineInterpolation": "linear",
+            "lineStyle": {
+              "fill": "solid"
+            },
             "lineWidth": 1,
             "pointSize": 5,
             "scaleDistribution": {
@@ -1121,7 +1145,24 @@
           "unit": "conμgm3",
           "unitScale": true
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "B 5min_avg"
+            },
+            "properties": [
+              {
+                "id": "custom.lineWidth",
+                "value": 5
+              },
+              {
+                "id": "custom.lineInterpolation",
+                "value": "smooth"
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 9,
@@ -1162,7 +1203,7 @@
           },
           "pluginVersion": "4.0.3",
           "queryType": "table",
-          "rawSql": "SELECT\n    name,\n    toStartOfMinute(timestamp1m) AS timestamp1m,\n    avgMerge(avg_air_pollution) as avg_air_pollution\nFROM innovacity.air_pollution1m\nGROUP BY (name, timestamp1m)\nHAVING ( timestamp1m  >= $__fromTime AND timestamp1m <= $__toTime ) ",
+          "rawSql": "SELECT\n    name,\n    timestamp1m,\n    avg_air_pollution as \" \"\nFROM innovacity.air_pollution1m\nWHERE (name,timestamp1m, insertion_timestamp) IN (\n    SELECT\n        name,\n        timestamp1m,\n        max(insertion_timestamp) AS max_insertion_timestamp\n    FROM innovacity.air_pollution1m\n    GROUP BY timestamp1m, name\n);",
           "refId": "A"
         },
         {
@@ -1185,7 +1226,7 @@
           },
           "pluginVersion": "4.0.3",
           "queryType": "table",
-          "rawSql": "SELECT\n  timestamp1m,\n  AVG(moving_average) AS moving_average\nFROM (\n  SELECT\n    avgMerge(avg_air_pollution) OVER (ORDER BY timestamp1m ROWS BETWEEN 2 PRECEDING AND CURRENT ROW) as moving_average,\n    timestamp1m\n  FROM innovacity.air_pollution1m\n) AS subquery\nGROUP BY timestamp1m\nORDER BY timestamp1m;",
+          "rawSql": "SELECT\n    timestamp5m,\n    avg_air_pollution as 5min_avg\nFROM innovacity.air_pollution5m_overall\nWHERE (timestamp5m, insertion_timestamp) IN (\n    SELECT\n        timestamp5m,\n        max(insertion_timestamp) AS max_insertion_timestamp\n    FROM innovacity.air_pollution5m_overall\n    GROUP BY timestamp5m\n);\n",
           "refId": "B"
         }
       ],
@@ -1254,7 +1295,24 @@
           "unit": "%",
           "unitScale": true
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "B 5min_avg"
+            },
+            "properties": [
+              {
+                "id": "custom.lineInterpolation",
+                "value": "smooth"
+              },
+              {
+                "id": "custom.lineWidth",
+                "value": 5
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 8,
@@ -1295,7 +1353,7 @@
           },
           "pluginVersion": "4.0.3",
           "queryType": "table",
-          "rawSql": "SELECT\n    name,\n    toStartOfMinute(timestamp1m) AS timestamp1m,\n    avgMerge(avgHumidity) as avgHumidity\nFROM innovacity.humidity1m\nGROUP BY (name, timestamp1m)\nHAVING ( timestamp1m  >= $__fromTime AND timestamp1m <= $__toTime ) ",
+          "rawSql": "SELECT\n    name,\n    timestamp1m,\n    avgHumidity as \" \"\nFROM innovacity.humidity1m\nWHERE (name,timestamp1m, insertion_timestamp) IN (\n    SELECT\n        name,\n        timestamp1m,\n        max(insertion_timestamp) AS max_insertion_timestamp\n    FROM innovacity.humidity1m\n    GROUP BY timestamp1m, name\n);",
           "refId": "A"
         },
         {
@@ -1318,7 +1376,7 @@
           },
           "pluginVersion": "4.0.3",
           "queryType": "table",
-          "rawSql": "SELECT\n  timestamp1m,\n  AVG(moving_average) AS moving_average\nFROM (\n  SELECT\n    avgMerge(avgHumidity) OVER (ORDER BY timestamp1m ROWS BETWEEN 2 PRECEDING AND CURRENT ROW) as moving_average,\n    timestamp1m\n  FROM innovacity.humidity1m\n) AS subquery\nGROUP BY timestamp1m\nORDER BY timestamp1m;",
+          "rawSql": "SELECT\n    timestamp5m,\n    avgHumidity as 5min_avg\nFROM innovacity.humidity5m_overall\nWHERE (timestamp5m, insertion_timestamp) IN (\n    SELECT\n        timestamp5m,\n        max(insertion_timestamp) AS max_insertion_timestamp\n    FROM innovacity.humidity5m_overall\n    GROUP BY timestamp5m\n);\n",
           "refId": "B"
         }
       ],
