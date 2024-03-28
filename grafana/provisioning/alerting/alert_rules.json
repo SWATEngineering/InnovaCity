@@ -98,7 +98,7 @@
                     "execErrState": "OK",
                     "for": "0s",
                     "annotations": {
-                        "summary": "Amount of air pollution for sensor {{ index $labels \"name\" }} has exceeded 80 𝜇𝑔/𝑚3 in the last five minute:  {{ index $values \"A\" }}  𝜇𝑔/𝑚3."
+                        "summary": "Il sensore '{{ index $labels \"sensor_name\" }}' ha rilavato un livello di inquinanti di tipo pm10 superiore agli 80 𝜇𝑔/𝑚3 negli ultimi 5 minuti:  {{ index $values \"A\" }}  𝜇𝑔/𝑚3."
                     },
                     "labels": {},
                     "isPaused": false
@@ -202,7 +202,7 @@
                     "execErrState": "OK",
                     "for": "0s",
                     "annotations": {
-                        "summary": "Filing percentage of eco zone {{ index $labels \"name\" }} has exceeded 80% in the last five minute:{{ index $values \"A\" }} %."
+                        "summary": "La percentuale di riempimento della zona ecologica monitorata dal sensore '{{ index $labels \"sensor_name\" }}' ha superato la soglia del 80% negli ultimi 5 minuti :{{ index $values \"A\" }} %."
                     },
                     "labels": {},
                     "isPaused": false
@@ -306,7 +306,7 @@
                     "execErrState": "OK",
                     "for": "0s",
                     "annotations": {
-                        "summary": "Amount of rainfall for sensor {{ index $labels \"name\" }} has exceeded 50𝑚𝑚/𝑚2 in the last five minute: {{ index $values \"A\" }} 𝑚𝑚/𝑚2."
+                        "summary": "Il quantitativo di pioggia rilevata dal sensore '{{ index $labels \"sensor_name\" }}' ha superato i 50𝑚𝑚/𝑚2 negli ultimi 5 minuti: {{ index $values \"A\" }} 𝑚𝑚/𝑚2."
                     },
                     "labels": {},
                     "isPaused": false
@@ -410,7 +410,7 @@
                     "execErrState": "OK",
                     "for": "0s",
                     "annotations": {
-                        "summary": "Filing percentage of reservoir capacity for sensor {{ index $labels \"name\" }} has exceeded 70% in the last five minute:{{ index $values \"A\" }} %."
+                        "summary": "La percentuale di riempimento del bacino idrico corrispondente al sensore '{{ index $labels \"sensor_name\" }}' ha superato la soglia del 70% negli ultimi 5 minuti:{{ index $values \"A\" }} %."
                     },
                     "labels": {},
                     "isPaused": false
@@ -516,7 +516,7 @@
                     "execErrState": "OK",
                     "for": "0s",
                     "annotations": {
-                        "summary": "Temperature for sensor {{ index $labels \"name\" }} has exceeded 40 degrees in the last five minutes: {{ index $values \"A\" }}°"
+                        "summary": "La temperatura rilevata dal sensore'{{ index $labels \"sensor_name\" }}' ha superato la soglia dei 40 gradi Celsius negli ultimi 5 minuti: {{ index $values \"A\" }}°"
                     },
                     "labels": {},
                     "isPaused": false
