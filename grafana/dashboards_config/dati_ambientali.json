@@ -485,7 +485,7 @@
               },
               {
                 "id": "custom.lineInterpolation",
-                "value": "linear"
+                "value": "smooth"
               },
               {
                 "id": "custom.lineWidth",
@@ -727,7 +727,24 @@
           "unit": "lengthmm",
           "unitScale": true
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "B 5min_avg"
+            },
+            "properties": [
+              {
+                "id": "custom.lineWidth",
+                "value": 5
+              },
+              {
+                "id": "custom.lineInterpolation",
+                "value": "smooth"
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 9,
@@ -754,18 +771,45 @@
             "type": "grafana-clickhouse-datasource",
             "uid": "PDEE91DDB90597936"
           },
+          "editorType": "sql",
           "format": 1,
           "meta": {
             "builderOptions": {
-              "fields": [],
+              "columns": [],
+              "database": "",
               "limit": 100,
-              "mode": "list"
+              "mode": "list",
+              "queryType": "table",
+              "table": ""
             }
           },
-          "queryType": "sql",
-          "rawSql": "SELECT\n  timestamp1m,\n  AVG(moving_average) AS media_totale\nFROM (\n  SELECT\n    avgMerge(avgRain) OVER (ORDER BY timestamp1m ROWS BETWEEN 2 PRECEDING AND CURRENT ROW) as moving_average,\n    timestamp1m\n  FROM innovacity.rain1m\n) AS subquery\nGROUP BY timestamp1m\nORDER BY timestamp1m;\n\n",
-          "refId": "A",
-          "selectedFormat": 4
+          "pluginVersion": "4.0.3",
+          "queryType": "table",
+          "rawSql": "SELECT\n    name,\n    timestamp1m,\n    avgRain as \" \"\nFROM innovacity.rain1m\nWHERE (name,timestamp1m, insertion_timestamp) IN (\n    SELECT\n        name,\n        timestamp1m,\n        max(insertion_timestamp) AS max_insertion_timestamp\n    FROM innovacity.rain1m\n    GROUP BY timestamp1m, name\n);\n\n",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "PDEE91DDB90597936"
+          },
+          "editorType": "sql",
+          "format": 1,
+          "hide": false,
+          "meta": {
+            "builderOptions": {
+              "columns": [],
+              "database": "",
+              "limit": 1000,
+              "mode": "list",
+              "queryType": "table",
+              "table": ""
+            }
+          },
+          "pluginVersion": "4.0.3",
+          "queryType": "table",
+          "rawSql": "SELECT\n    timestamp5m,\n    avgRain as 5min_avg\nFROM innovacity.rain5m_overall\nWHERE (timestamp5m, insertion_timestamp) IN (\n    SELECT\n        timestamp5m,\n        max(insertion_timestamp) AS max_insertion_timestamp\n    FROM innovacity.rain5m_overall\n    GROUP BY timestamp5m\n);\n",
+          "refId": "B"
         }
       ],
       "title": "Pioggia media per minuto",
@@ -858,18 +902,22 @@
             "type": "grafana-clickhouse-datasource",
             "uid": "PDEE91DDB90597936"
           },
+          "editorType": "sql",
           "format": 1,
           "meta": {
             "builderOptions": {
-              "fields": [],
+              "columns": [],
+              "database": "",
               "limit": 100,
-              "mode": "list"
+              "mode": "list",
+              "queryType": "table",
+              "table": ""
             }
           },
-          "queryType": "sql",
-          "rawSql": "SELECT\n  avgMerge(avgRain) as avgRain\nFROM innovacity.rain1m\nWHERE (timestamp1m >= $__fromTime AND timestamp1m <= $__toTime);",
-          "refId": "A",
-          "selectedFormat": 4
+          "pluginVersion": "4.0.3",
+          "queryType": "table",
+          "rawSql": "SELECT\n  avg(avgRain) as avgRain\nFROM innovacity.rain1m\nWHERE (timestamp1m >= $__fromTime AND timestamp1m <= $__toTime);",
+          "refId": "A"
         }
       ],
       "title": "Intensità media pioggia",
@@ -1626,14 +1674,14 @@
       "type": "table"
     }
   ],
-  "refresh": false,
+  "refresh": "1s",
   "schemaVersion": 39,
   "tags": [],
   "templating": {
     "list": []
   },
   "time": {
-    "from": "now-5m",
+    "from": "now-30m",
     "to": "now"
   },
   "timepicker": {
@@ -1654,6 +1702,6 @@
   "timezone": "",
   "title": "Ambientale",
   "uid": "fc312d0f-81a8-40f6-b70c-5b8f5ba76cce",
-  "version": 1,
+  "version": 5,
   "weekStart": ""
 }
