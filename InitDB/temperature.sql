@@ -1,28 +1,29 @@
 -- +----------------------+
 -- | START KAFKA CONSUMER |
 -- +----------------------+
-CREATE TABLE innovacity.temperatures_topic_kafka (
+CREATE TABLE innovacity.temperatures_topic_kafka
+(
     data String
 ) ENGINE = Kafka('kafka:9092', 'temperature', 'ch_group_1', 'JSONAsString');
 
-CREATE TABLE innovacity.temperatures (
-    name String,
+CREATE TABLE innovacity.temperatures
+(
+    name      String,
     timestamp DATETIME64,
-    value Float64,
-    type String,
-    latitude Float64,
+    value     Float64,
+    type      String,
+    latitude  Float64,
     longitude Float64
 ) ENGINE = MergeTree()
-ORDER BY (name, timestamp);
+      ORDER BY (name, timestamp);
 
 CREATE MATERIALIZED VIEW innovacity.temperatures_topic_mv TO innovacity.temperatures AS
-SELECT
-    JSONExtractString(data, 'name') AS name,
-    toDateTime64(JSONExtractString(data, 'timestamp'), 0) AS timestamp,
-    JSONExtractFloat(data, 'readings', 1, 'value') AS value, -- arrays start from 1
-    JSONExtractString(data, 'type') AS type,
-    JSONExtractFloat(data, 'location', 'coordinates', 1) AS latitude,
-    JSONExtractFloat(data, 'location', 'coordinates', 2) AS longitude
+SELECT JSONExtractString(data, 'name')                       AS name,
+       toDateTime64(JSONExtractString(data, 'timestamp'), 0) AS timestamp,
+       JSONExtractFloat(data, 'readings', 1, 'value')        AS value, -- arrays start from 1
+       JSONExtractString(data, 'type')                       AS type,
+       JSONExtractFloat(data, 'location', 'coordinates', 1)  AS latitude,
+       JSONExtractFloat(data, 'location', 'coordinates', 2)  AS longitude
 FROM innovacity.temperatures_topic_kafka;
 -- +--------------------+
 -- | END KAFKA CONSUMER |
@@ -33,35 +34,26 @@ FROM innovacity.temperatures_topic_kafka;
 -- +--------------------------+
 CREATE TABLE innovacity.temperatures1m
 (
-    name String,
+    name        String,
     timestamp1m DATETIME64,
     avgTemperature AggregateFunction(avgState, Float64),
-    latitude Float64,
-    longitude Float64
+    latitude    Float64,
+    longitude   Float64
 )
-ENGINE = AggregatingMergeTree
-ORDER BY (timestamp1m, name, longitude, latitude);
+    ENGINE = AggregatingMergeTree
+        ORDER BY (timestamp1m, name, longitude, latitude);
 
 CREATE MATERIALIZED VIEW innovacity.temperatures1m_mv
-TO innovacity.temperatures1m
+    TO innovacity.temperatures1m
 AS
-SELECT
-    toStartOfMinute(timestamp) AS timestamp1m,
-    name,
-    avgState(value) as avgTemperature,
-    latitude,
-    longitude
+SELECT toStartOfMinute(timestamp) AS timestamp1m,
+       name,
+       avgState(value)            as avgTemperature,
+       latitude,
+       longitude
 FROM innovacity.temperatures
 GROUP BY (timestamp1m, name, latitude, longitude);
 
-CREATE TABLE innovacity.temperatures_ma (
-    name String,
-    timestamp1m DATETIME64,
-    avgTemperature Float64,
-    latitude Float64,
-    longitude Float64
-) ENGINE = MergeTree()
-ORDER BY (timestamp1m, name, latitude, longitude);
 -- +------------------------+
 -- | END AGGREGATE 1 MINUTE |
 -- +------------------------+
@@ -69,16 +61,22 @@ ORDER BY (timestamp1m, name, latitude, longitude);
 -- +----------------------+
 -- | START MOVING AVERAGE |
 -- +----------------------+
-CREATE MATERIALIZED VIEW innovacity.temperatures1m_mov_avg
-TO innovacity.temperatures_ma
+CREATE TABLE innovacity.temperatures5m_overall
+(
+    timestamp5m    DATETIME64,
+    avgTemperature Float64,
+    insertion_timestamp DATETIME DEFAULT now()
+) ENGINE = MergeTree()
+      ORDER BY (timestamp5m);
+
+CREATE MATERIALIZED VIEW innovacity.temperatures_5m_overall_mv
+    TO innovacity.temperatures5m_overall
 AS
-SELECT
-    name,
-    toStartOfMinute(timestamp) AS timestamp1m,
-    avg(value) OVER (PARTITION BY  toStartOfMinute(timestamp) ORDER BY timestamp1m ROWS BETWEEN 2 PRECEDING AND CURRENT ROW) AS avgTemperature,
-    latitude,
-    longitude
-FROM innovacity.temperatures;
+SELECT toStartOfFiveMinute(timestamp) AS timestamp5m,
+       avg(value)                     AS avgTemperature,
+       now() AS insertion_timestamp
+FROM innovacity.temperatures
+GROUP BY timestamp5m;
 -- +--------------------+
 -- | END MOVING AVERAGE |
 -- +--------------------+

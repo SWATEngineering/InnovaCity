@@ -28,868 +28,6 @@
         "type": "grafana-clickhouse-datasource",
         "uid": "PDEE91DDB90597936"
       },
-      "description": "calcola la temperatura media ogni minuto ",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "opacity",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 3,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": true,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "celsius",
-          "unitScale": true
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "B moving_average"
-            },
-            "properties": [
-              {
-                "id": "custom.drawStyle",
-                "value": "line"
-              },
-              {
-                "id": "custom.fillOpacity",
-                "value": 13
-              },
-              {
-                "id": "custom.lineInterpolation",
-                "value": "linear"
-              },
-              {
-                "id": "custom.lineWidth",
-                "value": 5
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 9,
-        "w": 19,
-        "x": 0,
-        "y": 0
-      },
-      "id": 2,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "datasource": {
-            "type": "grafana-clickhouse-datasource",
-            "uid": "PDEE91DDB90597936"
-          },
-          "format": 1,
-          "meta": {
-            "builderOptions": {
-              "fields": [],
-              "limit": 100,
-              "mode": "list"
-            }
-          },
-          "queryType": "sql",
-          "rawSql": "SELECT\r\n    name,\r\n    toStartOfMinute(timestamp1m) AS timestamp1m,\r\n    avgMerge(avgTemperature) as \" \"\r\nFROM innovacity.temperatures1m\r\nGROUP BY (name, timestamp1m)\r\nHAVING ( timestamp1m  >= $__fromTime AND timestamp1m <= $__toTime ) ",
-          "refId": "A",
-          "selectedFormat": 4
-        },
-        {
-          "datasource": {
-            "type": "grafana-clickhouse-datasource",
-            "uid": "PDEE91DDB90597936"
-          },
-          "editorType": "sql",
-          "format": 1,
-          "hide": false,
-          "meta": {
-            "builderOptions": {
-              "columns": [],
-              "database": "",
-              "limit": 100,
-              "mode": "list",
-              "queryType": "table",
-              "table": ""
-            }
-          },
-          "pluginVersion": "4.0.0-beta",
-          "queryType": "table",
-          "rawSql": "SELECT\n  timestamp1m,\n  AVG(moving_average) AS moving_average\nFROM (\n  SELECT\n    avgMerge(avgTemperature) OVER (ORDER BY timestamp1m ROWS BETWEEN 2 PRECEDING AND CURRENT ROW) as moving_average,\n    timestamp1m\n  FROM innovacity.temperatures1m\n) AS subquery\nGROUP BY timestamp1m\nORDER BY timestamp1m;",
-          "refId": "B"
-        }
-      ],
-      "title": "Temperatura media per minuto",
-      "transformations": [
-        {
-          "id": "prepareTimeSeries",
-          "options": {
-            "format": "multi"
-          }
-        }
-      ],
-      "transparent": true,
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "grafana-clickhouse-datasource",
-        "uid": "PDEE91DDB90597936"
-      },
-      "description": "temperatura media nell'intervallo temporale selezionato",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "fieldMinMax": false,
-          "mappings": [],
-          "max": 17,
-          "min": 4,
-          "thresholds": {
-            "mode": "percentage",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "yellow",
-                "value": 30
-              },
-              {
-                "color": "orange",
-                "value": 60
-              },
-              {
-                "color": "red",
-                "value": 90
-              }
-            ]
-          },
-          "unit": "celsius",
-          "unitScale": true
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 9,
-        "w": 5,
-        "x": 19,
-        "y": 0
-      },
-      "id": 6,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "/^avgTemperature$/",
-          "values": false
-        },
-        "showPercentChange": false,
-        "textMode": "value",
-        "wideLayout": true
-      },
-      "pluginVersion": "10.3.0",
-      "targets": [
-        {
-          "datasource": {
-            "type": "grafana-clickhouse-datasource",
-            "uid": "PDEE91DDB90597936"
-          },
-          "format": 1,
-          "meta": {
-            "builderOptions": {
-              "fields": [],
-              "limit": 100,
-              "mode": "list"
-            }
-          },
-          "queryType": "sql",
-          "rawSql": "SELECT\n  avgMerge(avgTemperature) as avgTemperature\nFROM innovacity.temperatures1m\nWHERE (timestamp1m >= $__fromTime AND timestamp1m <= $__toTime);",
-          "refId": "A",
-          "selectedFormat": 4
-        }
-      ],
-      "title": "Temperatura media ",
-      "transformations": [],
-      "transparent": true,
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "grafana-clickhouse-datasource",
-        "uid": "PDEE91DDB90597936"
-      },
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 1,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "lengthmm",
-          "unitScale": true
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 9,
-        "w": 19,
-        "x": 0,
-        "y": 9
-      },
-      "id": 12,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "datasource": {
-            "type": "grafana-clickhouse-datasource",
-            "uid": "PDEE91DDB90597936"
-          },
-          "format": 1,
-          "meta": {
-            "builderOptions": {
-              "fields": [],
-              "limit": 100,
-              "mode": "list"
-            }
-          },
-          "queryType": "sql",
-          "rawSql": "SELECT\n  timestamp1m,\n  AVG(moving_average) AS media_totale\nFROM (\n  SELECT\n    avgMerge(avgRain) OVER (ORDER BY timestamp1m ROWS BETWEEN 2 PRECEDING AND CURRENT ROW) as moving_average,\n    timestamp1m\n  FROM innovacity.rain1m\n) AS subquery\nGROUP BY timestamp1m\nORDER BY timestamp1m;\n\n",
-          "refId": "A",
-          "selectedFormat": 4
-        }
-      ],
-      "title": "Pioggia media per minuto",
-      "transformations": [
-        {
-          "id": "prepareTimeSeries",
-          "options": {
-            "format": "multi"
-          }
-        }
-      ],
-      "transparent": true,
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "grafana-clickhouse-datasource",
-        "uid": "PDEE91DDB90597936"
-      },
-      "description": "Intensità media della pioggia in base all'intervallo selezionato ",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "decimals": 1,
-          "mappings": [],
-          "max": 15,
-          "min": 0,
-          "thresholds": {
-            "mode": "percentage",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "light-green",
-                "value": 13
-              },
-              {
-                "color": "yellow",
-                "value": 30
-              },
-              {
-                "color": "dark-orange",
-                "value": 50
-              },
-              {
-                "color": "dark-red",
-                "value": 70
-              },
-              {
-                "color": "purple",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "lengthmm",
-          "unitScale": true
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 9,
-        "w": 5,
-        "x": 19,
-        "y": 9
-      },
-      "id": 10,
-      "options": {
-        "minVizHeight": 75,
-        "minVizWidth": 75,
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "/^avgRain$/",
-          "values": false
-        },
-        "showThresholdLabels": false,
-        "showThresholdMarkers": true,
-        "sizing": "auto"
-      },
-      "pluginVersion": "10.3.0",
-      "targets": [
-        {
-          "datasource": {
-            "type": "grafana-clickhouse-datasource",
-            "uid": "PDEE91DDB90597936"
-          },
-          "format": 1,
-          "meta": {
-            "builderOptions": {
-              "fields": [],
-              "limit": 100,
-              "mode": "list"
-            }
-          },
-          "queryType": "sql",
-          "rawSql": "SELECT\n  avgMerge(avgRain) as avgRain\nFROM innovacity.rain1m\nWHERE (timestamp1m >= $__fromTime AND timestamp1m <= $__toTime);",
-          "refId": "A",
-          "selectedFormat": 4
-        }
-      ],
-      "title": "Intensità media pioggia",
-      "transparent": true,
-      "type": "gauge"
-    },
-    {
-      "datasource": {
-        "type": "grafana-clickhouse-datasource",
-        "uid": "PDEE91DDB90597936"
-      },
-      "description": "calcola il riempimento medio dei bacini idrici ogni minuto",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "opacity",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 3,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": true,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "%",
-          "unitScale": true
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 9,
-        "w": 19,
-        "x": 0,
-        "y": 18
-      },
-      "id": 11,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "10.2.3",
-      "targets": [
-        {
-          "datasource": {
-            "type": "grafana-clickhouse-datasource",
-            "uid": "PDEE91DDB90597936"
-          },
-          "format": 1,
-          "meta": {
-            "builderOptions": {
-              "fields": [],
-              "limit": 100,
-              "mode": "list"
-            }
-          },
-          "queryType": "sql",
-          "rawSql": "SELECT\r\n    name,\r\n    toStartOfMinute(timestamp1m) AS timestamp1m,\r\n    avgMerge(avgReservoir) as avgReservoir\r\nFROM innovacity.reservoirs1m\r\nGROUP BY (name, timestamp1m)\r\nHAVING ( timestamp1m  >= $__fromTime AND timestamp1m <= $__toTime ) ",
-          "refId": "A",
-          "selectedFormat": 4
-        },
-        {
-          "datasource": {
-            "type": "grafana-clickhouse-datasource",
-            "uid": "PDEE91DDB90597936"
-          },
-          "editorType": "sql",
-          "format": 1,
-          "hide": false,
-          "meta": {
-            "builderOptions": {
-              "columns": [],
-              "database": "",
-              "limit": 100,
-              "mode": "list",
-              "queryType": "table",
-              "table": ""
-            }
-          },
-          "pluginVersion": "4.0.0-beta",
-          "queryType": "table",
-          "rawSql": "SELECT\n  timestamp1m,\n  AVG(moving_average) AS moving_average\nFROM (\n  SELECT\n    avgMerge(avgReservoir) OVER (ORDER BY timestamp1m ROWS BETWEEN 2 PRECEDING AND CURRENT ROW) as moving_average,\n    timestamp1m\n  FROM innovacity.reservoirs1m\n) AS subquery\nGROUP BY timestamp1m\nORDER BY timestamp1m;",
-          "refId": "B"
-        }
-      ],
-      "title": "Riempimento medio dei bacini idrici per minuto",
-      "transformations": [
-        {
-          "id": "prepareTimeSeries",
-          "options": {
-            "format": "multi"
-          }
-        }
-      ],
-      "transparent": true,
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "grafana-clickhouse-datasource",
-        "uid": "PDEE91DDB90597936"
-      },
-      "description": "Misura PM10",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "conμgm3",
-          "unitScale": true
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 9,
-        "w": 19,
-        "x": 0,
-        "y": 27
-      },
-      "id": 13,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "datasource": {
-            "type": "grafana-clickhouse-datasource",
-            "uid": "PDEE91DDB90597936"
-          },
-          "editorType": "sql",
-          "format": 1,
-          "meta": {
-            "builderOptions": {
-              "columns": [],
-              "database": "",
-              "limit": 1000,
-              "mode": "list",
-              "queryType": "table",
-              "table": ""
-            }
-          },
-          "pluginVersion": "4.0.3",
-          "queryType": "table",
-          "rawSql": "SELECT\n    name,\n    toStartOfMinute(timestamp1m) AS timestamp1m,\n    avgMerge(avg_air_pollution) as avg_air_pollution\nFROM innovacity.air_pollution1m\nGROUP BY (name, timestamp1m)\nHAVING ( timestamp1m  >= $__fromTime AND timestamp1m <= $__toTime ) ",
-          "refId": "A"
-        },
-        {
-          "datasource": {
-            "type": "grafana-clickhouse-datasource",
-            "uid": "PDEE91DDB90597936"
-          },
-          "editorType": "sql",
-          "format": 1,
-          "hide": false,
-          "meta": {
-            "builderOptions": {
-              "columns": [],
-              "database": "",
-              "limit": 1000,
-              "mode": "list",
-              "queryType": "table",
-              "table": ""
-            }
-          },
-          "pluginVersion": "4.0.3",
-          "queryType": "table",
-          "rawSql": "SELECT\n  timestamp1m,\n  AVG(moving_average) AS moving_average\nFROM (\n  SELECT\n    avgMerge(avg_air_pollution) OVER (ORDER BY timestamp1m ROWS BETWEEN 2 PRECEDING AND CURRENT ROW) as moving_average,\n    timestamp1m\n  FROM innovacity.air_pollution1m\n) AS subquery\nGROUP BY timestamp1m\nORDER BY timestamp1m;",
-          "refId": "B"
-        }
-      ],
-      "title": "Qualità dell'aria",
-      "transparent": true,
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "grafana-clickhouse-datasource",
-        "uid": "PDEE91DDB90597936"
-      },
-      "description": "Misura la percentuale di umidità relativa presente nell'aria",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "decimals": 1,
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "%",
-          "unitScale": true
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 6,
-        "w": 19,
-        "x": 0,
-        "y": 36
-      },
-      "id": 16,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "datasource": {
-            "type": "grafana-clickhouse-datasource",
-            "uid": "PDEE91DDB90597936"
-          },
-          "editorType": "sql",
-          "format": 1,
-          "meta": {
-            "builderOptions": {
-              "columns": [],
-              "database": "",
-              "limit": 1000,
-              "mode": "list",
-              "queryType": "table",
-              "table": ""
-            }
-          },
-          "pluginVersion": "4.0.3",
-          "queryType": "table",
-          "rawSql": "SELECT\n    name,\n    toStartOfMinute(timestamp1m) AS timestamp1m,\n    avgMerge(avgHumidity) as avgHumidity\nFROM innovacity.humidity1m\nGROUP BY (name, timestamp1m)\nHAVING ( timestamp1m  >= $__fromTime AND timestamp1m <= $__toTime ) ",
-          "refId": "A"
-        },
-        {
-          "datasource": {
-            "type": "grafana-clickhouse-datasource",
-            "uid": "PDEE91DDB90597936"
-          },
-          "editorType": "sql",
-          "format": 1,
-          "hide": false,
-          "meta": {
-            "builderOptions": {
-              "columns": [],
-              "database": "",
-              "limit": 1000,
-              "mode": "list",
-              "queryType": "table",
-              "table": ""
-            }
-          },
-          "pluginVersion": "4.0.3",
-          "queryType": "table",
-          "rawSql": "SELECT\n  timestamp1m,\n  AVG(moving_average) AS moving_average\nFROM (\n  SELECT\n    avgMerge(avgHumidity) OVER (ORDER BY timestamp1m ROWS BETWEEN 2 PRECEDING AND CURRENT ROW) as moving_average,\n    timestamp1m\n  FROM innovacity.humidity1m\n) AS subquery\nGROUP BY timestamp1m\nORDER BY timestamp1m;",
-          "refId": "B"
-        }
-      ],
-      "title": "Umidità relativa per minuto",
-      "transparent": true,
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "grafana-clickhouse-datasource",
-        "uid": "PDEE91DDB90597936"
-      },
       "description": "dislocazione geografica dei sensori ",
       "fieldConfig": {
         "defaults": {
@@ -953,10 +91,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 11,
-        "w": 20,
-        "x": 2,
-        "y": 42
+        "h": 10,
+        "w": 24,
+        "x": 0,
+        "y": 0
       },
       "id": 4,
       "options": {
@@ -1275,6 +413,863 @@
         "type": "grafana-clickhouse-datasource",
         "uid": "PDEE91DDB90597936"
       },
+      "description": "calcola la temperatura media ogni minuto ",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 3,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "celsius",
+          "unitScale": true
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "B avgTemperature"
+            },
+            "properties": [
+              {
+                "id": "custom.drawStyle",
+                "value": "line"
+              },
+              {
+                "id": "custom.fillOpacity",
+                "value": 13
+              },
+              {
+                "id": "custom.lineInterpolation",
+                "value": "linear"
+              },
+              {
+                "id": "custom.lineWidth",
+                "value": 5
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 15,
+        "x": 2,
+        "y": 10
+      },
+      "id": 2,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "PDEE91DDB90597936"
+          },
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "fields": [],
+              "limit": 100,
+              "mode": "list"
+            }
+          },
+          "queryType": "sql",
+          "rawSql": "SELECT\r\n    name,\r\n    toStartOfMinute(timestamp1m) AS timestamp1m,\r\n    avgMerge(avgTemperature) as \" \"\r\nFROM innovacity.temperatures1m\r\nGROUP BY (name, timestamp1m)\r\nHAVING ( timestamp1m  >= $__fromTime AND timestamp1m <= $__toTime ) ",
+          "refId": "A",
+          "selectedFormat": 4
+        },
+        {
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "PDEE91DDB90597936"
+          },
+          "editorType": "sql",
+          "format": 1,
+          "hide": false,
+          "meta": {
+            "builderOptions": {
+              "columns": [],
+              "database": "",
+              "limit": 100,
+              "mode": "list",
+              "queryType": "table",
+              "table": ""
+            }
+          },
+          "pluginVersion": "4.0.3",
+          "queryType": "table",
+          "rawSql": "SELECT\n    timestamp5m,\n    avgTemperature\nFROM innovacity.temperatures5m_overall\nWHERE (timestamp5m, insertion_timestamp) IN (\n    SELECT\n        timestamp5m,\n        max(insertion_timestamp) AS max_insertion_timestamp\n    FROM innovacity.temperatures5m_overall\n    GROUP BY timestamp5m\n);\n",
+          "refId": "B"
+        }
+      ],
+      "title": "Temperatura media per minuto",
+      "transformations": [
+        {
+          "id": "prepareTimeSeries",
+          "options": {
+            "format": "multi"
+          }
+        }
+      ],
+      "transparent": true,
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-clickhouse-datasource",
+        "uid": "PDEE91DDB90597936"
+      },
+      "description": "temperatura media nell'intervallo temporale selezionato",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "fieldMinMax": false,
+          "mappings": [],
+          "max": 17,
+          "min": 4,
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 30
+              },
+              {
+                "color": "orange",
+                "value": 60
+              },
+              {
+                "color": "red",
+                "value": 90
+              }
+            ]
+          },
+          "unit": "celsius",
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 5,
+        "x": 17,
+        "y": 10
+      },
+      "id": 6,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^avgTemperature$/",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "PDEE91DDB90597936"
+          },
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "fields": [],
+              "limit": 100,
+              "mode": "list"
+            }
+          },
+          "queryType": "sql",
+          "rawSql": "SELECT\n  avgMerge(avgTemperature) as avgTemperature\nFROM innovacity.temperatures1m\nWHERE (timestamp1m >= $__fromTime AND timestamp1m <= $__toTime);",
+          "refId": "A",
+          "selectedFormat": 4
+        }
+      ],
+      "title": "Temperatura media ",
+      "transformations": [],
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-clickhouse-datasource",
+        "uid": "PDEE91DDB90597936"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "lengthmm",
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 15,
+        "x": 2,
+        "y": 19
+      },
+      "id": 12,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "PDEE91DDB90597936"
+          },
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "fields": [],
+              "limit": 100,
+              "mode": "list"
+            }
+          },
+          "queryType": "sql",
+          "rawSql": "SELECT\n  timestamp1m,\n  AVG(moving_average) AS media_totale\nFROM (\n  SELECT\n    avgMerge(avgRain) OVER (ORDER BY timestamp1m ROWS BETWEEN 2 PRECEDING AND CURRENT ROW) as moving_average,\n    timestamp1m\n  FROM innovacity.rain1m\n) AS subquery\nGROUP BY timestamp1m\nORDER BY timestamp1m;\n\n",
+          "refId": "A",
+          "selectedFormat": 4
+        }
+      ],
+      "title": "Pioggia media per minuto",
+      "transformations": [
+        {
+          "id": "prepareTimeSeries",
+          "options": {
+            "format": "multi"
+          }
+        }
+      ],
+      "transparent": true,
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-clickhouse-datasource",
+        "uid": "PDEE91DDB90597936"
+      },
+      "description": "Intensità media della pioggia in base all'intervallo selezionato ",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 1,
+          "mappings": [],
+          "max": 15,
+          "min": 0,
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "light-green",
+                "value": 13
+              },
+              {
+                "color": "yellow",
+                "value": 30
+              },
+              {
+                "color": "dark-orange",
+                "value": 50
+              },
+              {
+                "color": "dark-red",
+                "value": 70
+              },
+              {
+                "color": "purple",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "lengthmm",
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 5,
+        "x": 17,
+        "y": 19
+      },
+      "id": 10,
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^avgRain$/",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "sizing": "auto"
+      },
+      "pluginVersion": "10.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "PDEE91DDB90597936"
+          },
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "fields": [],
+              "limit": 100,
+              "mode": "list"
+            }
+          },
+          "queryType": "sql",
+          "rawSql": "SELECT\n  avgMerge(avgRain) as avgRain\nFROM innovacity.rain1m\nWHERE (timestamp1m >= $__fromTime AND timestamp1m <= $__toTime);",
+          "refId": "A",
+          "selectedFormat": 4
+        }
+      ],
+      "title": "Intensità media pioggia",
+      "transparent": true,
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "grafana-clickhouse-datasource",
+        "uid": "PDEE91DDB90597936"
+      },
+      "description": "calcola il riempimento medio dei bacini idrici ogni minuto",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 3,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "%",
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 20,
+        "x": 2,
+        "y": 28
+      },
+      "id": 11,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "10.2.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "PDEE91DDB90597936"
+          },
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "fields": [],
+              "limit": 100,
+              "mode": "list"
+            }
+          },
+          "queryType": "sql",
+          "rawSql": "SELECT\r\n    name,\r\n    toStartOfMinute(timestamp1m) AS timestamp1m,\r\n    avgMerge(avgReservoir) as avgReservoir\r\nFROM innovacity.reservoirs1m\r\nGROUP BY (name, timestamp1m)\r\nHAVING ( timestamp1m  >= $__fromTime AND timestamp1m <= $__toTime ) ",
+          "refId": "A",
+          "selectedFormat": 4
+        },
+        {
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "PDEE91DDB90597936"
+          },
+          "editorType": "sql",
+          "format": 1,
+          "hide": false,
+          "meta": {
+            "builderOptions": {
+              "columns": [],
+              "database": "",
+              "limit": 100,
+              "mode": "list",
+              "queryType": "table",
+              "table": ""
+            }
+          },
+          "pluginVersion": "4.0.0-beta",
+          "queryType": "table",
+          "rawSql": "SELECT\n  timestamp1m,\n  AVG(moving_average) AS moving_average\nFROM (\n  SELECT\n    avgMerge(avgReservoir) OVER (ORDER BY timestamp1m ROWS BETWEEN 2 PRECEDING AND CURRENT ROW) as moving_average,\n    timestamp1m\n  FROM innovacity.reservoirs1m\n) AS subquery\nGROUP BY timestamp1m\nORDER BY timestamp1m;",
+          "refId": "B"
+        }
+      ],
+      "title": "Riempimento medio dei bacini idrici per minuto",
+      "transformations": [
+        {
+          "id": "prepareTimeSeries",
+          "options": {
+            "format": "multi"
+          }
+        }
+      ],
+      "transparent": true,
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-clickhouse-datasource",
+        "uid": "PDEE91DDB90597936"
+      },
+      "description": "Misura PM10",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "conμgm3",
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 20,
+        "x": 2,
+        "y": 37
+      },
+      "id": 13,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "PDEE91DDB90597936"
+          },
+          "editorType": "sql",
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "columns": [],
+              "database": "",
+              "limit": 1000,
+              "mode": "list",
+              "queryType": "table",
+              "table": ""
+            }
+          },
+          "pluginVersion": "4.0.3",
+          "queryType": "table",
+          "rawSql": "SELECT\n    name,\n    toStartOfMinute(timestamp1m) AS timestamp1m,\n    avgMerge(avg_air_pollution) as avg_air_pollution\nFROM innovacity.air_pollution1m\nGROUP BY (name, timestamp1m)\nHAVING ( timestamp1m  >= $__fromTime AND timestamp1m <= $__toTime ) ",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "PDEE91DDB90597936"
+          },
+          "editorType": "sql",
+          "format": 1,
+          "hide": false,
+          "meta": {
+            "builderOptions": {
+              "columns": [],
+              "database": "",
+              "limit": 1000,
+              "mode": "list",
+              "queryType": "table",
+              "table": ""
+            }
+          },
+          "pluginVersion": "4.0.3",
+          "queryType": "table",
+          "rawSql": "SELECT\n  timestamp1m,\n  AVG(moving_average) AS moving_average\nFROM (\n  SELECT\n    avgMerge(avg_air_pollution) OVER (ORDER BY timestamp1m ROWS BETWEEN 2 PRECEDING AND CURRENT ROW) as moving_average,\n    timestamp1m\n  FROM innovacity.air_pollution1m\n) AS subquery\nGROUP BY timestamp1m\nORDER BY timestamp1m;",
+          "refId": "B"
+        }
+      ],
+      "title": "Qualità dell'aria",
+      "transparent": true,
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-clickhouse-datasource",
+        "uid": "PDEE91DDB90597936"
+      },
+      "description": "Misura la percentuale di umidità relativa presente nell'aria",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 1,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "%",
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 20,
+        "x": 2,
+        "y": 46
+      },
+      "id": 16,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "PDEE91DDB90597936"
+          },
+          "editorType": "sql",
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "columns": [],
+              "database": "",
+              "limit": 1000,
+              "mode": "list",
+              "queryType": "table",
+              "table": ""
+            }
+          },
+          "pluginVersion": "4.0.3",
+          "queryType": "table",
+          "rawSql": "SELECT\n    name,\n    toStartOfMinute(timestamp1m) AS timestamp1m,\n    avgMerge(avgHumidity) as avgHumidity\nFROM innovacity.humidity1m\nGROUP BY (name, timestamp1m)\nHAVING ( timestamp1m  >= $__fromTime AND timestamp1m <= $__toTime ) ",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "PDEE91DDB90597936"
+          },
+          "editorType": "sql",
+          "format": 1,
+          "hide": false,
+          "meta": {
+            "builderOptions": {
+              "columns": [],
+              "database": "",
+              "limit": 1000,
+              "mode": "list",
+              "queryType": "table",
+              "table": ""
+            }
+          },
+          "pluginVersion": "4.0.3",
+          "queryType": "table",
+          "rawSql": "SELECT\n  timestamp1m,\n  AVG(moving_average) AS moving_average\nFROM (\n  SELECT\n    avgMerge(avgHumidity) OVER (ORDER BY timestamp1m ROWS BETWEEN 2 PRECEDING AND CURRENT ROW) as moving_average,\n    timestamp1m\n  FROM innovacity.humidity1m\n) AS subquery\nGROUP BY timestamp1m\nORDER BY timestamp1m;",
+          "refId": "B"
+        }
+      ],
+      "title": "Umidità relativa per minuto",
+      "transparent": true,
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-clickhouse-datasource",
+        "uid": "PDEE91DDB90597936"
+      },
       "description": "Pannello mostrante la direzione e intensità del vento.",
       "fieldConfig": {
         "defaults": {
@@ -1295,8 +1290,7 @@
             "mode": "percentage",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "super-light-green",
@@ -1355,6 +1349,22 @@
                 "value": "degree"
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "corrected_direction"
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": true,
+                  "tooltip": true,
+                  "viz": true
+                }
+              }
+            ]
           }
         ]
       },
@@ -1362,7 +1372,7 @@
         "h": 8,
         "w": 11,
         "x": 2,
-        "y": 53
+        "y": 54
       },
       "id": 14,
       "options": {
@@ -1390,7 +1400,7 @@
                 },
                 "opacity": 0.7,
                 "rotation": {
-                  "field": "direction",
+                  "field": "corrected_direction",
                   "fixed": 0,
                   "max": 360,
                   "min": -360,
@@ -1402,12 +1412,12 @@
                   "min": 2
                 },
                 "symbol": {
-                  "fixed": "img/icons/unicons/arrow-down.svg",
+                  "fixed": "img/icons/unicons/arrow-right.svg",
                   "mode": "fixed"
                 },
                 "symbolAlign": {
                   "horizontal": "center",
-                  "vertical": "bottom"
+                  "vertical": "center"
                 },
                 "text": {
                   "field": "name",
@@ -1417,7 +1427,7 @@
                 "textConfig": {
                   "fontSize": 12,
                   "offsetX": 0,
-                  "offsetY": 0,
+                  "offsetY": 15,
                   "textAlign": "center",
                   "textBaseline": "middle"
                 }
@@ -1426,6 +1436,9 @@
             "filterData": {
               "id": "byRefId",
               "options": "A"
+            },
+            "location": {
+              "mode": "auto"
             },
             "name": "Layer 1",
             "tooltip": true,
@@ -1469,6 +1482,26 @@
         }
       ],
       "title": "Vento",
+      "transformations": [
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "corrected_direction",
+            "binary": {
+              "left": "direction",
+              "operator": "*",
+              "right": "-1"
+            },
+            "mode": "binary",
+            "reduce": {
+              "include": [
+                "direction"
+              ],
+              "reducer": "sum"
+            }
+          }
+        }
+      ],
       "type": "geomap"
     },
     {
@@ -1494,8 +1527,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1517,6 +1549,30 @@
                 "value": true
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "latitude"
+            },
+            "properties": [
+              {
+                "id": "custom.hidden",
+                "value": true
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "longitude"
+            },
+            "properties": [
+              {
+                "id": "custom.hidden",
+                "value": true
+              }
+            ]
           }
         ]
       },
@@ -1524,7 +1580,7 @@
         "h": 8,
         "w": 9,
         "x": 13,
-        "y": 53
+        "y": 54
       },
       "id": 15,
       "options": {
@@ -1551,6 +1607,7 @@
         }
       ],
       "title": "Vento (dati)",
+      "transformations": [],
       "type": "table"
     }
   ],
@@ -1561,7 +1618,7 @@
     "list": []
   },
   "time": {
-    "from": "now-5m",
+    "from": "now-30m",
     "to": "now"
   },
   "timepicker": {
@@ -1582,6 +1639,6 @@
   "timezone": "",
   "title": "Ambientale",
   "uid": "fc312d0f-81a8-40f6-b70c-5b8f5ba76cce",
-  "version": 2,
+  "version": 1,
   "weekStart": ""
 }
