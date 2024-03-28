@@ -644,18 +644,22 @@
             "type": "grafana-clickhouse-datasource",
             "uid": "PDEE91DDB90597936"
           },
+          "editorType": "sql",
           "format": 1,
           "meta": {
             "builderOptions": {
-              "fields": [],
+              "columns": [],
+              "database": "",
               "limit": 100,
-              "mode": "list"
+              "mode": "list",
+              "queryType": "table",
+              "table": ""
             }
           },
-          "queryType": "sql",
-          "rawSql": "SELECT\n  avgMerge(avgTemperature) as avgTemperature\nFROM innovacity.temperatures1m\nWHERE (timestamp1m >= $__fromTime AND timestamp1m <= $__toTime);",
-          "refId": "A",
-          "selectedFormat": 4
+          "pluginVersion": "4.0.3",
+          "queryType": "table",
+          "rawSql": "SELECT\n  avg(avgTemperature) as avgTemperature\nFROM innovacity.temperatures1m\nWHERE (timestamp1m >= $__fromTime AND timestamp1m <= $__toTime);",
+          "refId": "A"
         }
       ],
       "title": "Temperatura media ",
@@ -711,7 +715,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -794,7 +799,8 @@
             "mode": "percentage",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "light-green",
@@ -918,7 +924,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -1054,7 +1061,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -1186,7 +1194,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -1294,7 +1303,8 @@
             "mode": "percentage",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "super-light-green",
@@ -1531,7 +1541,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
