@@ -551,9 +551,9 @@
               "table": ""
             }
           },
-          "pluginVersion": "4.0.0-beta",
+          "pluginVersion": "4.0.3",
           "queryType": "table",
-          "rawSql": "SELECT\n  timestamp1m,\n  AVG(moving_average) AS moving_average\nFROM (\n  SELECT\n    avgMerge(avgTemperature) OVER (ORDER BY timestamp1m ROWS BETWEEN 2 PRECEDING AND CURRENT ROW) as moving_average,\n    timestamp1m\n  FROM innovacity.temperatures1m\n) AS subquery\nGROUP BY timestamp1m\nORDER BY timestamp1m;",
+          "rawSql": "SELECT\n    timestamp5m,\n    avgTemperature\nFROM innovacity.temperatures5m_overall\nWHERE (timestamp5m, insertion_timestamp) IN (\n    SELECT\n        timestamp5m,\n        max(insertion_timestamp) AS max_insertion_timestamp\n    FROM innovacity.temperatures5m_overall\n    GROUP BY timestamp5m\n);\n",
           "refId": "B"
         }
       ],
@@ -707,8 +707,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -791,8 +790,7 @@
             "mode": "percentage",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "light-green",
@@ -916,8 +914,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1053,8 +1050,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1186,8 +1182,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1295,8 +1290,7 @@
             "mode": "percentage",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "super-light-green",
@@ -1533,8 +1527,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1625,7 +1618,7 @@
     "list": []
   },
   "time": {
-    "from": "now-5m",
+    "from": "now-30m",
     "to": "now"
   },
   "timepicker": {
@@ -1646,6 +1639,6 @@
   "timezone": "",
   "title": "Ambientale",
   "uid": "fc312d0f-81a8-40f6-b70c-5b8f5ba76cce",
-  "version": 2,
+  "version": 1,
   "weekStart": ""
 }
